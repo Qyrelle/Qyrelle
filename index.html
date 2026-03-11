@@ -10,31 +10,66 @@ background:black;
 color:white;
 font-family:Arial;
 text-align:center;
-padding-top:100px;
+margin:0;
+overflow-x:hidden;
+}
+
+/* animated background */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center,#ff003c33,transparent 60%);
+animation:pulse 4s infinite;
+z-index:-1;
+}
+
+@keyframes pulse{
+0%{opacity:0.2;}
+50%{opacity:0.6;}
+100%{opacity:0.2;}
 }
 
 h1{
 color:#ff003c;
-font-size:60px;
+font-size:70px;
+margin-top:80px;
+text-shadow:0 0 15px #ff003c;
 }
 
 p{
 font-size:20px;
+color:#ccc;
 }
 
-a{
+.button{
 display:block;
 margin:20px auto;
-width:220px;
-padding:12px;
-border:1px solid #ff003c;
-text-decoration:none;
+width:240px;
+padding:14px;
+border:2px solid #ff003c;
+border-radius:8px;
 color:white;
-border-radius:5px;
+text-decoration:none;
+font-size:18px;
+transition:0.3s;
 }
 
-a:hover{
+.button:hover{
 background:#ff003c;
+box-shadow:0 0 20px #ff003c;
+}
+
+/* youtube section */
+.video{
+margin-top:40px;
+}
+
+iframe{
+border-radius:10px;
 }
 
 </style>
@@ -44,13 +79,22 @@ background:#ff003c;
 <body>
 
 <h1>Qyrelle</h1>
-
 <p>Dark Phonk Music</p>
 
-<a href="https://youtube.com/@qyrelle?si=G3B47_29WZ46pCre">YouTube</a>
-<a href="#">Latest Track</a>
-<a href="#">Anime Edits</a>
+<a class="button" href="#">YouTube</a>
+<a class="button" href="#">Latest Track</a>
+<a class="button" href="#">Anime Edits</a>
+
+<div class="video">
+<h2>Latest Video</h2>
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+frameborder="0"
+allowfullscreen>
+</iframe>
+
+</div>
 
 </body>
-
 </html>
