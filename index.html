@@ -155,12 +155,58 @@ max-width:100%;
 border-radius:12px;
 box-shadow:0 0 20px #ff003c44;
 }
+html,body{
+height:100%;
+}
+
+.app{
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+/* header */
+
+header{
+flex:0 0 auto;
+padding:20px;
+}
+
+/* main scroll area */
+
+main{
+flex:1 1 auto;
+overflow-y:auto;
+padding:20px;
+}
+
+/* footer */
+
+footer{
+flex:0 0 auto;
+padding:10px;
+color:#888;
+font-size:14px;
+}
+
+/* make video responsive */
+
+iframe{
+max-width:100%;
+height:auto;
+}
+
+/* mobile fix */
+
+img{
+max-width:100%;
+}
 </style>
 
 </head>
 
 <body>
-
+<div class="app">
 <div class="wrapper">
 
 <header>
