@@ -6,6 +6,28 @@
 <title>Qyrelle</title>
 
 <style>
+#playerBox{
+margin-top:40px;
+padding:20px;
+border:1px solid #ff003c44;
+border-radius:12px;
+max-width:400px;
+margin-left:auto;
+margin-right:auto;
+}
+
+button{
+margin:5px;
+padding:10px 15px;
+background:black;
+color:white;
+border:1px solid #ff003c;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff003c;
+}
 *{
 box-sizing:border-box;
 margin:0;
@@ -124,6 +146,25 @@ box-shadow:0 0 20px #ff003c44;
 <a class="button" href="#">Anime Edits</a>
 
 <h2>Latest Video</h2>
+<h2>Player</h2>
+
+<div id="playerBox">
+
+<p id="trackName">No track</p>
+
+<audio id="audioPlayer" controls></audio>
+
+<br><br>
+
+<button onclick="playTrack('music/track1.mp3','Track 1')">
+Play Track 1
+</button>
+
+<button onclick="playTrack('music/track2.mp3','Track 2')">
+Play Track 2
+</button>
+
+</div>
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/videoseries?list=PLrk3exvFXwThlJvdzBuuK8FrGnAJHbu6X"
@@ -137,6 +178,22 @@ allowfullscreen>
 </footer>
 
 </div>
+<script>
 
+function playTrack(src,name){
+
+let player = document.getElementById("audioPlayer");
+
+let title = document.getElementById("trackName");
+
+player.src = src;
+
+title.innerText = name;
+
+player.play();
+
+}
+
+</script>
 </body>
 </html>
