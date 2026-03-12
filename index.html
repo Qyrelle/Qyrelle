@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
+<div id="floatingPlayer">
 
+<img id="cover" src="cover1.jpg" width="40">
+
+<span id="trackName">No track</span>
+
+<audio id="audioPlayer" controls></audio>
+
+</div>
 <head>
 
 <title>Qyrelle</title>
@@ -207,7 +215,7 @@ position:fixed;
 bottom:0;
 left:0;
 width:100%;
-background:black;
+background:#050505;
 border-top:2px solid #ff003c;
 padding:10px;
 display:flex;
@@ -215,16 +223,19 @@ justify-content:center;
 align-items:center;
 gap:15px;
 z-index:1000;
+box-shadow:0 0 15px #ff003c55;
 }
 
 #floatingPlayer audio{
-width:300px;
-max-width:90%;
+width:350px;
+max-width:80%;
 }
 
 #trackName{
-color:#fff;
+color:#ff003c;
 font-size:14px;
+min-width:120px;
+text-align:right;
 }
 </style>
 
@@ -296,12 +307,13 @@ allowfullscreen>
 function playTrack(src,name){
 
 let player = document.getElementById("audioPlayer");
-
 let title = document.getElementById("trackName");
+let cover = document.getElementById("cover");
 
 player.src = src;
-
 title.innerText = name;
+
+cover.src = "cover1.jpg";
 
 player.play();
 
