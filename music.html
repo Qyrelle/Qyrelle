@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Qyrelle Music</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<h1>Qyrelle</h1>
+<p>Music</p>
+
+</header>
+
+<main>
+
+<div class="container">
+
+<h2>Tracks</h2>
+
+<div class="trackList">
+
+<div class="track" onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
+<img src="cover1.jpg">
+<span>VENENO BATIDA</span>
+</div>
+
+<div class="track" onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
+<img src="cover1.jpg">
+<span>KOKORO PULSE</span>
+</div>
+
+<div class="track" onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
+<img src="cover1.jpg">
+<span>BATIDA FATAL</span>
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<div id="floatingPlayer">
+
+<div class="playerInner">
+
+<span id="trackName">No track</span>
+
+<audio id="audioPlayer" controls></audio>
+
+</div>
+
+</div>
+
+<script>
+
+function playTrack(src,name){
+
+let player=document.getElementById("audioPlayer");
+let title=document.getElementById("trackName");
+
+player.src=src;
+title.innerText=name;
+
+player.play();
+
+}
+
+</script>
+
+</div>
+
+</body>
+</html>
