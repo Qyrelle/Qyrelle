@@ -21,14 +21,19 @@ overflow-x:hidden;
 body::before{
 content:"";
 position:fixed;
+top:0;
+left:0;
 width:100%;
 height:100%;
-background:
-radial-gradient(circle at 20% 30%,#ff003c55,transparent 40%),
-radial-gradient(circle at 80% 70%,#ff003c33,transparent 40%),
-radial-gradient(circle at 50% 50%,#ff003c22,transparent 50%);
-animation:movebg 8s infinite alternate;
+background:radial-gradient(circle,#ff003c22,transparent 70%);
+animation:pulse 6s infinite;
 z-index:-1;
+}
+
+@keyframes pulse{
+0%{opacity:0.2;}
+50%{opacity:0.5;}
+100%{opacity:0.2;}
 }
 
 @keyframes movebg{
