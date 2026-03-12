@@ -1,4 +1,23 @@
 body{
+.button{
+
+display:inline-block;
+
+color:white;
+text-decoration:none;
+
+border:1px solid red;
+
+padding:10px 20px;
+margin:10px;
+
+}
+
+.button:hover{
+
+background:red;
+
+}
 
 background:black;
 color:white;
