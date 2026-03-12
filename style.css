@@ -135,40 +135,48 @@ font-size:18px;
 
 
 /* FLOAT PLAYER */
-
 #floatingPlayer{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
 background:#050505;
-border-top:2px solid red;
+border-top:2px solid #ff003c;
 padding:10px;
 display:flex;
 justify-content:center;
-z-index:1000;
+box-shadow:0 0 20px #ff003c55;
 }
 
-.playerInner{
+.playerBox{
 display:flex;
 align-items:center;
 gap:15px;
+width:600px;
+max-width:90%;
 }
 
-.playerInner audio{
-width:400px;
-max-width:70vw;
+#playerCover{
+width:50px;
+height:50px;
+object-fit:cover;
+border-radius:6px;
+border:1px solid #ff003c;
+}
+
+.playerInfo{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+#audioPlayer{
+width:100%;
 }
 
 #trackName{
 color:#ff003c;
 font-size:14px;
-min-width:120px;
-text-align:right;
+margin-bottom:5px;
 }
-.content{
-max-width:700px;
-width:100%;
-margin-top:40px;
-text-align:center;
-}
+
