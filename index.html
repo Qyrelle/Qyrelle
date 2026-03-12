@@ -115,10 +115,9 @@ text-shadow:0 0 10px #ff003c;
 main{
 flex:1 1 auto;
 overflow-y:auto;
-text-align:center;
 padding:20px;
+padding-bottom:180px;
 }
-
 /* footer */
 
 footer{
@@ -151,9 +150,9 @@ box-shadow:0 0 15px #ff003c;
 /* video */
 
 iframe{
+display:block;
+margin:30px auto;
 max-width:100%;
-border-radius:12px;
-box-shadow:0 0 20px #ff003c44;
 }
 html,body{
 height:100%;
@@ -209,25 +208,30 @@ left:0;
 width:100%;
 background:#050505;
 border-top:2px solid #ff003c;
-padding:15px;
+padding:10px 0;
 display:flex;
 justify-content:center;
 align-items:center;
-gap:20px;
 z-index:1000;
 box-shadow:0 0 20px #ff003c55;
 }
 
-#floatingPlayer audio{
-width:500px;
-max-width:90%;
-height:40px;
+.playerInner{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.playerInner audio{
+width:420px;
+max-width:70vw;
 }
 
 #trackName{
 color:#ff003c;
 font-size:14px;
 min-width:120px;
+text-align:right;
 }
 </style>
 
@@ -283,11 +287,13 @@ allowfullscreen>
 </main>
 <div id="floatingPlayer">
 
-<img id="cover" src="cover1.jpg" width="40">
+<div class="playerInner">
 
 <span id="trackName">No track</span>
 
 <audio id="audioPlayer" controls></audio>
+
+</div>
 
 </div>
 
