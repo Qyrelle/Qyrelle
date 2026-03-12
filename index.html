@@ -9,11 +9,18 @@
 
 body{
 margin:0;
-background:black;
 font-family:Arial;
 color:white;
 text-align:center;
 overflow-x:hidden;
+background-color:black;
+
+/* phonk grid */
+background-image:
+linear-gradient(rgba(255,0,60,0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
+
+background-size:40px 40px;
 }
 
 /* animated background */
@@ -28,6 +35,14 @@ height:100%;
 background:radial-gradient(circle,#ff003c22,transparent 70%);
 animation:pulse 6s infinite;
 z-index:-1;
+}
+body{
+animation:gridmove 20s linear infinite;
+}
+
+@keyframes gridmove{
+0%{background-position:0 0;}
+100%{background-position:40px 40px;}
 }
 
 @keyframes pulse{
