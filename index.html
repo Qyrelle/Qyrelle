@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
-<div id="floatingPlayer">
 
-<img id="cover" src="cover1.jpg" width="40">
-
-<span id="trackName">No track</span>
-
-<audio id="audioPlayer" controls></audio>
-
-</div>
 <head>
 
 <title>Qyrelle</title>
@@ -186,7 +178,7 @@ main{
 flex:1 1 auto;
 overflow-y:auto;
 padding:20px;
-padding-bottom:120px;
+padding-bottom:180px;
 }
 
 /* footer */
@@ -217,25 +209,25 @@ left:0;
 width:100%;
 background:#050505;
 border-top:2px solid #ff003c;
-padding:10px;
+padding:15px;
 display:flex;
 justify-content:center;
 align-items:center;
-gap:15px;
+gap:20px;
 z-index:1000;
-box-shadow:0 0 15px #ff003c55;
+box-shadow:0 0 20px #ff003c55;
 }
 
 #floatingPlayer audio{
-width:350px;
-max-width:80%;
+width:500px;
+max-width:90%;
+height:40px;
 }
 
 #trackName{
 color:#ff003c;
 font-size:14px;
 min-width:120px;
-text-align:right;
 }
 </style>
 
@@ -290,6 +282,8 @@ allowfullscreen>
 
 </main>
 <div id="floatingPlayer">
+
+<img id="cover" src="cover1.jpg" width="40">
 
 <span id="trackName">No track</span>
 
