@@ -131,3 +131,38 @@ border-radius:8px;
 .track span{
 font-size:18px;
 }
+.content{
+max-width:700px;
+margin:0 auto;
+}
+
+.trackList{
+margin-top:20px;
+}
+
+.track{
+display:flex;
+align-items:center;
+gap:15px;
+border:1px solid #ff003c;
+padding:10px;
+margin:10px 0;
+cursor:pointer;
+transition:0.3s;
+}
+
+.track:hover{
+background:#ff003c22;
+box-shadow:0 0 10px #ff003c;
+}
+
+.track img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.track span{
+font-size:18px;
+}
