@@ -6,76 +6,74 @@
 <title>Qyrelle</title>
 
 <style>
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
-body{
-margin:0;
+html,body{
+height:100%;
 font-family:Arial;
+background:black;
 color:white;
-text-align:center;
-overflow-x:hidden;
-background-color:black;
+overflow:hidden;
+}
 
-/* phonk grid */
+/* grid background */
+
+body{
 background-image:
 linear-gradient(rgba(255,0,60,0.08) 1px, transparent 1px),
 linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
-
 background-size:40px 40px;
-}
-
-/* animated background */
-
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:radial-gradient(circle,#ff003c22,transparent 70%);
-animation:pulse 6s infinite;
-z-index:-1;
-}
-body{
 animation:gridmove 20s linear infinite;
 }
-
 
 @keyframes gridmove{
 0%{background-position:0 0;}
 100%{background-position:40px 40px;}
 }
 
-@keyframes pulse{
-0%{opacity:0.2;}
-50%{opacity:0.5;}
-100%{opacity:0.2;}
+/* layout */
+
+.wrapper{
+display:flex;
+flex-direction:column;
+height:100vh;
 }
 
-@keyframes movebg{
-0%{transform:scale(1);}
-100%{transform:scale(1.2);}
-}
+/* header */
 
-/* logo */
+header{
+flex:0 0 auto;
+text-align:center;
+padding:20px;
+}
 
 h1{
-margin-top:90px;
-font-size:70px;
+font-size:50px;
 color:#ff003c;
-text-shadow:0 0 12px #ff003c;
+text-shadow:0 0 10px #ff003c;
 }
 
+/* content scroll */
 
+main{
+flex:1 1 auto;
+overflow-y:auto;
+text-align:center;
+padding:20px;
+}
 
-p{
-color:#ccc;
-font-size:20px;
+/* footer */
+
+footer{
+flex:0 0 auto;
+text-align:center;
+padding:10px;
+color:#888;
+font-size:14px;
 }
 
 /* buttons */
@@ -83,65 +81,62 @@ font-size:20px;
 .button{
 display:block;
 width:260px;
-margin:20px auto;
-padding:14px;
+margin:15px auto;
+padding:12px;
 border:2px solid #ff003c;
 border-radius:10px;
 color:white;
 text-decoration:none;
-font-size:18px;
 transition:0.3s;
 }
 
 .button:hover{
 background:#ff003c;
-box-shadow:0 0 20px #ff003c;
-transform:scale(1.05);
+box-shadow:0 0 15px #ff003c;
 }
 
 /* video */
 
-.video{
-margin-top:40px;
-}
-
 iframe{
+max-width:100%;
 border-radius:12px;
 box-shadow:0 0 20px #ff003c44;
-max-width:100%;
-height:315px;
 }
-
 </style>
 
 </head>
 
 <body>
-<div class="container">
+
+<div class="wrapper">
+
+<header>
 <h1>Qyrelle</h1>
-
 <p>Dark Phonk Music</p>
+</header>
 
-<a class="button" href="https://youtube.com/@qyrelle" target="_blank">YouTube</a>
+<main>
 
-<a class="button" href="https://youtube.com/playlist?list=PLrk3exvFXwThlJvdzBuuK8FrGnAJHbu6X" target="_blank">Latest Track</a>
+<a class="button" href="https://youtube.com/@qyrelle">YouTube</a>
 
-<a class="button" href="https://youtube.com/results?search_query=qyrelle+anime+edit" target="_blank">Anime Edits</a>
-<div class="video">
+<a class="button" href="#">Latest Track</a>
+
+<a class="button" href="#">Anime Edits</a>
 
 <h2>Latest Video</h2>
 
 <iframe width="560" height="315"
 src="https://www.youtube.com/embed/videoseries?list=PLrk3exvFXwThlJvdzBuuK8FrGnAJHbu6X"
-title="Qyrelle Playlist"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 allowfullscreen>
 </iframe>
-</div>
-</div>
-<footer style="margin-top:60px;color:#888;font-size:14px;">
+
+</main>
+
+<footer>
 © 2026 Qyrelle • Dark Phonk Music
 </footer>
+
+</div>
+
 </body>
 </html>
