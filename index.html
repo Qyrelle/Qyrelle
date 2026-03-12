@@ -6,246 +6,9 @@
 <title>Qyrelle</title>
 
 <style>
-h2{
-text-align:center;
-}
-.container{
-max-width:900px;
-margin:0 auto;
-}
-.trackList{
-max-width:600px;
-margin:30px auto;
-}
-.trackList{
-max-width:600px;
-margin:30px auto;
-}
-.track{
-display:flex;
-align-items:center;
-gap:15px;
-padding:10px;
-border:1px solid #ff003c;
-margin:10px;
-cursor:pointer;
-transition:0.3s;
-}
 
-.track:hover{
-background:#ff003c22;
-box-shadow:0 0 10px #ff003c;
-}
+/* keep your style here */
 
-.track img{
-width:60px;
-height:60px;
-object-fit:cover;
-border-radius:8px;
-}
-
-.track span{
-font-size:18px;
-}
-#playerBox{
-margin-top:40px;
-padding:20px;
-border:1px solid #ff003c44;
-border-radius:12px;
-max-width:400px;
-margin-left:auto;
-margin-right:auto;
-}
-.button{
-display:block;
-margin:15px auto;
-}
-button{
-margin:5px;
-padding:10px 15px;
-background:black;
-color:white;
-border:1px solid #ff003c;
-cursor:pointer;
-}
-
-button:hover{
-background:#ff003c;
-}
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-html,body{
-height:100%;
-font-family:Arial;
-background:black;
-color:white;
-overflow:hidden;
-}
-
-/* grid background */
-
-body{
-background-image:
-linear-gradient(rgba(255,0,60,0.08) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
-background-size:40px 40px;
-animation:gridmove 20s linear infinite;
-}
-
-@keyframes gridmove{
-0%{background-position:0 0;}
-100%{background-position:40px 40px;}
-}
-
-/* layout */
-
-.wrapper{
-display:flex;
-flex-direction:column;
-height:100vh;
-}
-
-/* header */
-
-header{
-flex:0 0 auto;
-text-align:center;
-padding:20px;
-}
-
-h1{
-font-size:50px;
-color:#ff003c;
-text-shadow:0 0 10px #ff003c;
-}
-
-/* content scroll */
-
-main{
-flex:1 1 auto;
-overflow-y:auto;
-padding:20px;
-padding-bottom:180px;
-}
-/* footer */
-
-footer{
-flex:0 0 auto;
-text-align:center;
-padding:10px;
-color:#888;
-font-size:14px;
-}
-
-/* buttons */
-
-.button{
-display:block;
-width:260px;
-margin:15px auto;
-padding:12px;
-border:2px solid #ff003c;
-border-radius:10px;
-color:white;
-text-decoration:none;
-transition:0.3s;
-}
-
-.button:hover{
-background:#ff003c;
-box-shadow:0 0 15px #ff003c;
-}
-
-/* video */
-
-iframe{
-display:block;
-margin:30px auto;
-max-width:100%;
-}
-html,body{
-height:100%;
-}
-
-.app{
-display:flex;
-flex-direction:column;
-height:100vh;
-}
-
-/* header */
-
-header{
-flex:0 0 auto;
-padding:20px;
-}
-
-/* main scroll area */
-
-main{
-flex:1 1 auto;
-overflow-y:auto;
-padding:20px;
-padding-bottom:180px;
-}
-
-/* footer */
-
-footer{
-flex:0 0 auto;
-padding:10px;
-color:#888;
-font-size:14px;
-}
-
-/* make video responsive */
-
-iframe{
-max-width:100%;
-height:auto;
-}
-
-/* mobile fix */
-
-img{
-max-width:100%;
-}
-#floatingPlayer{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#050505;
-border-top:2px solid #ff003c;
-padding:10px 0;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:1000;
-box-shadow:0 0 20px #ff003c55;
-}
-
-.playerInner{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.playerInner audio{
-width:420px;
-max-width:70vw;
-}
-
-#trackName{
-color:#ff003c;
-font-size:14px;
-min-width:120px;
-text-align:right;
-}
 </style>
 
 </head>
@@ -286,47 +49,8 @@ text-align:right;
 </div>
 
 </div>
-<main>
-
-<div class="container">
-
-<a class="button" href="https://youtube.com/@qyrelle">YouTube</a>
-
-<a class="button" href="music.html">Latest Track</a>
-
-<a class="button" href="video.html">Anime Edits</a>
-
-<h2>Latest Video</h2>
-<h2>Tracks</h2>
-
-<div class="trackList">
-
-<div class="track" onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
-<img src="cover1.jpg">
-<span>VENENO BATIDA</span>
-</div>
-
-<div class="track" onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
-<img src="cover2.jpg">
-<span>KOKORO PULSE</span>
-</div>
-
-<div class="track" onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
-<img src="cover3.jpg">
-<span>BATIDA FATAL</span>
-</div>
-
-</div>
 
 
-</div>
-
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/videoseries?list=PLrk3exvFXwThlJvdzBuuK8FrGnAJHbu6X"
-allowfullscreen>
-</iframe>
-</div>
-</main>
 <div id="floatingPlayer">
 
 <div class="playerInner">
@@ -339,28 +63,22 @@ allowfullscreen>
 
 </div>
 
-<footer>
-© 2026 Qyrelle • Dark Phonk Music
-</footer>
 
-</div>
 <script>
 
 function playTrack(src,name){
 
 let player = document.getElementById("audioPlayer");
 let title = document.getElementById("trackName");
-let cover = document.getElementById("cover");
 
 player.src = src;
 title.innerText = name;
-
-cover.src = "cover1.jpg";
 
 player.play();
 
 }
 
 </script>
+
 </body>
 </html>
