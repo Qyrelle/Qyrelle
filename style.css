@@ -1,76 +1,28 @@
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
 body{
 background:black;
 color:white;
 font-family:Arial;
-margin:0;
-min-height:100vh;
+}
+
+/* grid */
+
+body{
+background-image:
+linear-gradient(rgba(255,0,60,0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
+background-size:40px 40px;
 }
 
 /* layout */
 
 .app{
 display:flex;
-height:100vh;
-}
-
-/* sidebar */
-
-.sidebar{
-width:200px;
-background:#050505;
-border-right:1px solid red;
-padding:20px;
-}
-
-.sidebar h2{
-color:red;
-}
-
-.sidebar a{
-display:block;
-color:white;
-text-decoration:none;
-margin:10px 0;
-}
-
-.sidebar a:hover{
-color:red;
-}
-
-
-/* main */
-
-.main{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-/* center box */
-
-.center{
-text-align:center;
-}
-
-h1{
-color:red;
-}
-
-.button{
-display:inline-block;
-border:1px solid red;
-padding:10px 20px;
-margin:10px;
-color:white;
-text-decoration:none;
-}
-
-.button:hover{
-background:red;
-}
-.app{
-display:flex;
 min-height:100vh;
 }
 
@@ -98,12 +50,7 @@ color:red;
 
 .main{
 flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.center{
+padding:20px;
 text-align:center;
 }
 
@@ -118,4 +65,23 @@ text-decoration:none;
 
 .button:hover{
 background:red;
+}
+
+.track{
+border:1px solid red;
+margin:10px;
+padding:10px;
+cursor:pointer;
+}
+
+#floatingPlayer{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#050505;
+border-top:2px solid red;
+padding:10px;
+display:flex;
+justify-content:center;
 }
