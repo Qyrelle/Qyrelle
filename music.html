@@ -112,9 +112,12 @@ function playTrack(src,name){
 
 let player=document.getElementById("audioPlayer");
 let title=document.getElementById("trackName");
+let cover=document.getElementById("playerCover");
 
 player.src=src;
 title.innerText=name;
+
+cover.src="cover1.jpg";
 
 player.play();
 
