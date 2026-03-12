@@ -120,4 +120,53 @@ max-width:600px;
 margin:auto;
 
 } 
+
+.app{
+
+display:flex;
+min-height:100vh;
+
+}
+
+.sidebar{
+
+width:220px;
+background:#050505;
+border-right:1px solid red;
+padding:20px;
+
+}
+
+.sidebar a{
+
+display:block;
+color:white;
+text-decoration:none;
+
+padding:10px;
+margin:10px 0;
+
+border:1px solid red;
+
+}
+
+.sidebar a:hover{
+
+background:red;
+
+}
+
+.main{
+
+flex:1;
+padding:20px;
+
+}
+
+.center{
+
+max-width:700px;
+margin:auto;
+
+}
 }
