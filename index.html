@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>Qyrelle</title>
 
 <style>
 
 body{
-background:black;
-color:white;
-font-family:Arial;
-text-align:center;
 margin:0;
+background:black;
+font-family:Arial;
+color:white;
+text-align:center;
 overflow-x:hidden;
 }
 
 /* animated background */
+
 body::before{
 content:"";
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
-background:radial-gradient(circle at center,#ff003c33,transparent 60%);
-animation:pulse 4s infinite;
+background:
+radial-gradient(circle at 20% 30%,#ff003c55,transparent 40%),
+radial-gradient(circle at 80% 70%,#ff003c33,transparent 40%),
+radial-gradient(circle at 50% 50%,#ff003c22,transparent 50%);
+animation:movebg 8s infinite alternate;
 z-index:-1;
 }
 
-@keyframes pulse{
-0%{opacity:0.2;}
-50%{opacity:0.6;}
-100%{opacity:0.2;}
+@keyframes movebg{
+0%{transform:scale(1);}
+100%{transform:scale(1.2);}
 }
 
+/* logo */
+
 h1{
+margin-top:90px;
+font-size:80px;
 color:#ff003c;
-font-size:70px;
-margin-top:80px;
-text-shadow:0 0 15px #ff003c;
+text-shadow:
+0 0 10px #ff003c,
+0 0 20px #ff003c,
+0 0 40px #ff003c;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{opacity:0.7;}
+to{opacity:1;}
 }
 
 p{
-font-size:20px;
 color:#ccc;
+font-size:20px;
 }
+
+/* buttons */
 
 .button{
 display:block;
+width:260px;
 margin:20px auto;
-width:240px;
 padding:14px;
 border:2px solid #ff003c;
-border-radius:8px;
+border-radius:10px;
 color:white;
 text-decoration:none;
 font-size:18px;
@@ -61,15 +77,18 @@ transition:0.3s;
 .button:hover{
 background:#ff003c;
 box-shadow:0 0 20px #ff003c;
+transform:scale(1.05);
 }
 
-/* youtube section */
+/* video */
+
 .video{
 margin-top:40px;
 }
 
 iframe{
-border-radius:10px;
+border-radius:12px;
+box-shadow:0 0 20px #ff003c44;
 }
 
 </style>
@@ -79,13 +98,17 @@ border-radius:10px;
 <body>
 
 <h1>Qyrelle</h1>
+
 <p>Dark Phonk Music</p>
 
 <a class="button" href="https://youtube.com/@qyrelle" target="_blank">YouTube</a>
+
 <a class="button" href="#">Latest Track</a>
+
 <a class="button" href="#">Anime Edits</a>
 
 <div class="video">
+
 <h2>Latest Video</h2>
 
 <iframe width="560" height="315"
