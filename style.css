@@ -3,6 +3,7 @@ background:black;
 color:white;
 font-family:Arial;
 margin:0;
+min-height:100vh;
 }
 
 /* layout */
@@ -54,6 +55,56 @@ text-align:center;
 
 h1{
 color:red;
+}
+
+.button{
+display:inline-block;
+border:1px solid red;
+padding:10px 20px;
+margin:10px;
+color:white;
+text-decoration:none;
+}
+
+.button:hover{
+background:red;
+}
+.app{
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:200px;
+background:#050505;
+border-right:1px solid red;
+padding:20px;
+}
+
+.sidebar h2{
+color:red;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+margin:10px 0;
+}
+
+.sidebar a:hover{
+color:red;
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.center{
+text-align:center;
 }
 
 .button{
