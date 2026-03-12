@@ -6,6 +6,37 @@
 <title>Qyrelle</title>
 
 <style>
+.trackList{
+max-width:600px;
+margin:30px auto;
+}
+
+.track{
+display:flex;
+align-items:center;
+gap:15px;
+padding:10px;
+border:1px solid #ff003c;
+margin:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.track:hover{
+background:#ff003c22;
+box-shadow:0 0 10px #ff003c;
+}
+
+.track img{
+width:60px;
+height:60px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.track span{
+font-size:18px;
+}
 #playerBox{
 margin-top:40px;
 padding:20px;
@@ -146,6 +177,26 @@ box-shadow:0 0 20px #ff003c44;
 <a class="button" href="#">Anime Edits</a>
 
 <h2>Latest Video</h2>
+<h2>Tracks</h2>
+
+<div class="trackList">
+
+<div class="track" onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
+<img src="cover1.jpg">
+<span>VENENO BATIDA</span>
+</div>
+
+<div class="track" onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
+<img src="cover2.jpg">
+<span>KOKORO PULSE</span>
+</div>
+
+<div class="track" onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
+<img src="cover3.jpg">
+<span>BATIDA FATAL</span>
+</div>
+
+</div>
 <h2>Player</h2>
 
 <div id="playerBox">
