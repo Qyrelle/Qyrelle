@@ -63,4 +63,61 @@ border-top:2px solid red;
 
 padding:10px;
 
+/* APP LAYOUT */
+
+.app{
+
+display:flex;
+min-height:100vh;
+
+}
+
+/* sidebar */
+
+.sidebar{
+
+width:200px;
+background:#050505;
+border-right:1px solid red;
+
+padding:20px;
+
+}
+
+.sidebar a{
+
+display:block;
+color:white;
+text-decoration:none;
+
+padding:10px;
+margin:10px 0;
+
+border:1px solid red;
+
+}
+
+.sidebar a:hover{
+
+background:red;
+
+}
+
+/* main */
+
+.main{
+
+flex:1;
+padding:20px;
+
+}
+
+/* center content */
+
+.center{
+
+max-width:600px;
+margin:auto;
+
+} 
 }
