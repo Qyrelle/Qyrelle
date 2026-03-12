@@ -50,10 +50,20 @@ color:red;
 
 .main{
 flex:1;
-padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
 text-align:center;
 }
-
+.center{
+max-width:500px;
+width:100%;
+}
+.button{
+display:block;
+width:200px;
+margin:15px auto;
+}
 .button{
 display:inline-block;
 border:1px solid red;
