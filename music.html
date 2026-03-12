@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Qyrelle Music</title>
@@ -11,6 +12,9 @@
 
 <div class="app">
 
+
+<!-- SIDEBAR -->
+
 <div class="sidebar">
 
 <h2>Qyrelle</h2>
@@ -21,45 +25,67 @@
 
 </div>
 
+
+
+<!-- MAIN -->
+
 <div class="main">
 
-<div class="center">
+<div class="content">
 
 <h1>Music</h1>
 
 <h2>Tracks</h2>
 
+
+<div class="trackList">
+
+
 <div class="track"
 onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
 
 <img src="cover1.jpg">
+
 <span>VENENO BATIDA</span>
 
 </div>
 
+
+
 <div class="track"
 onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
 
-<img src="cover1.jpg">
+<img src="cover2.jpg">
+
 <span>KOKORO PULSE</span>
 
 </div>
 
+
+
 <div class="track"
 onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
 
-<img src="cover1.jpg">
+<img src="cover3.jpg">
+
 <span>BATIDA FATAL</span>
 
 </div>
 
-</div>
 
 </div>
 
 </div>
 
-</main>
+</div>
+
+
+
+</div>
+
+
+
+<!-- PLAYER -->
 
 <div id="floatingPlayer">
 
@@ -72,6 +98,8 @@ onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
 </div>
 
 </div>
+
+
 
 <script>
 
@@ -89,7 +117,6 @@ player.play();
 
 </script>
 
-</div>
 
 </body>
 </html>
