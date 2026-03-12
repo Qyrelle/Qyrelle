@@ -10,7 +10,7 @@ color:white;
 font-family:Arial;
 }
 
-/* grid */
+/* GRID BACKGROUND */
 
 body{
 background-image:
@@ -19,12 +19,16 @@ linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
 background-size:40px 40px;
 }
 
-/* layout */
+
+/* APP LAYOUT */
 
 .app{
 display:flex;
 min-height:100vh;
 }
+
+
+/* SIDEBAR */
 
 .sidebar{
 width:200px;
@@ -35,6 +39,7 @@ padding:20px;
 
 .sidebar h2{
 color:red;
+margin-bottom:10px;
 }
 
 .sidebar a{
@@ -48,27 +53,35 @@ margin:10px 0;
 color:red;
 }
 
+
+/* MAIN */
+
 .main{
 flex:1;
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
+padding:20px;
 }
+
+
+/* CENTER BLOCK (HOME PAGE) */
+
 .center{
 max-width:500px;
 width:100%;
 }
+
+
+/* BUTTON */
+
 .button{
 display:block;
 width:200px;
 margin:15px auto;
-}
-.button{
-display:inline-block;
 border:1px solid red;
-padding:10px 20px;
-margin:10px;
+padding:10px;
 color:white;
 text-decoration:none;
 }
@@ -77,64 +90,17 @@ text-decoration:none;
 background:red;
 }
 
-.track{
-border:1px solid red;
-margin:10px;
-padding:10px;
-cursor:pointer;
-}
 
-#floatingPlayer{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#050505;
-border-top:2px solid red;
-padding:10px;
-display:flex;
-justify-content:center;
-}
-.content{
-max-width:900px;
-margin:0 auto;
-width:100%;
-}
-.trackList{
-max-width:600px;
-margin:20px auto;
-}
+/* CONTENT WIDTH */
 
-.track{
-display:flex;
-align-items:center;
-gap:15px;
-border:1px solid red;
-padding:10px;
-margin:10px 0;
-cursor:pointer;
-transition:0.3s;
-}
-
-.track:hover{
-background:#ff003c22;
-box-shadow:0 0 10px #ff003c;
-}
-
-.track img{
-width:70px;
-height:70px;
-object-fit:cover;
-border-radius:8px;
-}
-
-.track span{
-font-size:18px;
-}
 .content{
 max-width:700px;
 margin:0 auto;
+width:100%;
 }
+
+
+/* TRACK LIST */
 
 .trackList{
 margin-top:20px;
@@ -165,4 +131,38 @@ border-radius:8px;
 
 .track span{
 font-size:18px;
+}
+
+
+/* FLOAT PLAYER */
+
+#floatingPlayer{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#050505;
+border-top:2px solid red;
+padding:10px;
+display:flex;
+justify-content:center;
+z-index:1000;
+}
+
+.playerInner{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.playerInner audio{
+width:400px;
+max-width:70vw;
+}
+
+#trackName{
+color:#ff003c;
+font-size:14px;
+min-width:120px;
+text-align:right;
 }
