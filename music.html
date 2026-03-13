@@ -223,6 +223,35 @@ function repeatTrack(){
 repeatMode = !repeatMode;
 
 }
+function searchTrack(){
+
+let value =
+document
+.getElementById("searchBox")
+.value
+.toLowerCase();
+
+let all =
+document.querySelectorAll(".track");
+
+all.forEach(track=>{
+
+let name =
+track.innerText.toLowerCase();
+
+if(name.includes(value)){
+
+track.style.display = "flex";
+
+}else{
+
+track.style.display = "none";
+
+}
+
+});
+
+}
 </script>
 
 
