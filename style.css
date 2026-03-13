@@ -231,3 +231,12 @@ background:red;
 color:black;
 
 }
+.activeTrack{
+
+background:#100000;
+
+box-shadow:0 0 10px red;
+
+border:1px solid red;
+
+}
