@@ -41,8 +41,7 @@
 <div class="trackList">
 
 
-<div class="track"
-onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
+<div class="track" onclick="playIndex(0)">
 
 <img src="cover1.jpg">
 
@@ -52,8 +51,7 @@ onclick="playTrack('music/VENENO BATIDA.mp3','VENENO BATIDA')">
 
 
 
-<div class="track"
-onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
+<div class="track" onclick="playIndex(1)">
 
 <img src="cover2.jpg">
 
@@ -63,8 +61,7 @@ onclick="playTrack('music/KOKORO PULSE.mp3','KOKORO PULSE')">
 
 
 
-<div class="track"
-onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
+<div class="track" onclick="playIndex(2)">
 
 <img src="cover3.jpg">
 
@@ -97,7 +94,11 @@ onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
 
 <div id="trackName">No track</div>
 
+<button onclick="prevTrack()">◀</button>
+
 <audio id="audioPlayer" controls></audio>
+
+<button onclick="nextTrack()">▶</button>
 
 </div>
 
@@ -107,18 +108,77 @@ onclick="playTrack('music/BATIDA FATAL.mp3','BATIDA FATAL')">
 
 <script>
 
-function playTrack(src,name){
+let tracks = [
 
-let player=document.getElementById("audioPlayer");
-let title=document.getElementById("trackName");
-let cover=document.getElementById("playerCover");
+{
+name: "VENENO BATIDA",
+src: "music/VENENO BATIDA.mp3",
+cover: "cover1.jpg"
+},
 
-player.src=src;
-title.innerText=name;
+{
+name: "KOKORO PULSE",
+src: "music/KOKORO PULSE.mp3",
+cover: "cover1.jpg"
+},
 
-cover.src="cover1.jpg";
+{
+name: "BATIDA FATAL",
+src: "music/BATIDA FATAL.mp3",
+cover: "cover1.jpg"
+}
+
+];
+
+let currentIndex = 0;
+
+let player = document.getElementById("audioPlayer");
+let title = document.getElementById("trackName");
+let cover = document.getElementById("playerCover");
+
+
+function playIndex(i){
+
+currentIndex = i;
+
+player.src = tracks[i].src;
+title.innerText = tracks[i].name;
+cover.src = tracks[i].cover;
 
 player.play();
+
+}
+
+
+player.onended = function(){
+
+nextTrack();
+
+};
+
+
+function nextTrack(){
+
+currentIndex++;
+
+if(currentIndex >= tracks.length){
+currentIndex = 0;
+}
+
+playIndex(currentIndex);
+
+}
+
+
+function prevTrack(){
+
+currentIndex--;
+
+if(currentIndex < 0){
+currentIndex = tracks.length - 1;
+}
+
+playIndex(currentIndex);
 
 }
 </script>
