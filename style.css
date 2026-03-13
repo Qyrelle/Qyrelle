@@ -182,4 +182,86 @@ color:#ff003c;
 font-size:16px;
 margin-bottom:5px;
 }
+#floatingPlayer{
 
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+
+background:black;
+
+border-top:2px solid red;
+
+padding:10px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+z-index:9999;
+
+}
+
+
+.playerInner{
+
+display:flex;
+align-items:center;
+gap:15px;
+
+background:#050505;
+padding:10px 20px;
+
+border:1px solid red;
+box-shadow:0 0 10px #ff003c;
+
+}
+
+
+#playerCover{
+
+width:60px;
+height:60px;
+
+object-fit:cover;
+
+border-radius:8px;
+
+box-shadow:0 0 10px red;
+
+}
+
+
+#trackName{
+
+color:red;
+font-size:14px;
+min-width:120px;
+
+}
+
+
+#audioPlayer{
+
+width:400px;
+
+}
+
+
+.playerInner button{
+
+background:black;
+color:red;
+border:1px solid red;
+padding:5px 10px;
+cursor:pointer;
+
+}
+
+.playerInner button:hover{
+
+background:red;
+color:black;
+
+}
