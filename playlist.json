@@ -4,16 +4,34 @@
     "src": "music/VENENO BATIDA.mp3",
     "cover": "cover1.jpg"
   },
-
   {
     "name": "KOKORO PULSE",
     "src": "music/KOKORO PULSE.mp3",
     "cover": "cover2.jpg"
   },
-
   {
     "name": "BATIDA FATAL",
     "src": "music/BATIDA FATAL.mp3",
     "cover": "cover3.jpg"
+  },
+  {
+    "name": "BATIDA FATAL 2",
+    "src": "music/BATIDA FATAL 2.mp3",
+    "cover": "cover1.jpg"
+  },
+  {
+    "name": "Kawaii Overdrive",
+    "src": "music/Kawaii Overdrive.mp3",
+    "cover": "cover2.jpg"
+  },
+  {
+    "name": "Neon Waifu Drift",
+    "src": "music/Neon Waifu Drift.mp3",
+    "cover": "cover3.jpg"
+  },
+  {
+    "name": "Velvet Drop",
+    "src": "music/Velvet Drop.mp3",
+    "cover": "cover1.jpg"
   }
 ]
