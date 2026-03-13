@@ -106,25 +106,28 @@ let tracks = [
 
 {
 name: "VENENO BATIDA",
-src: "music/VENENO BATIDA.mp3",
+src: "music/veneno.mp3",
 cover: "cover1.jpg"
 },
 
 {
 name: "KOKORO PULSE",
-src: "music/KOKORO PULSE.mp3",
-cover: "cover1.jpg"
+src: "music/kokoro pulse.mp3",
+cover: "cover2.jpg"
 },
 
 {
 name: "BATIDA FATAL",
-src: "music/BATIDA FATAL.mp3",
-cover: "cover1.jpg"
+src: "music/batida fatal.mp3",
+cover: "cover3.jpg"
 }
 
 ];
 
-let currentTrack = null;
+let currentTrackElement = null;
+let currentIndex = 0;
+
+
 
 function playTrack(el,src,name){
 
@@ -134,27 +137,55 @@ let cover = document.getElementById("playerCover");
 
 player.src = src;
 title.innerText = name;
-cover.src = "cover1.jpg";
 
 player.play();
 
-if(currentTrack){
-currentTrack.classList.remove("activeTrack");
+if(currentTrackElement){
+currentTrackElement.classList.remove("activeTrack");
 }
 
 el.classList.add("activeTrack");
 
-currentTrack = el;
+currentTrackElement = el;
+
+
+// set index
+
+for(let i=0;i<tracks.length;i++){
+
+if(tracks[i].src === src){
+
+currentIndex = i;
+
+}
+
+}
 
 }
 
 
-player.onended = function(){
 
-nextTrack();
+// play by index
 
-};
+function playIndex(i){
 
+let player = document.getElementById("audioPlayer");
+let title = document.getElementById("trackName");
+let cover = document.getElementById("playerCover");
+
+player.src = tracks[i].src;
+
+title.innerText = tracks[i].name;
+
+cover.src = tracks[i].cover;
+
+player.play();
+
+}
+
+
+
+// next
 
 function nextTrack(){
 
@@ -169,6 +200,9 @@ playIndex(currentIndex);
 }
 
 
+
+// prev
+
 function prevTrack(){
 
 currentIndex--;
@@ -180,6 +214,17 @@ currentIndex = tracks.length - 1;
 playIndex(currentIndex);
 
 }
+
+
+
+// autoplay next
+
+document.getElementById("audioPlayer").onended = function(){
+
+nextTrack();
+
+};
+
 </script>
 
 
