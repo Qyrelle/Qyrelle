@@ -373,3 +373,16 @@ color:white;
 box-shadow:0 0 10px red;
 
 }
+.playerInner button{
+border:1px solid red;
+background:black;
+color:white;
+cursor:pointer;
+padding:4px 8px;
+}
+
+.activeBtn{
+background:red !important;
+color:white !important;
+box-shadow:0 0 10px red;
+}
