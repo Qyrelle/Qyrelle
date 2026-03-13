@@ -187,17 +187,18 @@ margin-bottom:5px;
 position:fixed;
 bottom:0;
 left:0;
+
 width:100%;
 
 background:black;
 
 border-top:2px solid red;
 
-padding:10px;
-
 display:flex;
 justify-content:center;
 align-items:center;
+
+padding:10px;
 
 z-index:9999;
 
@@ -206,18 +207,25 @@ z-index:9999;
 
 .playerInner{
 
-display:flex;
-align-items:center;
+display:flex !important;
+align-items:center !important;
+justify-content:center !important;
+
 gap:15px;
 
 background:#050505;
+
 padding:10px 20px;
 
 border:1px solid red;
+
 box-shadow:0 0 10px #ff003c;
 
-}
+width:fit-content;
 
+margin:auto;
+
+}
 
 #playerCover{
 
@@ -243,9 +251,7 @@ min-width:120px;
 
 
 #audioPlayer{
-
-width:400px;
-
+width:350px;
 }
 
 
