@@ -67,20 +67,21 @@ class="searchBox"
 
 <button onclick="prevTrack()">◀</button>
 
-<button onclick="shuffleTrack()">🔀</button>
+<button onclick="toggleShuffle()">🔀</button>
 
-<button onclick="repeatTrack()">🔁</button>
-
-<audio id="audioPlayer" controls></audio>
+<button onclick="toggleRepeat()">🔁</button>
 
 <button onclick="nextTrack()">▶</button>
+<audio id="audioPlayer" controls></audio>
+
 
 </div>
 
 </div>
 
 <script>
-
+let shuffleMode = false;
+let repeatMode = false;
 let tracks = [];
 let currentIndex = 0;
 
@@ -155,6 +156,16 @@ setActive(i);
 // NEXT
 function nextTrack(){
 
+if(shuffleMode){
+
+currentIndex =
+Math.floor(Math.random() * tracks.length);
+
+playIndex(currentIndex);
+return;
+
+}
+
 currentIndex++;
 
 if(currentIndex >= tracks.length){
@@ -165,10 +176,18 @@ playIndex(currentIndex);
 
 }
 
-
-
 // PREV
 function prevTrack(){
+
+if(shuffleMode){
+
+currentIndex =
+Math.floor(Math.random() * tracks.length);
+
+playIndex(currentIndex);
+return;
+
+}
 
 currentIndex--;
 
@@ -254,6 +273,20 @@ track.style.display = "none";
 }
 
 });
+
+}
+function toggleShuffle(){
+
+shuffle = !shuffle;
+
+console.log("shuffle:", shuffle);
+
+}
+function toggleRepeat(){
+
+repeat = !repeat;
+
+console.log("repeat:", repeat);
 
 }
 </script>
