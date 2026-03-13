@@ -242,16 +242,29 @@ border:1px solid red;
 }
 .searchBox{
 
-width:300px;
+width:260px;
 
-padding:8px;
+padding:8px 10px;
 
-margin:10px;
+margin:10px auto 15px auto;
 
-background:black;
+display:block;
+
+background:#050505;
 
 color:white;
 
 border:1px solid red;
+
+outline:none;
+
+box-shadow:0 0 6px #ff003c55;
+
+}
+.trackList{
+
+max-width:600px;
+
+margin:auto;
 
 }
