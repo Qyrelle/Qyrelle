@@ -62,9 +62,9 @@ class="searchBox"
 
 <button onclick="prevTrack()">◀</button>
 
-<button onclick="toggleShuffle()">🔀</button>
+<button id="shuffleBtn" onclick="toggleShuffle()">🔀</button>
 
-<button onclick="toggleRepeat()">🔁</button>
+<button id="repeatBtn" onclick="toggleRepeat()">🔁</button>
 
 <button onclick="nextTrack()">▶</button>
 
@@ -267,11 +267,37 @@ function toggleShuffle(){
 
 shuffleMode = !shuffleMode;
 
+let btn =
+document.getElementById("shuffleBtn");
+
+if(shuffleMode){
+
+btn.classList.add("activeBtn");
+
+}else{
+
+btn.classList.remove("activeBtn");
+
+}
+
 }
 
 function toggleRepeat(){
 
 repeatMode = !repeatMode;
+
+let btn =
+document.getElementById("repeatBtn");
+
+if(repeatMode){
+
+btn.classList.add("activeBtn");
+
+}else{
+
+btn.classList.remove("activeBtn");
+
+}
 
 }
 
