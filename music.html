@@ -61,6 +61,10 @@
 
 <button onclick="prevTrack()">◀</button>
 
+<button onclick="shuffleTrack()">🔀</button>
+
+<button onclick="repeatTrack()">🔁</button>
+
 <audio id="audioPlayer" controls></audio>
 
 <button onclick="nextTrack()">▶</button>
@@ -171,7 +175,15 @@ playIndex(currentIndex);
 // AUTOPLAY
 player.onended = function(){
 
+if(repeatMode){
+
+playIndex(currentIndex);
+
+}else{
+
 nextTrack();
+
+}
 
 };
 
@@ -189,7 +201,22 @@ all[i].classList.add("activeTrack");
 }
 
 }
+let repeatMode = false;
+  function shuffleTrack(){
 
+let i = Math.floor(Math.random() * tracks.length);
+
+playIndex(i);
+
+}
+
+
+
+function repeatTrack(){
+
+repeatMode = !repeatMode;
+
+}
 </script>
 
 
