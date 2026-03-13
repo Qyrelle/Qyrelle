@@ -105,69 +105,56 @@
 let tracks = [
 
 {
-name: "VENENO BATIDA",
-src: "music/veneno.mp3",
-cover: "cover1.jpg"
+name:"VENENO BATIDA",
+src:"music/VENENO BATIDA.mp3",
+cover:"cover1.jpg"
 },
 
 {
-name: "KOKORO PULSE",
-src: "music/kokoro pulse.mp3",
-cover: "cover2.jpg"
+name:"KOKORO PULSE",
+src:"music/KOKORO PULSE.mp3",
+cover:"cover2.jpg"
 },
 
 {
-name: "BATIDA FATAL",
-src: "music/batida fatal.mp3",
-cover: "cover3.jpg"
+name:"BATIDA FATAL",
+src:"music/BATIDA FATAL.mp3",
+cover:"cover3.jpg"
+},
+
+{
+name:"BATIDA FATAL 2",
+src:"music/BATIDA FATAL 2.mp3",
+cover:"cover1.jpg"
+},
+
+{
+name:"Kawaii Overdrive",
+src:"music/Kawaii Overdrive.mp3",
+cover:"cover2.jpg"
+},
+
+{
+name:"Neon Waifu Drift",
+src:"music/Neon Waifu Drift.mp3",
+cover:"cover3.jpg"
+},
+
+{
+name:"Velvet Drop",
+src:"music/Velvet Drop.mp3",
+cover:"cover1.jpg"
 }
 
 ];
 
-let currentTrackElement = null;
 let currentIndex = 0;
 
 
 
-function playTrack(el,src,name){
-
-let player = document.getElementById("audioPlayer");
-let title = document.getElementById("trackName");
-let cover = document.getElementById("playerCover");
-
-player.src = src;
-title.innerText = name;
-
-player.play();
-
-if(currentTrackElement){
-currentTrackElement.classList.remove("activeTrack");
-}
-
-el.classList.add("activeTrack");
-
-currentTrackElement = el;
-
-
-// set index
-
-for(let i=0;i<tracks.length;i++){
-
-if(tracks[i].src === src){
+function playIndex(i){
 
 currentIndex = i;
-
-}
-
-}
-
-}
-
-
-
-// play by index
-
-function playIndex(i){
 
 let player = document.getElementById("audioPlayer");
 let title = document.getElementById("trackName");
@@ -181,11 +168,19 @@ cover.src = tracks[i].cover;
 
 player.play();
 
+setActive(i);
+
 }
 
 
 
-// next
+function playTrack(i){
+
+playIndex(i);
+
+}
+
+
 
 function nextTrack(){
 
@@ -201,8 +196,6 @@ playIndex(currentIndex);
 
 
 
-// prev
-
 function prevTrack(){
 
 currentIndex--;
@@ -217,13 +210,25 @@ playIndex(currentIndex);
 
 
 
-// autoplay next
-
 document.getElementById("audioPlayer").onended = function(){
 
 nextTrack();
 
 };
+
+
+
+function setActive(i){
+
+let all = document.querySelectorAll(".track");
+
+all.forEach(t => t.classList.remove("activeTrack"));
+
+if(all[i]){
+all[i].classList.add("activeTrack");
+}
+
+}
 
 </script>
 
