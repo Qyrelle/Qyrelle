@@ -167,42 +167,43 @@ gap:10px;
 
 background:#050505;
 
-padding:8px 15px;
+padding:6px 12px;
 
 border:1px solid red;
 
 box-shadow:0 0 10px #ff003c;
 
-height:70px;
+height:60px;
 
 }
-
 #playerCover{
 
-width:50px;
-height:50px;
+width:45px;
+height:45px;
 
 object-fit:cover;
 
 border-radius:6px;
 
-box-shadow:0 0 8px red;
+box-shadow:0 0 6px red;
 
 }
 
 
 #audioPlayer{
 
-width:350px;
-height:30px;
+width:320px;
+height:25px;
+
+transform:scaleY(0.8);
 
 }
 
 
 .playerInner button{
 
-width:30px;
-height:30px;
+width:28px;
+height:28px;
 
 background:black;
 color:red;
