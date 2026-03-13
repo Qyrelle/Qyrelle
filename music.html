@@ -102,63 +102,58 @@
 
 <script>
 
-let tracks = [
-
-{
-name:"VENENO BATIDA",
-src:"music/VENENO BATIDA.mp3",
-cover:"cover1.jpg"
-},
-
-{
-name:"KOKORO PULSE",
-src:"music/KOKORO PULSE.mp3",
-cover:"cover2.jpg"
-},
-
-{
-name:"BATIDA FATAL",
-src:"music/BATIDA FATAL.mp3",
-cover:"cover3.jpg"
-},
-
-{
-name:"BATIDA FATAL 2",
-src:"music/BATIDA FATAL 2.mp3",
-cover:"cover1.jpg"
-},
-
-{
-name:"Kawaii Overdrive",
-src:"music/Kawaii Overdrive.mp3",
-cover:"cover2.jpg"
-},
-
-{
-name:"Neon Waifu Drift",
-src:"music/Neon Waifu Drift.mp3",
-cover:"cover3.jpg"
-},
-
-{
-name:"Velvet Drop",
-src:"music/Velvet Drop.mp3",
-cover:"cover1.jpg"
-}
-
-];
-
+let tracks = [];
 let currentIndex = 0;
-
-
-
-function playIndex(i){
-
-currentIndex = i;
 
 let player = document.getElementById("audioPlayer");
 let title = document.getElementById("trackName");
 let cover = document.getElementById("playerCover");
+let trackList = document.querySelector(".trackList");
+
+
+// LOAD PLAYLIST
+fetch("playlist.json")
+.then(res => res.json())
+.then(data => {
+
+tracks = data;
+
+buildPlaylist();
+
+});
+
+
+
+// CREATE TRACK LIST UI
+function buildPlaylist(){
+
+trackList.innerHTML = "";
+
+tracks.forEach((track,i)=>{
+
+let div = document.createElement("div");
+
+div.className = "track";
+
+div.onclick = () => playIndex(i);
+
+div.innerHTML = `
+<img src="${track.cover}">
+<span>${track.name}</span>
+`;
+
+trackList.appendChild(div);
+
+});
+
+}
+
+
+
+// PLAY TRACK
+function playIndex(i){
+
+currentIndex = i;
 
 player.src = tracks[i].src;
 
@@ -174,14 +169,7 @@ setActive(i);
 
 
 
-function playTrack(i){
-
-playIndex(i);
-
-}
-
-
-
+// NEXT
 function nextTrack(){
 
 currentIndex++;
@@ -196,6 +184,7 @@ playIndex(currentIndex);
 
 
 
+// PREV
 function prevTrack(){
 
 currentIndex--;
@@ -210,7 +199,8 @@ playIndex(currentIndex);
 
 
 
-document.getElementById("audioPlayer").onended = function(){
+// AUTOPLAY
+player.onended = function(){
 
 nextTrack();
 
@@ -218,6 +208,7 @@ nextTrack();
 
 
 
+// ACTIVE TRACK GLOW
 function setActive(i){
 
 let all = document.querySelectorAll(".track");
