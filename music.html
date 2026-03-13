@@ -12,7 +12,6 @@
 
 <div class="app">
 
-
 <!-- SIDEBAR -->
 
 <div class="sidebar">
@@ -26,7 +25,6 @@
 </div>
 
 
-
 <!-- MAIN -->
 
 <div class="main">
@@ -34,8 +32,8 @@
 <div class="content">
 
 <h1>Music</h1>
-
 <h2>Tracks</h2>
+
 <input
 type="text"
 id="searchBox"
@@ -45,14 +43,11 @@ class="searchBox"
 >
 
 <div class="trackList"></div>
+
+</div>
 </div>
 
 </div>
-
-
-
-</div>
-
 
 
 <!-- PLAYER -->
@@ -72,21 +67,177 @@ class="searchBox"
 <button onclick="toggleRepeat()">🔁</button>
 
 <button onclick="nextTrack()">▶</button>
+
 <audio id="audioPlayer" controls></audio>
 
-
+</div>
 </div>
 
-</div>
 
 <script>
+
 let shuffleMode = false;
 let repeatMode = false;
+
+let tracks = [];
+let currentIndex = 0;
+
+let player = document.getElementById("audioPlayer");
+let title = document.getElementById("trackName");
+let cover = document.getElementById("playerCover");
+let trackList = document.querySelector(".trackList");
+
+
+// LOAD PLAYLIST
+
+fetch("playlist.json")
+.then(res => res.json())
+.then(data => {
+
+tracks = data;
+buildPlaylist();
+
+});
+
+
+
+// BUILD UI
+
+function buildPlaylist(){
+
+trackList.innerHTML = "";
+
+tracks.forEach((track,i)=>{
+
+let div = document.createElement("div");
+
+div.className = "track";
+
+div.onclick = () => playIndex(i);
+
+div.innerHTML = `
+<div class="coverBox">
+<img src="${track.cover}">
+<div class="playIcon">▶</div>
+</div>
+
+<div class="trackTitle">${track.name}</div>
+`;
+
+trackList.appendChild(div);
+
+});
+
+}
+
+
+
+// PLAY
+
+function playIndex(i){
+
+currentIndex = i;
+
+player.src = tracks[i].src;
+title.innerText = tracks[i].name;
+cover.src = tracks[i].cover;
+
+player.play();
+
+setActive(i);
+
+}
+
+
+
+// NEXT
+
+function nextTrack(){
+
+if(shuffleMode){
+
+currentIndex =
+Math.floor(Math.random() * tracks.length);
+
+playIndex(currentIndex);
+return;
+
+}
+
+currentIndex++;
+
+if(currentIndex >= tracks.length){
+currentIndex = 0;
+}
+
+playIndex(currentIndex);
+
+}
+
+
+
+// PREV
+
+function prevTrack(){
+
+if(shuffleMode){
+
+currentIndex =
+Math.floor(Math.random() * tracks.length);
+
+playIndex(currentIndex);
+return;
+
+}
+
+currentIndex--;
+
+if(currentIndex < 0){
+currentIndex = tracks.length - 1;
+}
+
+playIndex(currentIndex);
+
+}
+
+
+
+// AUTOPLAY
+
+player.onended = function(){
+
+if(repeatMode){
+playIndex(currentIndex);
+}else{
+nextTrack();
+}
+
+};
+
+
+
+// ACTIVE
+
+function setActive(i){
+
+let all = document.querySelectorAll(".track");
+
+all.forEach(t => t.classList.remove("activeTrack"));
+
+if(all[i]){
+all[i].classList.add("activeTrack");
+}
+
+}
+
+
+
+// SEARCH
+
 function searchTrack(){
 
 let value =
-document
-.getElementById("searchBox")
+document.getElementById("searchBox")
 .value
 .toLowerCase();
 
@@ -99,13 +250,9 @@ let name =
 track.innerText.toLowerCase();
 
 if(name.includes(value)){
-
 track.style.display = "block";
-
 }else{
-
 track.style.display = "none";
-
 }
 
 });
@@ -114,25 +261,21 @@ track.style.display = "none";
 
 
 
+// TOGGLE
+
 function toggleShuffle(){
 
 shuffleMode = !shuffleMode;
 
-console.log("shuffle:", shuffleMode);
-
 }
-
-
 
 function toggleRepeat(){
 
 repeatMode = !repeatMode;
 
-console.log("repeat:", repeatMode);
-
 }
-</script>
 
+</script>
 
 </body>
 </html>
