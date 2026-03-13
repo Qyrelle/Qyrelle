@@ -64,7 +64,8 @@ flex-direction:column;
 align-items:center;
 }
 
-/* CENTER BLOCK (HOME PAGE) */
+
+/* CENTER BLOCK */
 
 .center{
 max-width:500px;
@@ -91,7 +92,7 @@ background:red;
 }
 
 
-/* CONTENT WIDTH */
+/* CONTENT */
 
 .content{
 max-width:700px;
@@ -100,37 +101,51 @@ width:100%;
 }
 
 
+/* SEARCH */
+
+.searchBox{
+
+width:260px;
+padding:8px 10px;
+margin:10px auto 15px auto;
+display:block;
+
+background:#050505;
+color:white;
+
+border:1px solid red;
+
+outline:none;
+
+box-shadow:0 0 6px #ff003c55;
+
+}
+
+
 /* TRACK LIST */
 
 .trackList{
 
 display:grid;
-
-grid-template-columns:
-repeat(auto-fill, 180px);
-
+grid-template-columns:repeat(auto-fill, 180px);
 gap:20px;
-
 justify-content:center;
-
 margin-top:20px;
+
+max-width:600px;
+margin-left:auto;
+margin-right:auto;
 
 }
 
 .track{
 
 width:180px;
-
 border:1px solid red;
-
 padding:8px;
-
 text-align:center;
-
 cursor:pointer;
-
 background:#050505;
-
 transition:0.2s;
 
 }
@@ -138,29 +153,88 @@ transition:0.2s;
 .track:hover{
 
 box-shadow:0 0 10px red;
-
 transform:scale(1.05);
 
 }
 
-.track img{
+.trackTitle{
+
+margin-top:6px;
+font-size:14px;
+
+}
+
+
+/* COVER */
+
+.coverBox{
+
+position:relative;
+width:100%;
+height:150px;
+overflow:hidden;
+
+}
+
+.coverBox img{
 
 width:100%;
-
-height:150px;
-
+height:100%;
 object-fit:cover;
-
-margin-bottom:6px;
+transition:0.3s;
 
 }
 
-.track span{
-font-size:18px;
+.coverBox::after{
+
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0);
+transition:0.3s;
+
+}
+
+.track:hover .coverBox::after{
+
+background:rgba(0,0,0,0.5);
+
+}
+
+.playIcon{
+
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+font-size:30px;
+color:red;
+transition:0.3s;
+
+}
+
+.track:hover .playIcon{
+
+transform:translate(-50%,-50%) scale(1.2);
+
 }
 
 
-/* FLOAT PLAYER */
+/* ACTIVE TRACK */
+
+.activeTrack{
+
+background:#200000;
+box-shadow:0 0 15px red;
+
+}
+
+
+/* PLAYER */
+
 #floatingPlayer{
 
 position:fixed;
@@ -170,7 +244,6 @@ left:0;
 width:100%;
 
 background:black;
-
 border-top:2px solid red;
 
 display:flex;
@@ -183,16 +256,13 @@ z-index:9999;
 
 }
 
-
 .playerInner{
 
 display:flex;
 align-items:center;
-
 gap:12px;
 
 background:#050505;
-
 padding:6px 12px;
 
 border:1px solid red;
@@ -201,12 +271,10 @@ box-shadow:0 0 10px #ff003c;
 
 }
 
-
 #playerCover{
 
 width:45px;
 height:45px;
-
 object-fit:cover;
 
 border-radius:6px;
@@ -214,7 +282,6 @@ border-radius:6px;
 box-shadow:0 0 6px red;
 
 }
-
 
 #trackName{
 
@@ -224,13 +291,14 @@ min-width:120px;
 
 }
 
-
 #audioPlayer{
 
 width:300px;
 
 }
 
+
+/* PLAYER BUTTON */
 
 .playerInner button{
 
@@ -248,8 +316,9 @@ display:flex;
 align-items:center;
 justify-content:center;
 
-}
+transition:0.2s;
 
+}
 
 .playerInner button:hover{
 
@@ -257,132 +326,15 @@ background:red;
 color:black;
 
 }
-.activeTrack{
 
-background:#200000;
 
-box-shadow:0 0 15px red;
-
-}
-.searchBox{
-
-width:260px;
-
-padding:8px 10px;
-
-margin:10px auto 15px auto;
-
-display:block;
-
-background:#050505;
-
-color:white;
-
-border:1px solid red;
-
-outline:none;
-
-box-shadow:0 0 6px #ff003c55;
-
-}
-.trackList{
-
-max-width:600px;
-
-margin:auto;
-
-}
-.coverBox{
-
-position:relative;
-
-width:100%;
-height:150px;
-
-overflow:hidden;
-
-}
-
-.coverBox img{
-
-width:100%;
-height:100%;
-object-fit:cover;
-
-transition:0.3s;
-
-}
-.coverBox::after{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:rgba(0,0,0,0);
-
-transition:0.3s;
-
-}
-
-.track:hover .coverBox::after{
-
-background:rgba(0,0,0,0.5);
-
-}
-.playIcon{
-
-position:absolute;
-
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%) scale(0);
-
-font-size:30px;
-
-color:red;
-
-transition:0.3s;
-
-}
-
-.track:hover .playIcon{
-
-transform:translate(-50%,-50%) scale(1.2);
-
-}
-.trackTitle{
-
-margin-top:6px;
-
-font-size:14px;
-
-}
-.activeBtn{
-
-background:red;
-
-color:white;
-
-box-shadow:0 0 10px red;
-
-}
-.playerInner button{
-border:1px solid red;
-background:black;
-color:white;
-cursor:pointer;
-padding:4px 8px;
-}
+/* FIXED ACTIVE BUTTON */
 
 .activeBtn{
+
 background:red !important;
 color:white !important;
+border:1px solid red !important;
 box-shadow:0 0 10px red;
+
 }
