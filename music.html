@@ -117,8 +117,12 @@ div.className = "track";
 div.onclick = () => playIndex(i);
 
 div.innerHTML = `
+<div class="coverBox">
 <img src="${track.cover}">
-<div>${track.name}</div>
+<div class="playIcon">▶</div>
+</div>
+
+<div class="trackTitle">${track.name}</div>
 `;
 
 trackList.appendChild(div);
