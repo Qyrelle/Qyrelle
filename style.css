@@ -151,7 +151,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 
-padding:10px;
+padding:8px;
 
 z-index:9999;
 
@@ -163,7 +163,7 @@ z-index:9999;
 display:flex;
 align-items:center;
 
-gap:10px;
+gap:12px;
 
 background:#050505;
 
@@ -173,9 +173,9 @@ border:1px solid red;
 
 box-shadow:0 0 10px #ff003c;
 
-height:60px;
-
 }
+
+
 #playerCover{
 
 width:45px;
@@ -190,12 +190,18 @@ box-shadow:0 0 6px red;
 }
 
 
+#trackName{
+
+color:red;
+font-size:13px;
+min-width:120px;
+
+}
+
+
 #audioPlayer{
 
-width:320px;
-height:25px;
-
-transform:scaleY(0.8);
+width:300px;
 
 }
 
@@ -215,45 +221,6 @@ cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-
-}
-
-
-.playerInner button:hover{
-
-background:red;
-color:black;
-
-}
-
-.playerBox{
-display:flex;
-align-items:center;
-gap:20px;
-width:800px;
-max-width:95%;
-}
-
-
-
-.playerInfo{
-flex:1;
-display:flex;
-flex-direction:column;
-}
-
-
-#trackName{
-color:#ff003c;
-font-size:16px;
-margin-bottom:5px;
-}
-
-#trackName{
-
-color:red;
-font-size:14px;
-min-width:120px;
 
 }
 
