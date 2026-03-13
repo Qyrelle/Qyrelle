@@ -1,0 +1,19 @@
+[
+  {
+    "name": "VENENO BATIDA",
+    "src": "music/VENENO BATIDA.mp3",
+    "cover": "cover1.jpg"
+  },
+
+  {
+    "name": "KOKORO PULSE",
+    "src": "music/KOKORO PULSE.mp3",
+    "cover": "cover2.jpg"
+  },
+
+  {
+    "name": "BATIDA FATAL",
+    "src": "music/BATIDA FATAL.mp3",
+    "cover": "cover3.jpg"
+  }
+]
