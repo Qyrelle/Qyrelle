@@ -240,3 +240,18 @@ box-shadow:0 0 10px red;
 border:1px solid red;
 
 }
+.searchBox{
+
+width:300px;
+
+padding:8px;
+
+margin:10px;
+
+background:black;
+
+color:white;
+
+border:1px solid red;
+
+}
