@@ -107,7 +107,7 @@ width:100%;
 display:grid;
 
 grid-template-columns:
-repeat(auto-fill, 160px);
+repeat(auto-fill, 180px);
 
 gap:20px;
 
@@ -119,11 +119,11 @@ margin-top:20px;
 
 .track{
 
-width:160px;
+width:180px;
 
 border:1px solid red;
 
-padding:10px;
+padding:8px;
 
 text-align:center;
 
@@ -147,11 +147,11 @@ transform:scale(1.05);
 
 width:100%;
 
-height:140px;
+height:150px;
 
 object-fit:cover;
 
-margin-bottom:5px;
+margin-bottom:6px;
 
 }
 
@@ -259,9 +259,9 @@ color:black;
 }
 .activeTrack{
 
-box-shadow:0 0 15px red;
-
 background:#200000;
+
+box-shadow:0 0 15px red;
 
 }
 .searchBox{
