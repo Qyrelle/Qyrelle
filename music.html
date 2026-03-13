@@ -124,22 +124,27 @@ cover: "cover1.jpg"
 
 ];
 
-let currentIndex = 0;
+let currentTrack = null;
+
+function playTrack(el,src,name){
 
 let player = document.getElementById("audioPlayer");
 let title = document.getElementById("trackName");
 let cover = document.getElementById("playerCover");
 
-
-function playIndex(i){
-
-currentIndex = i;
-
-player.src = tracks[i].src;
-title.innerText = tracks[i].name;
-cover.src = tracks[i].cover;
+player.src = src;
+title.innerText = name;
+cover.src = "cover1.jpg";
 
 player.play();
+
+if(currentTrack){
+currentTrack.classList.remove("activeTrack");
+}
+
+el.classList.add("activeTrack");
+
+currentTrack = el;
 
 }
 
