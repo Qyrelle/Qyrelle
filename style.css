@@ -10,7 +10,7 @@ color:white;
 font-family:Arial;
 }
 
-/* GRID BACKGROUND */
+/* GRID */
 
 body{
 background-image:
@@ -39,7 +39,6 @@ padding:20px;
 
 .sidebar h2{
 color:red;
-margin-bottom:10px;
 }
 
 .sidebar a{
@@ -200,6 +199,9 @@ box-shadow:0 0 10px red;
 position:relative;
 width:45px;
 height:45px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 #playerCover{
@@ -207,6 +209,8 @@ width:45px;
 height:45px;
 object-fit:cover;
 border-radius:6px;
+position:relative;
+z-index:1;
 }
 
 #ring{
@@ -217,13 +221,14 @@ width:53px;
 height:53px;
 border-radius:50%;
 border:2px solid red;
-opacity:0.4;
+opacity:0.6;
+z-index:2;
+pointer-events:none;
 }
 
 #ring.playing{
 animation:ringSpin 3s linear infinite;
 box-shadow:0 0 10px red;
-opacity:1;
 }
 
 @keyframes ringSpin{
