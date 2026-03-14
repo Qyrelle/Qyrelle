@@ -150,6 +150,7 @@ title.innerText = tracks[i].name;
 cover.src = tracks[i].cover;
 
 player.play();
+document.getElementById("eq").style.opacity = 1;
 
 setActive(i);
 
@@ -212,7 +213,14 @@ playIndex(currentIndex);
 // AUTOPLAY
 
 player.onended = function(){
+document.getElementById("eq").style.opacity = 0.3;
+ player.onpause = function(){
+document.getElementById("eq").style.opacity = 0.3;
+}
 
+player.onplay = function(){
+document.getElementById("eq").style.opacity = 1;
+}
 if(repeatMode){
 playIndex(currentIndex);
 }else{
