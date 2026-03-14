@@ -88,7 +88,7 @@ class="searchBox"
 
 
 <script>
-
+let ring = document.getElementById("ring");
 let eq = document.getElementById("eq");
 
 let shuffleMode = false;
@@ -225,13 +225,14 @@ playIndex(currentIndex);
 player.onplay = function(){
 
 eq.classList.add("playing");
+ring.classList.add("playing");
 
 }
 
 player.onpause = function(){
 
 eq.classList.remove("playing");
-
+ring.classList.remove("playing");
 }
 
 player.onended = function(){
