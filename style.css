@@ -347,11 +347,28 @@ align-items:flex-end;
 
 }
 
+#eq{
+
+display:flex;
+gap:3px;
+height:18px;
+align-items:flex-end;
+
+opacity:0.3;
+
+}
+
 #eq div{
 
 width:3px;
 height:5px;
 background:red;
+
+}
+
+/* animation only when playing */
+
+#eq.playing div{
 
 animation:eq 0.6s infinite ease-in-out;
 
