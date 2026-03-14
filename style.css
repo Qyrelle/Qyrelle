@@ -441,3 +441,52 @@ transform:rotate(360deg);
 }
 
 }
+#coverWrap{
+
+position:relative;
+width:45px;
+height:45px;
+
+}
+
+#playerCover{
+
+width:45px;
+height:45px;
+object-fit:cover;
+border-radius:6px;
+
+}
+
+#ring{
+
+position:absolute;
+top:-4px;
+left:-4px;
+
+width:53px;
+height:53px;
+
+border-radius:50%;
+border:2px solid red;
+
+opacity:0.4;
+
+}
+
+#ring.playing{
+
+animation:ringSpin 3s linear infinite;
+
+box-shadow:0 0 10px red;
+
+opacity:1;
+
+}
+
+@keyframes ringSpin{
+
+from{ transform:rotate(0deg); }
+to{ transform:rotate(360deg); }
+
+}
