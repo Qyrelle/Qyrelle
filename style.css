@@ -8,11 +8,7 @@ body{
 background:black;
 color:white;
 font-family:Arial;
-}
 
-/* GRID */
-
-body{
 background-image:
 linear-gradient(rgba(255,0,60,0.08) 1px, transparent 1px),
 linear-gradient(90deg, rgba(255,0,60,0.08) 1px, transparent 1px);
@@ -199,9 +195,6 @@ box-shadow:0 0 10px red;
 position:relative;
 width:45px;
 height:45px;
-display:flex;
-align-items:center;
-justify-content:center;
 }
 
 #playerCover{
@@ -213,65 +206,23 @@ position:relative;
 z-index:1;
 }
 
-#coverWrap{
-
-position:relative;
-width:45px;
-height:45px;
-
-}
-
-#playerCover{
-
-width:45px;
-height:45px;
-object-fit:cover;
-border-radius:6px;
-
-}
-
 #ring{
-
 position:absolute;
 top:-4px;
 left:-4px;
-
 width:53px;
 height:53px;
-
 border-radius:50%;
 border:2px solid red;
-
 opacity:0.4;
-
-/* NO animation here */
-
 }
 
-#ring.playing{
+/* animation only when playing */
 
+#ring.playing{
 animation:ringSpin 2s linear infinite;
-
 box-shadow:0 0 10px red;
-
 opacity:1;
-
-}
-
-@keyframes ringSpin{
-
-from{
-transform:rotate(0deg);
-}
-
-to{
-transform:rotate(360deg);
-}
-
-}
-#ring.playing{
-animation:ringSpin 3s linear infinite;
-box-shadow:0 0 10px red;
 }
 
 @keyframes ringSpin{
