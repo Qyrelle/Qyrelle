@@ -157,12 +157,10 @@ player.src = tracks[i].src;
 title.innerText = tracks[i].name;
 cover.src = tracks[i].cover;
 
-player.play().then(()=>{
+player.play();
 
 eq.classList.add("playing");
 ring.classList.add("playing");
-
-});
 
 setActive(i);
 
@@ -234,6 +232,7 @@ player.onpause = function(){
 
 eq.classList.remove("playing");
 ring.classList.remove("playing");
+
 }
 
 player.onended = function(){
@@ -252,7 +251,6 @@ nextTrack();
 }
 
 }
-
 
 
 // ACTIVE TRACK
