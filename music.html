@@ -151,14 +151,15 @@ player.src = tracks[i].src;
 title.innerText = tracks[i].name;
 cover.src = tracks[i].cover;
 
-player.play();
+player.play().then(()=>{
 
 eq.classList.add("playing");
+
+});
 
 setActive(i);
 
 }
-
 
 
 // NEXT
@@ -224,6 +225,22 @@ eq.classList.add("playing");
 player.onpause = function(){
 
 eq.classList.remove("playing");
+
+}
+
+player.onended = function(){
+
+eq.classList.remove("playing");
+
+if(repeatMode){
+
+playIndex(currentIndex);
+
+}else{
+
+nextTrack();
+
+}
 
 }
 
