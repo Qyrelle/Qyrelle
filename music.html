@@ -88,25 +88,25 @@ class="searchBox"
 
 
 <script>
-let eq = document.getElementById("eq");
-let ring = document.getElementById("ring");
-  
-let shuffleMode = false;
-let repeatMode = false;
 
 let tracks = [];
 let currentIndex = 0;
 
+let shuffleMode = false;
+let repeatMode = false;
+
 let player = document.getElementById("audioPlayer");
 let title = document.getElementById("trackName");
 let cover = document.getElementById("playerCover");
+let eq = document.getElementById("eq");
+let ring = document.getElementById("ring");
 let trackList = document.querySelector(".trackList");
 
 
 // LOAD PLAYLIST
 
 fetch("playlist.json")
-.then(res => res.json())
+.then(r => r.json())
 .then(data => {
 
 tracks = data;
@@ -115,8 +115,7 @@ buildPlaylist();
 });
 
 
-
-// BUILD UI
+// BUILD LIST
 
 function buildPlaylist(){
 
@@ -135,7 +134,6 @@ div.innerHTML = `
 <img src="${track.cover}">
 <div class="playIcon">▶</div>
 </div>
-
 <div class="trackTitle">${track.name}</div>
 `;
 
@@ -144,7 +142,6 @@ trackList.appendChild(div);
 });
 
 }
-
 
 
 // PLAY
@@ -174,7 +171,7 @@ function nextTrack(){
 if(shuffleMode){
 
 currentIndex =
-Math.floor(Math.random() * tracks.length);
+Math.floor(Math.random()*tracks.length);
 
 playIndex(currentIndex);
 return;
@@ -192,7 +189,6 @@ playIndex(currentIndex);
 }
 
 
-
 // PREV
 
 function prevTrack(){
@@ -200,7 +196,7 @@ function prevTrack(){
 if(shuffleMode){
 
 currentIndex =
-Math.floor(Math.random() * tracks.length);
+Math.floor(Math.random()*tracks.length);
 
 playIndex(currentIndex);
 return;
@@ -210,13 +206,12 @@ return;
 currentIndex--;
 
 if(currentIndex < 0){
-currentIndex = tracks.length - 1;
+currentIndex = tracks.length-1;
 }
 
 playIndex(currentIndex);
 
 }
-
 
 
 // EVENTS
@@ -257,9 +252,12 @@ nextTrack();
 
 function setActive(i){
 
-let all = document.querySelectorAll(".track");
+let all =
+document.querySelectorAll(".track");
 
-all.forEach(t => t.classList.remove("activeTrack"));
+all.forEach(t =>
+t.classList.remove("activeTrack")
+);
 
 if(all[i]){
 all[i].classList.add("activeTrack");
@@ -268,15 +266,13 @@ all[i].classList.add("activeTrack");
 }
 
 
-
 // SEARCH
 
 function searchTrack(){
 
 let value =
 document.getElementById("searchBox")
-.value
-.toLowerCase();
+.value.toLowerCase();
 
 let all =
 document.querySelectorAll(".track");
@@ -286,19 +282,17 @@ all.forEach(track=>{
 let name =
 track.innerText.toLowerCase();
 
-if(name.includes(value)){
-track.style.display = "block";
-}else{
-track.style.display = "none";
-}
+track.style.display =
+name.includes(value)
+? "block"
+: "none";
 
 });
 
 }
 
 
-
-// TOGGLE
+// SHUFFLE
 
 function toggleShuffle(){
 
@@ -307,18 +301,12 @@ shuffleMode = !shuffleMode;
 let btn =
 document.getElementById("shuffleBtn");
 
-if(shuffleMode){
-
-btn.classList.add("activeBtn");
-
-}else{
-
-btn.classList.remove("activeBtn");
+btn.classList.toggle("activeBtn");
 
 }
 
-}
 
+// REPEAT
 
 function toggleRepeat(){
 
@@ -327,15 +315,7 @@ repeatMode = !repeatMode;
 let btn =
 document.getElementById("repeatBtn");
 
-if(repeatMode){
-
-btn.classList.add("activeBtn");
-
-}else{
-
-btn.classList.remove("activeBtn");
-
-}
+btn.classList.toggle("activeBtn");
 
 }
 
