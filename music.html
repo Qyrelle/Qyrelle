@@ -160,6 +160,7 @@ cover.src = tracks[i].cover;
 player.play().then(()=>{
 
 eq.classList.add("playing");
+ring.classList.add("playing");
 
 });
 
@@ -238,22 +239,7 @@ ring.classList.remove("playing");
 player.onended = function(){
 
 eq.classList.remove("playing");
-
-if(repeatMode){
-
-playIndex(currentIndex);
-
-}else{
-
-nextTrack();
-
-}
-
-}
-
-player.onended = function(){
-
-eq.classList.remove("playing");
+ring.classList.remove("playing");
 
 if(repeatMode){
 
