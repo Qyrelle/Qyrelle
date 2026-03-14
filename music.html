@@ -82,7 +82,9 @@ class="searchBox"
 
 
 <script>
+
 let eq = document.getElementById("eq");
+
 let shuffleMode = false;
 let repeatMode = false;
 
@@ -150,6 +152,7 @@ title.innerText = tracks[i].name;
 cover.src = tracks[i].cover;
 
 player.play();
+
 eq.classList.add("playing");
 
 setActive(i);
@@ -210,28 +213,39 @@ playIndex(currentIndex);
 
 
 
-// AUTOPLAY
-
-player.onended = function(){
-document.getElementById("eq").style.opacity = 0.3;
- player.onpause = function(){
-document.getElementById("eq").style.opacity = 0.3;
-}
+// EVENTS
 
 player.onplay = function(){
-document.getElementById("eq").style.opacity = 1;
+
+eq.classList.add("playing");
+
 }
+
+player.onpause = function(){
+
+eq.classList.remove("playing");
+
+}
+
+player.onended = function(){
+
+eq.classList.remove("playing");
+
 if(repeatMode){
+
 playIndex(currentIndex);
+
 }else{
+
 nextTrack();
+
 }
 
-};
+}
 
 
 
-// ACTIVE
+// ACTIVE TRACK
 
 function setActive(i){
 
@@ -297,6 +311,7 @@ btn.classList.remove("activeBtn");
 
 }
 
+
 function toggleRepeat(){
 
 repeatMode = !repeatMode;
@@ -315,27 +330,7 @@ btn.classList.remove("activeBtn");
 }
 
 }
-player.onpause = function(){
 
-eq.classList.remove("playing");
-
-}
-
-player.onended = function(){
-
-eq.classList.remove("playing");
-
-if(repeatMode){
-
-playIndex(currentIndex);
-
-}else{
-
-nextTrack();
-
-}
-
-}
 </script>
 
 </body>
