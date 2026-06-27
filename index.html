@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qyrelle | Official Hub</title>
     
-    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
     
     <style>
@@ -268,7 +267,7 @@
         }
 
         .platform-card span {
-            font-size: 1.4rem; /* Makes the symbol slightly larger than text */
+            font-size: 1.4rem;
         }
         
         .platform-card:hover { transform: translateY(-4px); color: #fff; }
@@ -314,10 +313,8 @@
 </head>
 <body>
 
-    <!-- Particle Render Plane -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Pure CSS Built Pixel Bot Character -->
     <div id="anime-pet">
         <div class="pet-head"></div>
         <div class="pet-body"></div>
@@ -333,12 +330,10 @@
     </header>
 
     <div class="container">
-        <!-- RELEASES & INTERACTIVE MEDIA -->
         <section>
             <h2 class="section-title">Latest Drops & Visuals</h2>
             <div class="media-grid">
                 
-                <!-- YouTube Playlist Card -->
                 <div class="player-card">
                     <div class="card-label">Latest Videos</div>
                     <div class="video-container">
@@ -346,16 +341,14 @@
                     </div>
                 </div>
 
-                <!-- Spotify Automated Card -->
                 <div class="player-card">
                     <div class="card-label">Stream on Spotify</div>
-                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpheBM" width="100%" height="100%" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px; min-height: 280px;"></iframe>
+                    <iframe src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px;"></iframe>
                 </div>
 
             </div>
         </section>
 
-        <!-- BOOKING / CONNECT BOX -->
         <section style="display: flex; flex-direction: column;">
             <h2 class="section-title">Contact & Inquiries</h2>
             <div class="player-card contact-box">
@@ -367,11 +360,10 @@
             </div>
         </section>
 
-        <!-- EXTERNAL PLATFORMS PORTAL -->
         <section>
             <h2 class="section-title">Listen Everywhere</h2>
             <div class="platforms-grid">
-                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
+                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
                 <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn"><span>♫</span> Apple Music</a>
                 <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn"><span>☁️</span> SoundCloud</a>
                 <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon Music</a>
@@ -381,7 +373,6 @@
 
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
-    <!-- Background Particle Engine Script -->
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
