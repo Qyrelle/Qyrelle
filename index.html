@@ -42,6 +42,18 @@
             pointer-events: none;
         }
 
+        /* --- ANIME DESKTOP PET STYLE --- */
+        #anime-pet {
+            position: fixed;
+            bottom: 10px; /* Sits cleanly on the floor of the viewport */
+            left: 100px;
+            width: 64px;  /* Clean, crisp pixel-art or avatar size */
+            height: 64px;
+            z-index: 999; /* Always floats above everything else */
+            pointer-events: none; /* User can click straight through it to touch links */
+            transition: transform 0.2s ease;
+        }
+
         header { 
             text-align: center; 
             margin: 40px 0; 
@@ -128,24 +140,30 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Contact Section Styling */
+        .utility-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
         .contact-box {
             text-align: center;
             align-items: center;
             justify-content: center;
-            padding: 30px;
+            padding: 30px 20px;
+            height: 100%;
         }
 
         .contact-box p {
             color: var(--text-dim);
-            margin-bottom: 20px;
-            font-size: 1.05rem;
+            margin-bottom: 15px;
+            font-size: 1rem;
         }
 
         .email-link {
             color: #ffffff;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-decoration: none;
             letter-spacing: 1px;
             transition: color 0.3s ease;
@@ -153,12 +171,12 @@
 
         .contact-btn {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 20px;
             background: transparent;
             border: 2px solid var(--accent-color);
             color: #ffffff;
-            padding: 12px 30px;
-            font-size: 1rem;
+            padding: 10px 25px;
+            font-size: 0.9rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -175,7 +193,39 @@
             transform: scale(1.03);
         }
 
-        /* Distribution Dashboard Setup */
+        .socials-subgrid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .social-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 25, 0.6);
+            border: 1px solid #252530;
+            border-radius: 10px;
+            padding: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover {
+            transform: translateX(4px);
+            color: #ffffff;
+        }
+        
+        .yt-social:hover { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); }
+        .ig-social:hover { border-color: #e1306c; box-shadow: 0 0 15px rgba(225, 48, 108, 0.3); }
+        .fb-social:hover { border-color: #1877f2; box-shadow: 0 0 15px rgba(24, 119, 242, 0.3); }
+
         .platforms-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
@@ -221,7 +271,7 @@
         @media (max-width: 768px) {
             body { padding: 15px; }
             header h1 { font-size: 2.6rem; }
-            .media-grid { flex-direction: column; gap: 15px; }
+            .media-grid, .utility-grid { flex-direction: column; grid-template-columns: 1fr; gap: 15px; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .spotify-iframe { height: 352px !important; }
         }
@@ -231,6 +281,10 @@
 
     <!-- Particle Render Plane -->
     <canvas id="bg-canvas"></canvas>
+
+    <!-- Translucent Anime Floating Pet Element -->
+    <!-- Feel free to swap out the src link with any transparent gif or png icon you like! -->
+    <img id="anime-pet" src="https://media.giphy.com/media/Vw8t3vXWfC664/giphy.gif" alt="pet">
 
     <header>
         <h1>Qyrelle</h1>
@@ -260,17 +314,38 @@
             </div>
         </section>
 
-        <!-- BOOKING / CONNECT BOX -->
-        <section>
-            <h2 class="section-title">Contact & Inquiries</h2>
-            <div class="player-card contact-box">
-                <p>For label placements, remix requests, visual edits, or business collaborations:</p>
-                <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
-                <div>
-                    <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
+        <!-- UTILITY SUBSECTION: CONTACT & SOCIAL PORTAL -->
+        <div class="utility-grid">
+            <!-- BOOKING / CONNECT BOX -->
+            <section style="display: flex; flex-direction: column;">
+                <h2 class="section-title">Contact & Inquiries</h2>
+                <div class="player-card contact-box">
+                    <p>For label placements, remix requests, visual edits, or business collaborations:</p>
+                    <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
+                    <div>
+                        <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- SOCIAL MEDIA PORTAL -->
+            <section style="display: flex; flex-direction: column;">
+                <h2 class="section-title">Follow the Visuals</h2>
+                <div class="player-card" style="padding: 20px; justify-content: center;">
+                    <div class="socials-subgrid">
+                        <a href="https://www.youtube.com/@Qyrelle" target="_blank" class="social-card yt-social">
+                            <span>🔴 YouTube Channel</span>
+                        </a>
+                        <a href="https://instagram.com/qyre.lle" target="_blank" class="social-card ig-social">
+                            <span>📸 Instagram Feed</span>
+                        </a>
+                        <a href="https://facebook.com/profile.php?id=61585738736503" target="_blank" class="social-card fb-social">
+                            <span>🔵 Facebook Profile</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <!-- EXTERNAL PLATFORMS PORTAL -->
         <section>
@@ -361,6 +436,45 @@
 
         init();
         animate();
+
+        // --- SHIMEJI DESKTOP PET CONTROLLER SCRIPT ---
+        const pet = document.getElementById('anime-pet');
+        let petX = 100;
+        let direction = 1; // 1 = Right, -1 = Left
+        let isWalking = true;
+
+        function updatePetMovement() {
+            if (!isWalking) return;
+
+            // Simple velocity addition
+            petX += 0.8 * direction;
+            pet.style.left = petX + 'px';
+
+            // Check boundaries to bounce and flip direction cleanly
+            const maxW = window.innerWidth - 80;
+            if (petX > maxW) {
+                direction = -1;
+                pet.style.transform = 'scaleX(1)'; // Standard orientation
+            } else if (petX < 10) {
+                direction = 1;
+                pet.style.transform = 'scaleX(-1)'; // Flips character facing path direction
+            }
+
+            // Simple randomness engine to simulate pausing/idle states
+            if (Math.random() < 0.005) {
+                isWalking = false;
+                setTimeout(() => {
+                    isWalking = true;
+                    // 50% chance to flip direction after idling
+                    if (Math.random() > 0.5) {
+                        direction *= -1;
+                        pet.style.transform = direction === 1 ? 'scaleX(-1)' : 'scaleX(1)';
+                    }
+                }, Math.random() * 3000 + 1000); // Wait 1-4 seconds before walking again
+            }
+        }
+
+        setInterval(updatePetMovement, 20); // Smooth 50hz character ticker logic
     </script>
 </body>
 </html>
