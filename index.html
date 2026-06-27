@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qyrelle | Official Hub</title>
     
     <!-- Tab Icon -->
@@ -23,70 +23,67 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            height: 100vh; /* Forces exact screen height */
-            width: 100vw;
-            overflow: hidden; /* Blocks all page-level up/down scrolling */
+            min-height: 100vh;
         }
 
         header { 
             text-align: center; 
-            margin: 10px 0; 
+            margin: 20px 0; 
         }
         header h1 { 
-            font-size: 2.2rem; 
-            letter-spacing: 3px; 
+            font-size: 2.8rem; 
+            letter-spacing: 4px; 
             text-transform: none; 
             color: var(--text-color); 
             text-shadow: 0 0 10px var(--accent-color); 
         }
         header p { 
             color: var(--text-dim); 
-            margin-top: 5px; 
-            font-size: 0.95rem; 
+            margin-top: 8px; 
+            font-size: 1.05rem; 
         }
 
         .container { 
             width: 100%; 
-            max-width: 950px; 
+            max-width: 1000px; 
             display: flex; 
             flex-direction: column; 
-            gap: 20px;
+            gap: 30px;
             flex-grow: 1;
-            justify-content: center;
         }
 
         .section-title { 
-            font-size: 1.1rem; 
+            font-size: 1.3rem; 
             text-transform: none; 
             letter-spacing: 1px; 
-            margin-bottom: 10px; 
+            margin-bottom: 15px; 
             border-left: 3px solid var(--accent-color); 
-            padding-left: 8px; 
+            padding-left: 10px; 
         }
 
-        /* Responsive Media Section Layout */
+        /* Fluid layout: Side-by-side on desktop, stacked vertical feed on mobile phones */
         .media-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
         }
 
         .player-card { 
             background: var(--panel-bg); 
             border: 1px solid #222; 
             border-radius: 12px; 
-            padding: 15px; 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5); 
+            padding: 20px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); 
+            flex: 1;
             display: flex;
             flex-direction: column;
         }
         
-        .card-label { margin-bottom: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
+        .card-label { margin-bottom: 15px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
 
         .video-container { 
             position: relative; 
@@ -97,41 +94,47 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Smooth responsive platforms dashboard layout grid */
+        /* Dynamic Grid for Streaming Links */
         .platforms-grid { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
-            gap: 12px; 
+            gap: 15px; 
+            margin-bottom: 30px;
         }
         .platform-card { 
             background: var(--panel-bg); 
             border: 1px solid #222; 
-            border-radius: 10px; 
-            padding: 15px 5px; 
+            border-radius: 12px; 
+            padding: 20px 10px; 
             text-align: center; 
             text-decoration: none; 
             color: var(--text-color); 
             font-weight: bold; 
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: all 0.3s ease; 
-            white-space: nowrap;
         }
-        .platform-card:hover { transform: translateY(-3px); border-color: var(--accent-color); box-shadow: 0 0 10px rgba(255, 0, 85, 0.2); }
+        .platform-card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
         
         footer { 
             text-align: center; 
-            margin-top: 10px;
+            margin-top: auto;
+            padding-top: 20px;
             color: var(--text-dim); 
-            font-size: 0.8rem; 
+            font-size: 0.85rem; 
         }
 
-        /* Responsive mobile adjustments to stay perfectly inside 1 frame */
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.8rem; }
-            .media-grid { grid-template-columns: 1fr; gap: 10px; }
-            .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .spotify-player { height: 180px !important; } /* Compact player view on phones */
-            .platform-card { padding: 12px 5px; font-size: 0.85rem; }
+        /* AUTO-ADJUST SPECIFICALLY FOR MOBILE PHONES */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            header h1 { font-size: 2.2rem; }
+            header p { font-size: 0.95rem; }
+            
+            /* Stacks layout vertically so it fills mobile perfectly without squishing */
+            .media-grid { flex-direction: column; gap: 15px; }
+            .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            
+            .platform-card { padding: 15px 5px; font-size: 0.9rem; }
+            .spotify-iframe { height: 352px !important; }
         }
     </style>
 </head>
@@ -158,7 +161,7 @@
                 <!-- Spotify Automated Card -->
                 <div class="player-card">
                     <div class="card-label">Stream on Spotify</div>
-                    <iframe class="spotify-player" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM" width="100%" height="240" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:8px;"></iframe>
+                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM" width="100%" height="100%" min-height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px; min-height: 280px;"></iframe>
                 </div>
 
             </div>
