@@ -1,27 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-<header>
-        <!-- Removed uppercase forcing so it displays exactly as Qyrelle -->
-        <h1 style="text-transform: none;">Qyrelle</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QYRELLE | Official Hub</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --panel-bg: #121212;
+            --accent-color: #ff0055; /* Phonk/Neon Red-Pink Accent */
+            --text-color: #ffffff;
+            --text-dim: #b3b3b3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-color);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        header p {
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+        }
+
+        /* Responsive Video & Audio Players */
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .media-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .player-card {
+            background: var(--panel-bg);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Streaming Platforms Grid */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .platform-card {
+            background: var(--panel-bg);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+        }
+
+        /* Brand Colors for Icons/Hover states */
+        .spotify-card:hover { border-color: #1DB954; box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
+        .soundcloud-card:hover { border-color: #FF5500; box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
+        .apple-card:hover { border-color: #FA243C; box-shadow: 0 0 15px rgba(250, 36, 60, 0.3); }
+        .amazon-card:hover { border-color: #00A8E1; box-shadow: 0 0 15px rgba(0, 168, 225, 0.3); }
+
+        footer {
+            text-align: center;
+            margin: 60px 0 20px 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>QYRELLE</h1>
         <p>Phonk Producer & Visual Artist</p>
     </header>
 
     <div class="container">
         
-        <!-- LATEST RELEASES PLAYERS -->
         <section>
-            <h2 class="section-title" style="text-transform: none;">Latest Drops & Visuals</h2>
+            <h2 class="section-title">Latest Drops & Visuals</h2>
             <div class="media-grid">
                 
-                <!-- Fixed YouTube Video Embed using your exact Channel ID -->
                 <div class="player-card">
                     <p style="margin-bottom: 10px; font-weight: 600; color: var(--text-dim);">Latest Video</p>
                     <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed?listType=playlist&list=UUZtH3K8S0_j_D1D-5VvCAnQ" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=qyrelle" allowfullscreen></iframe>
                     </div>
                 </div>
 
-                <!-- SoundCloud Embed Player -->
                 <div class="player-card" style="display: flex; flex-direction: column; justify-content: space-between;">
                     <p style="margin-bottom: 10px; font-weight: 600; color: var(--text-dim);">Stream on SoundCloud</p>
                     <iframe width="100%" height="250" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/1190288338&color=%23ff0055&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
