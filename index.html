@@ -32,19 +32,27 @@
         .container { width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 40px; }
         .section-title { font-size: 1.5rem; text-transform: none; letter-spacing: 2px; margin-bottom: 20px; border-left: 4px solid var(--accent-color); padding-left: 10px; }
 
-        /* Perfect side-by-side alignment for YouTube and Spotify widgets */
-        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start; }
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         @media (max-width: 768px) { .media-grid { grid-template-columns: 1fr; } }
 
-        .player-card { background: var(--panel-bg); border: 1px solid #222; border-radius: 12px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-        .card-label { margin-bottom: 15px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+        .player-card { 
+            background: var(--panel-bg); 
+            border: 1px solid #222; 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); 
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-label { margin-bottom: 15px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
 
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         .platforms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 50px; }
         .platform-card { background: var(--panel-bg); border: 1px solid #222; border-radius: 12px; padding: 25px; text-align: center; text-decoration: none; color: var(--text-color); font-weight: bold; transition: all 0.3s ease; }
-        .platform-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: 0 0 15px rgba(255, 0, 85, 0.3); }
+        .platform-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
         
         footer { text-align: center; margin: 60px 0 20px 0; color: var(--text-dim); font-size: 0.9rem; }
     </style>
@@ -61,19 +69,18 @@
             <h2 class="section-title">Latest Drops & Visuals</h2>
             <div class="media-grid">
                 
-                <!-- YouTube Dynamic Card -->
+                <!-- YouTube Automated Uploads Feed -->
                 <div class="player-card">
-                    <p class="card-label">📺 Latest Visuals</p>
+                    <div class="card-label">Latest Video</div>
                     <div class="video-container">
-                        <!-- Pulls your absolute latest video upload dynamically -->
-                        <iframe src="https://www.youtube.com/embed?listType=playlist&list=UUZtH3K8S0_j_D1D-5VvCAnQ" allowfullscreen></iframe>
+                        <!-- Pulls your live upload feed cleanly from your Channel ID string -->
+                        <iframe src="https://www.youtube.com/embed/videoseries?list=UUr47-AbMd0j0IUnf0i8HVmg" allowfullscreen></iframe>
                     </div>
                 </div>
 
-                <!-- Spotify Dynamic Card -->
+                <!-- Spotify Automated Card -->
                 <div class="player-card">
-                    <p class="card-label">🟢 Stream on Spotify</p>
-                    <!-- Official Spotify widget that updates artwork automatically whenever you drop a track -->
+                    <div class="card-label">Stream on Spotify</div>
                     <iframe style="border-radius:8px" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
 
