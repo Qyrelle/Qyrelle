@@ -10,17 +10,21 @@
     
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --panel-bg: #121212;
+            --bg-color: #050505;
+            --panel-bg: #0d0d0d;
             --accent-color: #ff0055;
+            --accent-glow: rgba(255, 0, 85, 0.5);
             --text-color: #ffffff;
-            --text-dim: #b3b3b3;
+            --text-dim: #999999;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 0, 85, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(0, 242, 254, 0.05) 0%, transparent 40%);
             color: var(--text-color);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             padding: 20px;
@@ -32,19 +36,24 @@
 
         header { 
             text-align: center; 
-            margin: 20px 0; 
+            margin: 40px 0; 
         }
+
+        /* Animated Phonk Glow Text Effect */
         header h1 { 
-            font-size: 2.8rem; 
-            letter-spacing: 4px; 
+            font-size: 3.5rem; 
+            letter-spacing: 6px; 
             text-transform: none; 
             color: var(--text-color); 
-            text-shadow: 0 0 10px var(--accent-color); 
+            animation: phonkGlow 3s infinite alternate ease-in-out;
         }
+        
         header p { 
             color: var(--text-dim); 
             margin-top: 8px; 
             font-size: 1.05rem; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .container { 
@@ -52,58 +61,78 @@
             max-width: 1000px; 
             display: flex; 
             flex-direction: column; 
-            gap: 30px;
+            gap: 35px;
             flex-grow: 1;
         }
 
         .section-title { 
             font-size: 1.3rem; 
             text-transform: none; 
-            letter-spacing: 1px; 
+            letter-spacing: 2px; 
             margin-bottom: 15px; 
             border-left: 3px solid var(--accent-color); 
-            padding-left: 10px; 
+            padding-left: 10px;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
-        /* Fluid layout: Side-by-side on desktop, stacked vertical feed on mobile phones */
+        /* Media Grid Setup */
         .media-grid { 
             display: flex;
             flex-direction: row;
-            gap: 20px;
+            gap: 25px;
         }
 
+        /* Pulsing Neon Cards */
         .player-card { 
             background: var(--panel-bg); 
-            border: 1px solid #222; 
-            border-radius: 12px; 
+            border: 1px solid #1a1a1a; 
+            border-radius: 16px; 
             padding: 20px; 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7); 
             flex: 1;
             display: flex;
             flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        /* Subversive glowing response on card hover */
+        .player-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px var(--accent-glow), inset 0 0 10px rgba(255, 0, 85, 0.1);
+            transform: translateY(-2px);
         }
         
-        .card-label { margin-bottom: 15px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+        .card-label { 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+            color: #e6e6e6; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            font-size: 0.8rem; 
+        }
 
         .video-container { 
             position: relative; 
             padding-bottom: 56.25%; 
             height: 0; 
             overflow: hidden; 
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         /* Dynamic Grid for Streaming Links */
         .platforms-grid { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 15px; 
             margin-bottom: 30px;
         }
+        
         .platform-card { 
             background: var(--panel-bg); 
-            border: 1px solid #222; 
+            border: 1px solid #1a1a1a; 
             border-radius: 12px; 
             padding: 20px 10px; 
             text-align: center; 
@@ -113,27 +142,42 @@
             font-size: 1rem;
             transition: all 0.3s ease; 
         }
-        .platform-card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
+        
+        /* Unique brand glows on hover */
+        .platform-card:hover { 
+            transform: translateY(-4px); 
+            color: #fff;
+        }
+        .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 20px rgba(29, 185, 84, 0.3); }
+        .apple-btn:hover { border-color: #FA243C; box-shadow: 0 0 20px rgba(250, 36, 60, 0.3); }
+        .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 20px rgba(255, 85, 0, 0.3); }
+        .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 20px rgba(0, 168, 225, 0.3); }
         
         footer { 
             text-align: center; 
             margin-top: auto;
-            padding-top: 20px;
-            color: var(--text-dim); 
+            padding-top: 30px;
+            color: #555; 
             font-size: 0.85rem; 
+            letter-spacing: 1px;
         }
 
-        /* AUTO-ADJUST SPECIFICALLY FOR MOBILE PHONES */
+        /* Neon Glow Animation Rules */
+        @keyframes phonkGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 0, 85, 0.4), 0 0 20px rgba(255, 0, 85, 0.2);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 0, 85, 0.8), 0 0 30px rgba(255, 0, 85, 0.5), 0 0 40px rgba(255, 0, 85, 0.3);
+            }
+        }
+
+        /* Mobile Adjustment Rules */
         @media (max-width: 768px) {
             body { padding: 15px; }
-            header h1 { font-size: 2.2rem; }
-            header p { font-size: 0.95rem; }
-            
-            /* Stacks layout vertically so it fills mobile perfectly without squishing */
+            header h1 { font-size: 2.6rem; }
             .media-grid { flex-direction: column; gap: 15px; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            
-            .platform-card { padding: 15px 5px; font-size: 0.9rem; }
             .spotify-iframe { height: 352px !important; }
         }
     </style>
@@ -161,7 +205,7 @@
                 <!-- Spotify Automated Card -->
                 <div class="player-card">
                     <div class="card-label">Stream on Spotify</div>
-                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM" width="100%" height="100%" min-height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px; min-height: 280px;"></iframe>
+                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM" width="100%" height="100%" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px; min-height: 280px;"></iframe>
                 </div>
 
             </div>
@@ -170,10 +214,10 @@
         <section>
             <h2 class="section-title">Listen Everywhere</h2>
             <div class="platforms-grid">
-                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card">ᯤ Spotify</a>
-                <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card">♫ Apple Music</a>
-                <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card">☁️ SoundCloud</a>
-                <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card">‿ Amazon Music</a>
+                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn">ᯤ Spotify</a>
+                <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn">♫ Apple Music</a>
+                <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn">☁️ SoundCloud</a>
+                <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn">‿ Amazon Music</a>
             </div>
         </section>
     </div>
