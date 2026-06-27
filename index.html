@@ -128,31 +128,24 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Split Utilities Grid for Contact and Social Media */
-        .utility-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
+        /* Contact Section Styling */
         .contact-box {
             text-align: center;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
-            height: 100%;
+            padding: 30px;
         }
 
         .contact-box p {
             color: var(--text-dim);
-            margin-bottom: 15px;
-            font-size: 1rem;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
         }
 
         .email-link {
             color: #ffffff;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             text-decoration: none;
             letter-spacing: 1px;
             transition: color 0.3s ease;
@@ -160,12 +153,12 @@
 
         .contact-btn {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 15px;
             background: transparent;
             border: 2px solid var(--accent-color);
             color: #ffffff;
-            padding: 10px 25px;
-            font-size: 0.9rem;
+            padding: 12px 30px;
+            font-size: 1rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -181,40 +174,6 @@
             box-shadow: 0 0 25px var(--accent-color);
             transform: scale(1.03);
         }
-
-        /* Social Portal Internal Grid Layout */
-        .socials-subgrid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            height: 100%;
-            justify-content: center;
-        }
-
-        .social-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(20, 20, 25, 0.6);
-            border: 1px solid #252530;
-            border-radius: 10px;
-            padding: 14px;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-        }
-
-        .social-card:hover {
-            transform: translateX(4px);
-            color: #ffffff;
-        }
-        
-        .yt-social:hover { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); }
-        .ig-social:hover { border-color: #e1306c; box-shadow: 0 0 15px rgba(225, 48, 108, 0.3); }
-        .fb-social:hover { border-color: #1877f2; box-shadow: 0 0 15px rgba(24, 119, 242, 0.3); }
 
         /* Distribution Dashboard Setup */
         .platforms-grid { 
@@ -262,7 +221,7 @@
         @media (max-width: 768px) {
             body { padding: 15px; }
             header h1 { font-size: 2.6rem; }
-            .media-grid, .utility-grid { flex-direction: column; grid-template-columns: 1fr; gap: 15px; }
+            .media-grid { flex-direction: column; gap: 15px; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .spotify-iframe { height: 352px !important; }
         }
@@ -301,38 +260,17 @@
             </div>
         </section>
 
-        <!-- UTILITY SUBSECTION: CONTACT & SOCIAL PORTAL -->
-        <div class="utility-grid">
-            <!-- BOOKING / CONNECT BOX -->
-            <section style="display: flex; flex-direction: column;">
-                <h2 class="section-title">Contact & Inquiries</h2>
-                <div class="player-card contact-box">
-                    <p>For label placements, remix requests, visual edits, or business collaborations:</p>
-                    <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
-                    <div>
-                        <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
-                    </div>
+        <!-- BOOKING / CONNECT BOX -->
+        <section>
+            <h2 class="section-title">Contact & Inquiries</h2>
+            <div class="player-card contact-box">
+                <p>For label placements, remix requests, visual edits, or business collaborations:</p>
+                <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
+                <div>
+                    <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
                 </div>
-            </section>
-
-            <!-- SOCIAL MEDIA PORTAL -->
-            <section style="display: flex; flex-direction: column;">
-                <h2 class="section-title">Follow the Visuals</h2>
-                <div class="player-card" style="padding: 20px; justify-content: center;">
-                    <div class="socials-subgrid">
-                        <a href="https://www.youtube.com/@Qyrelle" target="_blank" class="social-card yt-social">
-                            <span>🔴 YouTube Channel</span>
-                        </a>
-                        <a href="https://instagram.com/qyre.lle" target="_blank" class="social-card ig-social">
-                            <span>📸 Instagram Feed</span>
-                        </a>
-                        <a href="https://facebook.com/profile.php?id=61585738736503" target="_blank" class="social-card fb-social">
-                            <span>🔵 Facebook Profile</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
         <!-- EXTERNAL PLATFORMS PORTAL -->
         <section>
