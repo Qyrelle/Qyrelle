@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
     
+    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
     
     <style>
@@ -23,11 +24,14 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px;
+            padding: 1.5vh 2vw;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            justify-content: space-between;
+            height: 100vh; /* Lock height to exact screen viewport */
+            width: 100vw;
+            overflow: hidden; /* Obliterates all up/down scrolling */
             position: relative;
         }
 
@@ -41,10 +45,10 @@
             pointer-events: none;
         }
 
-        /* --- CODE-BASED PIXEL ART PET --- */
+        /* Pure CSS Pixel Art Pet */
         #anime-pet {
             position: fixed;
-            bottom: 15px;
+            bottom: 1.5vh;
             left: 100px;
             width: 40px;
             height: 45px;
@@ -62,8 +66,6 @@
             background: #1a1a24;
             border: 2px solid var(--accent-color);
             border-radius: 6px;
-            position: relative;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -76,7 +78,7 @@
             height: 6px;
             background: #00f2fe;
             border-radius: 2px;
-            box-shadow: 0 0 8px #00f2fe, 0 0 15px #00f2fe;
+            box-shadow: 0 0 8px #00f2fe;
         }
 
         .pet-body {
@@ -85,45 +87,29 @@
             background: #15151c;
             border: 2px solid #252530;
             border-top: none;
-            border-radius: 0 0 4px 4px;
-            position: relative;
         }
 
-        .pet-legs {
-            display: flex;
-            justify-content: space-between;
-            width: 16px;
-            margin-top: -2px;
-        }
-
-        .leg {
-            width: 4px;
-            height: 6px;
-            background: var(--accent-color);
-            animation: legWalk 0.2s infinite alternate linear;
-        }
-        .leg-right {
-            animation-delay: 0.1s;
-        }
+        .pet-legs { display: flex; justify-content: space-between; width: 16px; margin-top: -2px; }
+        .leg { width: 4px; height: 6px; background: var(--accent-color); animation: legWalk 0.2s infinite alternate linear; }
+        .leg-right { animation-delay: 0.1s; }
 
         header { 
             text-align: center; 
-            margin: 40px 0; 
+            margin: 1vh 0;
             z-index: 2;
         }
 
         header h1 { 
-            font-size: 3.5rem; 
+            font-size: 5vh; /* Responsive font scaling based on screen height */
             letter-spacing: 6px; 
-            text-transform: none; 
             color: var(--text-color); 
             animation: phonkGlow 3s infinite alternate ease-in-out;
+            line-height: 1.2;
         }
         
         header p { 
             color: var(--text-dim); 
-            margin-top: 8px; 
-            font-size: 1.05rem; 
+            font-size: 1.6vh; 
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -133,181 +119,165 @@
             max-width: 1000px; 
             display: flex; 
             flex-direction: column; 
-            gap: 35px;
-            flex-grow: 1;
+            justify-content: space-between;
+            height: 78vh; /* Forces content grid to live exactly inside dashboard constraints */
+            gap: 2vh;
             z-index: 2;
         }
 
         .section-title { 
-            font-size: 1.3rem; 
-            text-transform: none; 
-            letter-spacing: 2px; 
-            margin-bottom: 15px; 
+            font-size: 1.8vh; 
+            letter-spacing: 1px; 
+            margin-bottom: 0.8vh; 
             border-left: 3px solid var(--accent-color); 
-            padding-left: 10px;
+            padding-left: 8px;
             text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .media-grid { 
-            display: flex;
-            flex-direction: row;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw;
+            height: 42vh; /* Precise locked media window height */
         }
 
         .player-card { 
             background: var(--panel-bg); 
             border: 1px solid #1f1f24; 
-            border-radius: 16px; 
-            padding: 20px; 
+            border-radius: 12px; 
+            padding: 1.5vh; 
             backdrop-filter: blur(8px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
-            flex: 1;
             display: flex;
             flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        .player-card:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 25px var(--accent-glow), inset 0 0 10px rgba(255, 0, 85, 0.1);
-            transform: translateY(-2px);
+            justify-content: space-between;
+            height: 100%;
         }
         
         .card-label { 
-            margin-bottom: 15px; 
+            margin-bottom: 0.8vh; 
             font-weight: 600; 
             color: #e6e6e6; 
             text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            font-size: 0.8rem; 
+            letter-spacing: 1px; 
+            font-size: 1.3vh; 
         }
 
         .video-container { 
-            position: relative; 
-            padding-bottom: 56.25%; 
-            height: 0; 
-            overflow: hidden; 
-            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-container iframe { width: 100%; height: 100%; border: 0; }
+        .spotify-iframe { border-radius: 8px; width: 100%; height: 100%; }
 
-        /* Contact Box Styling */
+        /* Full Width Contact Box Styling */
         .contact-box {
             text-align: center;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
-            width: 100%;
+            padding: 1.5vh;
+            height: 14vh; /* Fits neatly inside dashboard calculations */
         }
 
         .contact-box p {
             color: var(--text-dim);
-            margin-bottom: 15px;
-            font-size: 1rem;
+            margin-bottom: 0.5vh;
+            font-size: 1.5vh;
         }
 
         .email-link {
             color: #ffffff;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.8vh;
             text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
+            letter-spacing: 0.5px;
         }
 
         .contact-btn {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 1vh;
             background: transparent;
-            border: 2px solid var(--accent-color);
+            border: 1.5px solid var(--accent-color);
             color: #ffffff;
-            padding: 10px 25px;
-            font-size: 0.9rem;
+            padding: 0.6vh 20px;
+            font-size: 1.3vh;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 30px;
-            cursor: pointer;
+            letter-spacing: 1px;
+            border-radius: 20px;
             text-decoration: none;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
             transition: all 0.3s ease;
         }
 
         .contact-btn:hover {
             background: var(--accent-color);
-            box-shadow: 0 0 25px var(--accent-color);
-            transform: scale(1.03);
+            box-shadow: 0 0 15px var(--accent-color);
         }
 
-        /* Distribution Dashboard Setup with Custom Icons and Text styling */
+        /* Distribution Dashboard Setup */
         .platforms-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 15px; 
-            margin-bottom: 30px;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1vw;
+            height: 8vh;
         }
         
         .platform-card { 
             background: var(--panel-bg); 
             border: 1px solid #1f1f24; 
-            border-radius: 12px; 
-            padding: 20px 10px; 
+            border-radius: 10px; 
             text-align: center; 
             text-decoration: none; 
             color: var(--text-color); 
             font-weight: bold; 
-            font-size: 1.1rem;
+            font-size: 1.5vh;
             backdrop-filter: blur(8px);
             transition: all 0.3s ease; 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            height: 100%;
         }
 
-        .platform-card span {
-            font-size: 1.4rem;
-        }
-        
-        .platform-card:hover { transform: translateY(-4px); color: #fff; }
-        .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 20px rgba(29, 185, 84, 0.3); }
-        .apple-btn:hover { border-color: #FA243C; box-shadow: 0 0 20px rgba(250, 36, 60, 0.3); }
-        .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 20px rgba(255, 85, 0, 0.3); }
-        .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 20px rgba(0, 168, 225, 0.3); }
+        .platform-card span { font-size: 1.8vh; }
+        .platform-card:hover { transform: translateY(-2px); color: #fff; }
+        .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
+        .apple-btn:hover { border-color: #FA243C; box-shadow: 0 0 15px rgba(250, 36, 60, 0.3); }
+        .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
+        .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 15px rgba(0, 168, 225, 0.3); }
         
         footer { 
             text-align: center; 
-            margin-top: auto;
-            padding-top: 30px;
+            margin: 1vh 0 0 0;
             color: #444; 
-            font-size: 0.85rem; 
-            letter-spacing: 1px;
+            font-size: 1.3vh; 
             z-index: 2;
         }
 
-        /* Custom Pure-CSS Character Animations */
-        @keyframes petBob {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-3px); }
-        }
+        @keyframes petBob { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
+        @keyframes legWalk { 0% { height: 3px; transform: translateY(0); } 100% { height: 7px; transform: translateY(-2px); } }
+        @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
 
-        @keyframes legWalk {
-            0% { height: 3px; transform: translateY(0); }
-            100% { height: 7px; transform: translateY(-2px); }
-        }
-
-        @keyframes phonkGlow {
-            0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4), 0 0 20px rgba(255, 0, 85, 0.2); }
-            100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.8), 0 0 30px rgba(255, 0, 85, 0.5); }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            header h1 { font-size: 2.6rem; }
-            .media-grid { flex-direction: column; gap: 15px; }
-            .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .spotify-iframe { height: 352px !important; }
+        /* --- SINGLE SCREEN AUTO-SCALING FOR SMARTPHONES --- */
+        @media (max-width: 600px) {
+            body { padding: 1vh 3vw; }
+            header h1 { font-size: 4vh; }
+            .container { height: 84vh; gap: 1vh; }
+            .section-title { font-size: 1.5vh; margin-bottom: 0.5vh; }
+            
+            /* Stack media blocks but let them automatically split the space */
+            .media-grid { grid-template-columns: 1fr; height: 50vh; gap: 1vh; }
+            .player-card { padding: 1vh; }
+            
+            /* Compact layouts on phone viewports to prevent layout breakages */
+            .contact-box { height: 14vh; padding: 1vh; }
+            .contact-btn { margin-top: 0.5vh; padding: 4px 15px; }
+            .platforms-grid { grid-template-columns: 1fr 1fr; height: 10vh; gap: 8px; }
+            .platform-card { font-size: 1.4vh; }
         }
     </style>
 </head>
@@ -330,29 +300,28 @@
     </header>
 
     <div class="container">
+        <!-- RELEASES & INTERACTIVE MEDIA -->
         <section>
             <h2 class="section-title">Latest Drops & Visuals</h2>
             <div class="media-grid">
-                
                 <div class="player-card">
                     <div class="card-label">Latest Videos</div>
                     <div class="video-container">
                         <iframe src="https://www.youtube.com/embed/videoseries?list=PLe-JhuYacKzo" allowfullscreen></iframe>
                     </div>
                 </div>
-
                 <div class="player-card">
                     <div class="card-label">Stream on Spotify</div>
-                    <iframe src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:12px;"></iframe>
+                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                 </div>
-
             </div>
         </section>
 
-        <section style="display: flex; flex-direction: column;">
+        <!-- BOOKING / CONNECT BOX -->
+        <section>
             <h2 class="section-title">Contact & Inquiries</h2>
             <div class="player-card contact-box">
-                <p>For label placements, remix requests, visual edits, or business collaborations:</p>
+                <p>For placements, visual edits, or collaborations:</p>
                 <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
                 <div>
                     <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
@@ -360,23 +329,24 @@
             </div>
         </section>
 
+        <!-- EXTERNAL PLATFORMS PORTAL -->
         <section>
             <h2 class="section-title">Listen Everywhere</h2>
             <div class="platforms-grid">
                 <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
                 <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn"><span>♫</span> Apple Music</a>
                 <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn"><span>☁️</span> SoundCloud</a>
-                <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon Music</a>
+                <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon</a>
             </div>
         </section>
     </div>
 
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
+    <!-- Background Particle Engine Script -->
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-
         let particles = [];
         const particleCount = 45;
 
@@ -396,20 +366,12 @@
                 this.speedY = Math.random() * -0.5 - 0.1;
                 this.opacity = Math.random() * 0.5 + 0.1;
             }
-
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-
-                if (this.y < 0) {
-                    this.y = canvas.height;
-                    this.x = Math.random() * canvas.width;
-                }
-                if (this.x < 0 || this.x > canvas.width) {
-                    this.speedX = -this.speedX;
-                }
+                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
+                if (this.x < 0 || this.x > canvas.width) { this.speedX = -this.speedX; }
             }
-
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -422,9 +384,7 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); }
         }
 
         function animate() {
@@ -434,17 +394,10 @@
             grad.addColorStop(1, '#020203');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.shadowBlur = 0; 
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
-
         init();
         animate();
 
@@ -456,34 +409,22 @@
 
         function updatePetMovement() {
             if (!isWalking) return;
-
             petX += 0.8 * direction;
             pet.style.left = petX + 'px';
-
             const maxW = window.innerWidth - 60;
-            if (petX > maxW) {
-                direction = -1;
-                pet.style.transform = 'scaleX(-1)'; 
-            } else if (petX < 10) {
-                direction = 1;
-                pet.style.transform = 'scaleX(1)';
-            }
+            if (petX > maxW) { direction = -1; pet.style.transform = 'scaleX(-1)'; }
+            else if (petX < 10) { direction = 1; pet.style.transform = 'scaleX(1)'; }
 
             if (Math.random() < 0.005) {
                 isWalking = false;
                 document.querySelectorAll('.leg').forEach(l => l.style.animationPlayState = 'paused');
-                
                 setTimeout(() => {
                     isWalking = true;
                     document.querySelectorAll('.leg').forEach(l => l.style.animationPlayState = 'running');
-                    if (Math.random() > 0.5) {
-                        direction *= -1;
-                        pet.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
-                    }
+                    if (Math.random() > 0.5) { direction *= -1; pet.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)'; }
                 }, Math.random() * 3000 + 1000);
             }
         }
-
         setInterval(updatePetMovement, 20);
     </script>
 </body>
