@@ -10,10 +10,10 @@
     
     <style>
         :root {
-            --bg-color: #050505;
-            --panel-bg: #0d0d0d;
+            --bg-color: #060608;
+            --panel-bg: rgba(13, 13, 15, 0.85); /* Slightly translucent to see particles behind cards */
             --accent-color: #ff0055;
-            --accent-glow: rgba(255, 0, 85, 0.5);
+            --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
         }
@@ -22,9 +22,6 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(255, 0, 85, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(0, 242, 254, 0.05) 0%, transparent 40%);
             color: var(--text-color);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             padding: 20px;
@@ -32,14 +29,26 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* Fixed background canvas for smooth particle animation rendering */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
         }
 
         header { 
             text-align: center; 
             margin: 40px 0; 
+            z-index: 2;
         }
 
-        /* Animated Phonk Glow Text Effect */
         header h1 { 
             font-size: 3.5rem; 
             letter-spacing: 6px; 
@@ -63,6 +72,7 @@
             flex-direction: column; 
             gap: 35px;
             flex-grow: 1;
+            z-index: 2;
         }
 
         .section-title { 
@@ -75,28 +85,25 @@
             text-shadow: 0 0 10px var(--accent-glow);
         }
 
-        /* Media Grid Setup */
         .media-grid { 
             display: flex;
             flex-direction: row;
             gap: 25px;
         }
 
-        /* Pulsing Neon Cards */
         .player-card { 
             background: var(--panel-bg); 
-            border: 1px solid #1a1a1a; 
+            border: 1px solid #1f1f24; 
             border-radius: 16px; 
             padding: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7); 
+            backdrop-filter: blur(8px); /* Subtle glass blur for depth over particles */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
             flex: 1;
             display: flex;
             flex-direction: column;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
         }
 
-        /* Subversive glowing response on card hover */
         .player-card:hover {
             border-color: var(--accent-color);
             box-shadow: 0 0 25px var(--accent-glow), inset 0 0 10px rgba(255, 0, 85, 0.1);
@@ -122,7 +129,6 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Dynamic Grid for Streaming Links */
         .platforms-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
@@ -132,7 +138,7 @@
         
         .platform-card { 
             background: var(--panel-bg); 
-            border: 1px solid #1a1a1a; 
+            border: 1px solid #1f1f24; 
             border-radius: 12px; 
             padding: 20px 10px; 
             text-align: center; 
@@ -140,14 +146,11 @@
             color: var(--text-color); 
             font-weight: bold; 
             font-size: 1rem;
+            backdrop-filter: blur(8px);
             transition: all 0.3s ease; 
         }
         
-        /* Unique brand glows on hover */
-        .platform-card:hover { 
-            transform: translateY(-4px); 
-            color: #fff;
-        }
+        .platform-card:hover { transform: translateY(-4px); color: #fff; }
         .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 20px rgba(29, 185, 84, 0.3); }
         .apple-btn:hover { border-color: #FA243C; box-shadow: 0 0 20px rgba(250, 36, 60, 0.3); }
         .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 20px rgba(255, 85, 0, 0.3); }
@@ -157,22 +160,17 @@
             text-align: center; 
             margin-top: auto;
             padding-top: 30px;
-            color: #555; 
+            color: #444; 
             font-size: 0.85rem; 
             letter-spacing: 1px;
+            z-index: 2;
         }
 
-        /* Neon Glow Animation Rules */
         @keyframes phonkGlow {
-            0% {
-                text-shadow: 0 0 10px rgba(255, 0, 85, 0.4), 0 0 20px rgba(255, 0, 85, 0.2);
-            }
-            100% {
-                text-shadow: 0 0 20px rgba(255, 0, 85, 0.8), 0 0 30px rgba(255, 0, 85, 0.5), 0 0 40px rgba(255, 0, 85, 0.3);
-            }
+            0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4), 0 0 20px rgba(255, 0, 85, 0.2); }
+            100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.8), 0 0 30px rgba(255, 0, 85, 0.5); }
         }
 
-        /* Mobile Adjustment Rules */
         @media (max-width: 768px) {
             body { padding: 15px; }
             header h1 { font-size: 2.6rem; }
@@ -183,6 +181,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Particle Render Plane -->
+    <canvas id="bg-canvas"></canvas>
 
     <header>
         <h1>Qyrelle</h1>
@@ -223,5 +224,86 @@
     </div>
 
     <footer><p>&copy; 2026 Qyrelle. All Rights Reserved.</p></footer>
+
+    <!-- Background Particle Engine Script -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const particleCount = 45; // Smooth balanced presence
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5; // Fine dust particles
+                this.speedX = Math.random() * 0.4 - 0.2; // Slow kinetic movement
+                this.speedY = Math.random() * -0.5 - 0.1; // Drift upward smoothly
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Loop particles back onto the window screen frame if they escape
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+                if (this.x < 0 || this.x > canvas.width) {
+                    this.speedX = -this.speedX;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; // Neon mist aura dust
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#ff0055';
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            // Draw deep charcoal gradient canvas base
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#0c0c10'); // Dark slate charcoal
+            grad.addColorStop(0.5, '#060608');
+            grad.addColorStop(1, '#020203');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Redundant shadow clear for standard performance logic
+            ctx.shadowBlur = 0; 
+
+            // Render active ambient particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
