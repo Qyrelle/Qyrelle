@@ -1,4 +1,4 @@
-// --- MAKIMA INTELLIGENT NAVIGATION ENGINE ---
+// --- MAKIMA ADVANCED NAVIGATION EYE ENGINE ---
 
 const element = document.getElementById('shimeji-character');
 
@@ -6,12 +6,8 @@ let currentX = 150;
 let currentY = window.innerHeight - 65;
 let direction = 1;
 let state = 'FLOOR_WALKING';
-let idleTimer = null;
 
-// Target points cache map
 const targets = ['youtube-target', 'spotify-target', 'contact-target'];
-
-// Track mouse position to let her look toward your cursor dynamically
 let mouseX = 0;
 window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
 
@@ -21,16 +17,16 @@ function findTargetCoords(id) {
     const rect = target.getBoundingClientRect();
     return {
         x: rect.left + (rect.width / 2) - 24,
-        y: rect.top - 42 // Sits directly on top edge of card frames
+        y: rect.top - 42 
     };
 }
 
 function updateMakimaBehavior() {
-    // Face the mouse cursor direction smoothly
+    // Face the mouse cursor dynamically
     if (mouseX > currentX) {
-        element.style.transform = 'scaleX(1)'; // Face right
+        element.style.transform = 'scaleX(1)'; 
     } else {
-        element.style.transform = 'scaleX(-1)'; // Face left
+        element.style.transform = 'scaleX(-1)'; 
     }
 
     if (state === 'FLOOR_WALKING') {
@@ -38,12 +34,10 @@ function updateMakimaBehavior() {
         element.style.left = currentX + 'px';
         element.style.top = (window.innerHeight - 65) + 'px';
 
-        // Ground boundaries calculation
         const maxW = window.innerWidth - 60;
         if (currentX > maxW) direction = -1;
         if (currentX < 15) direction = 1;
 
-        // Random chance to look for a panel to jump and climb on
         if (Math.random() < 0.006) {
             const randomTarget = targets[Math.floor(Math.random() * targets.length)];
             const coord = findTargetCoords(randomTarget);
@@ -54,38 +48,53 @@ function updateMakimaBehavior() {
                 element.style.left = currentX + 'px';
                 element.style.top = currentY + 'px';
                 
-                // Add a cute breathing scale effect when she successfully sits on a dashboard card
-                element.style.transform += ' scale(1.05)';
+                // Triggers her eye glow bloom when she arrives on a media card panel!
+                element.classList.add('reactive-pulse');
             }
         }
     } 
     else if (state === 'PANEL_SITTING') {
-        // Safe check if browser resized out from under her position
         if (Math.random() < 0.005) {
-            // Drop back down to ground floor walking mode
             state = 'FLOOR_WALKING';
             currentY = window.innerHeight - 65;
             element.style.top = currentY + 'px';
+            
+            // Turns off eye glow when she jumps back down to floor walk
+            element.classList.remove('reactive-pulse');
         }
     }
 }
 
-// INTERACTIVE REACTION: Leaps out of shock if a user tries clicking her
+// INTERACTIVE ACTION: Click response jolt
 element.addEventListener('click', (e) => {
     e.stopPropagation();
     const originalY = currentY;
     element.style.top = (originalY - 30) + 'px';
-    element.style.filter = 'drop-shadow(0 0 8px #ff0055)'; // Subtle pink anger aura glow
+    element.style.filter = 'drop-shadow(0 0 8px #ff0055)';
+    element.classList.add('reactive-pulse'); // Force flash eyes on shock click
     
     setTimeout(() => {
         element.style.top = originalY + 'px';
         element.style.filter = '';
-    }, 400);
+        if (state !== 'PANEL_SITTING') {
+            element.classList.remove('reactive-pulse');
+        }
+    }, 600);
 });
 
-// Smooth 50Hz animation logic ticker
+// AUDIO GLOBAL LISTENERS: Trigger her eye glow whenever mouse enters any player or streaming card
+document.querySelectorAll('.player-card, .platform-card').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        element.classList.add('reactive-pulse');
+    });
+    item.addEventListener('mouseleave', () => {
+        if (state !== 'PANEL_SITTING') {
+            element.classList.remove('reactive-pulse');
+        }
+    });
+});
+
 setInterval(updateMakimaBehavior, 20);
 
-// Initialize starting coordinates
 element.style.left = currentX + 'px';
 element.style.top = currentY + 'px';
