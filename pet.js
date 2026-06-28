@@ -1,4 +1,4 @@
-// --- PRIVATE DIRECT VISUAL MONITOR ENGINE ---
+// --- PRIVATE DIRECT VISUAL MONITOR ENGINE WITH SKIN SYSTEM ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -58,8 +58,11 @@ window.onload = function() {
         trail.style.top = (y + 10 + Math.random() * 30) + 'px';
         trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
         trail.style.height = trail.style.width;
-        trail.style.backgroundColor = isOverdriveActive ? '#ff0000' : '#ff0055'; 
-        trail.style.boxShadow = isOverdriveActive ? '0 0 10px #ff0000' : '0 0 8px #ff0055';
+        
+        let currentColor = document.documentElement.style.getPropertyValue('--accent-color').trim() || '#ff0055';
+        trail.style.backgroundColor = currentColor; 
+        trail.style.boxShadow = `0 0 8px ${currentColor}`;
+        
         trail.style.zIndex = '99'; trail.style.pointerEvents = 'none';
         document.body.appendChild(trail);
         setTimeout(() => { trail.style.transform = 'scale(0)'; trail.style.opacity = '0'; }, 50);
@@ -95,7 +98,6 @@ window.onload = function() {
         let baseSpeed = isOverdriveActive ? 3.6 : 1.2;
         let finalSpeed = baseSpeed;
         
-        // Boost her speed automatically when page registers user playback interaction
         if (window.isMusicPlaying) {
             finalSpeed *= 1.6;
             element.classList.add('reactive-pulse');
@@ -135,10 +137,11 @@ window.onload = function() {
     element.addEventListener('click', (e) => {
         e.stopPropagation(); const originalY = currentY;
         element.style.top = (originalY - 30) + 'px';
-        element.style.filter = isOverdriveActive ? 'drop-shadow(0 0 15px #ff0000) brightness(1.4)' : 'drop-shadow(0 0 10px #ff0055)';
+        let auraColor = isOverdriveActive ? '#ff0000' : '#ff0055';
+        element.style.filter = `drop-shadow(0 0 10px ${auraColor}) var(--pet-skin, initial)`;
         element.classList.add('reactive-pulse');
         playClickSound();
-        setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = ''; if (state !== 'PANEL_SITTING') element.classList.remove('reactive-pulse'); }, 600);
+        setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.5)) var(--pet-skin, initial)'; if (state !== 'PANEL_SITTING') element.classList.remove('reactive-pulse'); }, 600);
     });
 
     document.querySelectorAll('.player-card, .platform-card').forEach(item => {
