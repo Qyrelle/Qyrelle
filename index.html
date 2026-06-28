@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
     
+    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
     
     <style>
@@ -15,7 +16,7 @@
             --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
-            --pet-skin: none; /* Controlled dynamically by step 4 switcher */
+            --pet-skin: none;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,19 +46,19 @@
             pointer-events: none;
         }
 
-        /* --- STEP 3: HIGH-INTENSITY CRT SCANLINE OVERLAY --- */
+        /* CRT SCANLINE OVERLAY */
         body::before {
             content: " ";
             display: block;
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999; /* Floats over everything for a subtle retro workspace filter */
+            z-index: 999;
             background-size: 100% 4px, 6px 100%;
             pointer-events: none;
         }
 
-        /* --- THE COMPACT ANIME SHIMEJI CONTAINER --- */
+        /* THE SHIMEJI CONTAINER */
         .interactive-shimeji {
             position: fixed;
             width: 48px;  
@@ -87,7 +88,7 @@
 
         .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; height: 42vh; }
         
-        /* Audio-reactive pulsing cards handles frame borders glow changes */
+        /* Set base style to a clean, dark look so it doesn't stay red permanently */
         .player-card { 
             background: var(--panel-bg); 
             border: 1px solid #1f1f24; 
@@ -99,7 +100,7 @@
             flex-direction: column; 
             justify-content: space-between; 
             height: 100%; 
-            transition: border-color 0.1s linear, box-shadow 0.1s linear;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         .card-label { margin-bottom: 0.8vh; font-weight: 600; color: #e6e6e6; text-transform: uppercase; letter-spacing: 1px; font-size: 1.3vh; }
@@ -108,7 +109,6 @@
         .video-container iframe { width: 100%; height: 100%; border: 0; }
         .spotify-iframe { border-radius: 8px; width: 100%; height: 100%; }
 
-        /* Contact & Step 4 Switcher Layout Box */
         .contact-box { 
             text-align: center; 
             align-items: center; 
@@ -120,7 +120,7 @@
         .contact-box p { color: var(--text-dim); margin-bottom: 0.5vh; font-size: 1.5vh; }
         .email-link { color: #ffffff; font-weight: bold; font-size: 1.8vh; text-decoration: none; letter-spacing: 0.5px; }
         
-        /* --- STEP 4: MINI COSTUME CLOSET SWITCHER STYLE --- */
+        /* COSTUME SWITCHER */
         .skin-closet {
             position: absolute;
             right: 15px;
@@ -190,7 +190,8 @@
     </header>
 
     <div class="container">
-        <div class="media-grid">
+        <!-- The Media Box container groups your active players -->
+        <div class="media-grid" id="media-block">
             <div class="player-card" id="youtube-target">
                 <div class="card-label">Latest Videos</div>
                 <div class="video-container">
@@ -247,24 +248,23 @@
         }
         for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
 
-        // Wake up audio reactive animations when mouse hovers over media targets
-        window.addEventListener('click', () => { window.isMusicPlaying = true; });
-        document.querySelectorAll('.player-card, .platform-card').forEach(item => {
-            item.addEventListener('mouseenter', () => { window.isMusicPlaying = true; });
+        // HOVER DETECTOR MATRIX: Only light up the system borders when hovering over the music tracks window space!
+        const mediaBlock = document.getElementById('media-block');
+        mediaBlock.addEventListener('mouseenter', () => { window.isMusicPlaying = true; });
+        mediaBlock.addEventListener('mouseleave', () => { 
+            window.isMusicPlaying = false; 
+            // Reset panel borders immediately to a clean dark look when mouse departs
+            document.querySelectorAll('#youtube-target, #spotify-target').forEach(card => {
+                card.style.borderColor = '#1f1f24';
+                card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.8)';
+            });
         });
 
-        // --- STEP 4: COSTUME SKIN MANAGER INTERFACE SUB-LOGIC ---
         function changePetSkin(skinType) {
             const root = document.documentElement;
-            if (skinType === 'suit') {
-                root.style.setProperty('--pet-skin', 'none');
-            } else if (skinType === 'neon') {
-                // Intense bright hue shift into saturated hyper-red visibility configurations
-                root.style.setProperty('--pet-skin', 'matrix(1, 0, 0, 0, 1,  0, 0, 0, 0, 0,  0, 0, 0, 0, 0,  0, 0, 0, 1, 0) sepia(1) hue-rotate(-50deg) saturate(8)');
-            } else if (skinType === 'mono') {
-                // Strips pixel color spectrum into underground deep grayscale tones
-                root.style.setProperty('--pet-skin', 'grayscale(1) contrast(1.4) brightness(0.8)');
-            }
+            if (skinType === 'suit') root.style.setProperty('--pet-skin', 'none');
+            else if (skinType === 'neon') root.style.setProperty('--pet-skin', 'matrix(1, 0, 0, 0, 1,  0, 0, 0, 0, 0,  0, 0, 0, 0, 0,  0, 0, 0, 1, 0) sepia(1) hue-rotate(-50deg) saturate(8)');
+            else if (skinType === 'mono') root.style.setProperty('--pet-skin', 'grayscale(1) contrast(1.4) brightness(0.8)');
         }
 
         function animate() {
@@ -272,13 +272,13 @@
             grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
             ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // --- THE ACTIVE PANEL CORNER GLOW MATRIX SWEEP ---
             if (window.isMusicPlaying) {
                 waveValue += 0.08;
-                let activeIntensity = 0.5 + Math.sin(waveValue) * 0.5; // Smooth harmonic rebound range
+                let activeIntensity = 0.5 + Math.sin(waveValue) * 0.5;
                 let activeColor = document.documentElement.style.getPropertyValue('--accent-color').trim() || '#ff0055';
                 
-                document.querySelectorAll('.player-card').forEach(card => {
+                // Only pulses the specific music box elements
+                document.querySelectorAll('#youtube-target, #spotify-target').forEach(card => {
                     card.style.borderColor = activeColor;
                     card.style.boxShadow = `0 0 ${12 + activeIntensity * 18}px rgba(255, 0, 85, ${0.2 + activeIntensity * 0.4}), inset 0 0 10px rgba(255, 0, 85, 0.1)`;
                 });
