@@ -1,4 +1,4 @@
-// --- MAKIMA NAVIGATION AURIC GLOW & VELOCITY TRAIL ENGINE ---
+// --- MAKIMA AUDIO-REACTIVE TRAIL & ELECTRONIC SYNTH SOUND ENGINE ---
 
 const element = document.getElementById('shimeji-character');
 
@@ -23,34 +23,60 @@ function findTargetCoords(id) {
     };
 }
 
-// --- STEP 2: HIGH-INTENSITY PIXEL TRAIL GENERATOR ---
+// --- STEP 3: CODE-GENERATED WEB AUDIO SYNTH ACCENT ---
+function playClickSound() {
+    try {
+        // Initialize independent digital audio framework context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const audioCtx = new AudioContext();
+
+        // 1. Setup Oscillator Node for deep electronic pitch tone frequencies
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = 'triangle'; // Smooth, low-end bass texture perfect for Phonk layouts
+        osc.frequency.setValueAtTime(120, audioCtx.currentTime); // Mid-low sweep starting point
+        osc.frequency.exponentialRampToValueAtTime(45, audioCtx.currentTime + 0.35); // Sweeps down into deep sub bass
+
+        // 2. Setup Volume Envelope curve to handle fast-decay pop punch
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // Sets master drop volume
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); // Fast smooth decay fade out
+
+        // 3. Connect audio modules together and execute tone release execution
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+    } catch(e) {
+        console.log("Audio play blocked by browser sandbox policy rules.");
+    }
+}
+
+// --- HIGH-INTENSITY PIXEL TRAIL GENERATOR ---
 function spawnTrailParticle(x, y) {
     const trail = document.createElement('div');
-    // Generates square glitch blocks matching your editing aesthetic
     trail.style.position = 'fixed';
     trail.style.left = (x + 14 + Math.random() * 20) + 'px';
     trail.style.top = (y + 10 + Math.random() * 30) + 'px';
     trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
     trail.style.height = trail.style.width;
-    trail.style.backgroundColor = '#ff0055'; // High-vis Phonk pink
+    trail.style.backgroundColor = '#ff0055'; 
     trail.style.boxShadow = '0 0 8px #ff0055, 0 0 15px #ff0055';
-    trail.style.zIndex = '99'; // Renders right beneath Makima but above panels
+    trail.style.zIndex = '99'; 
     trail.style.pointerEvents = 'none';
     trail.style.borderRadius = '1px';
     trail.style.transition = 'all 0.4s cubic-bezier(0.1, 0.8, 0.3, 1)';
     
     document.body.appendChild(trail);
 
-    // Force browser repaint to trigger smooth scaling physics collapse
     setTimeout(() => {
         trail.style.transform = 'translateY(15px) scale(0) rotate(45deg)';
         trail.style.opacity = '0';
     }, 50);
 
-    // Garbage collector: clean node from background memory plane
-    setTimeout(() => {
-        trail.remove();
-    }, 450);
+    setTimeout(() => { trail.remove(); }, 450);
 }
 
 function updateMakimaBehavior() {
@@ -91,27 +117,28 @@ function updateMakimaBehavior() {
         }
     }
 
-    // TRAIL CHECKER: Spawns particles if she is moving or launching vertically
     let velocity = Math.abs(currentX - prevX) + Math.abs(currentY - prevY);
     if (velocity > 0.5) {
         spawnTrailParticle(currentX, currentY);
-        // If jumping or crossing panels, add extra particles for speed intensity
         if (Math.abs(currentY - prevY) > 2) {
             spawnTrailParticle(currentX, currentY);
             spawnTrailParticle(currentX, currentY);
         }
     }
 
-    // Store historical coordinate ticks
     prevX = currentX;
     prevY = currentY;
 }
 
+// Click listener with custom code synth integration
 element.addEventListener('click', (e) => {
     e.stopPropagation();
     const originalY = currentY;
     element.style.top = (originalY - 30) + 'px';
     element.classList.add('reactive-pulse');
+    
+    // Play our new synthesized sound wave
+    playClickSound();
     
     setTimeout(() => {
         element.style.top = originalY + 'px';
