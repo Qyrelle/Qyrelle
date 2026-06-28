@@ -15,7 +15,7 @@
             --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
-            --pet-skin: initial; /* Dynamic costume overlay properties */
+            --pet-skin: initial;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,30 +66,6 @@
             animation: makimaGlowPulse 1s infinite alternate ease-in-out;
         }
 
-        /* Audio Engine Controller Access Bar Layout */
-        #visualizer-gate {
-            position: fixed;
-            top: 15px;
-            right: 20px;
-            z-index: 200;
-            background: rgba(20, 20, 25, 0.8);
-            border: 1px solid #252530;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 1.1vh;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        #visualizer-gate:hover {
-            color: #fff;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
         header { text-align: center; margin: 1vh 0; z-index: 2; }
         header h1 { font-size: 5vh; letter-spacing: 6px; color: var(--text-color); animation: phonkGlow 3s infinite alternate ease-in-out; line-height: 1.2; }
         header p { color: var(--text-dim); font-size: 1.6vh; letter-spacing: 1px; text-transform: uppercase; }
@@ -98,7 +74,7 @@
         .section-title { font-size: 1.8vh; letter-spacing: 1px; margin-bottom: 0.8vh; border-left: 3px solid var(--accent-color); padding-left: 8px; text-shadow: 0 0 10px var(--accent-glow); }
 
         .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; height: 42vh; }
-        .player-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 12px; padding: 1.5vh; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        .player-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 12px; padding: 1.5vh; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: space-between; height: 100%; position: relative; }
         .card-label { margin-bottom: 0.8vh; font-weight: 600; color: #e6e6e6; text-transform: uppercase; letter-spacing: 1px; font-size: 1.3vh; }
 
         .video-container { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
@@ -136,13 +112,10 @@
             .contact-box { height: 14vh; padding: 1vh; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); height: 10vh; gap: 8px; }
             .interactive-shimeji { width: 36px; height: 36px; }
-            #visualizer-gate { top: 10px; right: 10px; padding: 4px 10px; }
         }
     </style>
 </head>
 <body>
-
-    <div id="visualizer-gate" onclick="initAudioEngine()">🎙️ Sync Audio</div>
 
     <canvas id="bg-canvas"></canvas>
 
@@ -196,11 +169,9 @@
         const ctx = canvas.getContext('2d');
         let particles = [];
         
-        // Audio API references
-        let audioCtx = null;
-        let analyser = null;
-        let dataArray = null;
-        let isAudioConnected = false;
+        // Global variables for tracking site media playback simulation state
+        window.isMusicPlaying = false; 
+        let waveValue = 0;
 
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
@@ -214,9 +185,10 @@
                 this.speedY = Math.random() * -0.5 - 0.1;
                 this.opacity = Math.random() * 0.5 + 0.1;
             }
-            update(intensity) {
-                // Background particles speed up subtly matching low frequencies
-                this.y += this.speedY * (1 + intensity * 3);
+            update() {
+                // Accelerate particles organically if layout records interaction metrics
+                let boost = window.isMusicPlaying ? 2.5 : 1.0;
+                this.y += this.speedY * boost;
                 if (this.y < 0) this.y = canvas.height;
             }
             draw() {
@@ -227,61 +199,33 @@
 
         for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
 
-        // Request browser microphone audio synchronization stream
-        function initAudioEngine() {
-            if (isAudioConnected) return;
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            
-            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-            .then(stream => {
-                audioCtx = new AudioContext();
-                analyser = audioCtx.createAnalyser();
-                const source = audioCtx.createMediaStreamSource(stream);
-                source.connect(analyser);
-                
-                analyser.fftSize = 64; // Low bucket sizes keeps calculations fast
-                const bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                
-                isAudioConnected = true;
-                document.getElementById('visualizer-gate').innerText = "🔊 Audio Synced";
-                document.getElementById('visualizer-gate').style.borderColor = "#1DB954";
-            })
-            .catch(err => {
-                document.getElementById('visualizer-gate').innerText = "❌ Mic Denied";
-                console.log("Audio capturing system connection failed.", err);
-            });
-        }
+        // Trigger dynamic visualizer waves automatically on click/hover inside media frames
+        window.addEventListener('click', () => { window.isMusicPlaying = true; });
+        document.querySelectorAll('.player-card, .platform-card').forEach(item => {
+            item.addEventListener('mouseenter', () => { window.isMusicPlaying = true; });
+        });
 
         function animate() {
-            // Draw gradient workspace canvas base
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
             ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            let audioIntensity = 0;
-            if (isAudioConnected && analyser) {
-                analyser.getByteFrequencyData(dataArray);
-                let sum = 0;
-                for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
-                audioIntensity = sum / dataArray.length / 255; // Normalized amplitude scale (0.0 to 1.0)
-            }
-
-            // --- LIVE BACKGROUND CANVAS SPECTRUM RING ---
-            if (audioIntensity > 0.05) {
+            // Algorithmic oscillator mapping logic
+            if (window.isMusicPlaying) {
+                waveValue += 0.08;
+                let pulsingRadius = 130 + Math.sin(waveValue) * 35 + Math.cos(waveValue * 1.5) * 15;
+                
                 ctx.beginPath();
-                // Centers spectrum ring layout exactly behind dashboard panel workspace
-                ctx.arc(canvas.width / 2, canvas.height / 2, 140 + audioIntensity * 80, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(255, 0, 85, ${audioIntensity * 0.4})`;
-                ctx.lineWidth = 4 + audioIntensity * 12;
-                ctx.shadowBlur = 15;
+                ctx.arc(canvas.width / 2, canvas.height / 2, pulsingRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 0, 85, 0.25)`;
+                ctx.lineWidth = 6 + Math.sin(waveValue) * 4;
+                ctx.shadowBlur = 20;
                 ctx.shadowColor = '#ff0055';
                 ctx.stroke();
-                ctx.shadowBlur = 0; // Clear blur constraints immediately
+                ctx.shadowBlur = 0;
             }
 
-            // Render particles
-            particles.forEach(p => { p.update(audioIntensity); p.draw(); });
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
