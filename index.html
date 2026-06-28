@@ -57,7 +57,7 @@
             pointer-events: none;
         }
 
-        /* SHIMEJI BOT FRAME */
+        /* SHIMEJI CONTAINER */
         .interactive-shimeji {
             position: fixed;
             width: 48px;  
@@ -98,12 +98,12 @@
             flex-direction: column; 
             justify-content: space-between; 
             height: 100%; 
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         
         .card-label { margin-bottom: 0.8vh; font-weight: 600; color: #e6e6e6; text-transform: uppercase; letter-spacing: 1px; font-size: 1.3vh; }
 
-        .video-container { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; }
+        .video-container { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .video-container iframe { width: 100%; height: 100%; border: 0; }
         .spotify-iframe { border-radius: 8px; width: 100%; height: 100%; }
 
@@ -192,12 +192,12 @@
             <div class="player-card" id="youtube-target">
                 <div class="card-label">Latest Videos</div>
                 <div class="video-container">
-                    <div id="yt-player-frame"></div>
+                    <iframe id="yt-iframe" src="https://www.youtube.com/embed/videoseries?list=PLe-JhuYacKzo&enablejsapi=1" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="player-card" id="spotify-target">
                 <div class="card-label">Stream on Spotify</div>
-                <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                <iframe id="spotify-iframe" class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
             </div>
         </div>
 
@@ -231,12 +231,9 @@
 
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
         const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
         window.isMusicPlaying = false; let waveValue = 0;
-        let ytPlayer = null;
 
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
@@ -248,36 +245,37 @@
         }
         for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
 
-        // --- NATIVE INTER-FRAME API HANDSHAKE CODES ---
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player-frame', {
-                height: '100%',
-                width: '100%',
-                playerVars: {
-                    listType: 'playlist',
-                    list: 'PLe-JhuYacKzo',
-                    wmode: 'transparent'
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            // State 1 = Playing music tracking active
-            if (event.data == YT.PlayerState.PLAYING) {
+        // --- THE FOCUS TRACKER BYPASS ---
+        // Checks every 400ms if the user clicked inside the YouTube or Spotify players
+        setInterval(() => {
+            const activeEl = document.activeElement;
+            if (activeEl && (activeEl.id === 'yt-iframe' || activeEl.id === 'spotify-iframe' || activeEl.className === 'spotify-iframe')) {
                 window.isMusicPlaying = true;
-            } else {
-                window.isMusicPlaying = false;
+            }
+        }, 400);
+
+        // Standard Cursor hover backups stay active
+        const mediaBlock = document.getElementById('media-block');
+        mediaBlock.addEventListener('mouseenter', () => { window.isMusicPlaying = true; });
+        mediaBlock.addEventListener('mouseleave', () => { 
+            // If user clicked play, we don't shut off the glow when cursor leaves
+            const activeEl = document.activeElement;
+            if (activeEl && activeEl.id !== 'yt-iframe' && activeEl.id !== 'spotify-iframe' && activeEl.className !== 'spotify-iframe') {
+                window.isMusicPlaying = false; 
                 resetGlowBorders();
             }
-        }
+        });
 
-        // Keep hover support intact for Spotify tracks card
-        const mediaBlock = document.getElementById('media-block');
-        mediaBlock.addEventListener('mouseenter', () => { if(!ytPlayer || ytPlayer.getPlayerState() !== 1) window.isMusicPlaying = true; });
-        mediaBlock.addEventListener('mouseleave', () => { if(!ytPlayer || ytPlayer.getPlayerState() !== 1) { window.isMusicPlaying = false; resetGlowBorders(); } });
+        // Clicking anywhere outside players cools the glow down
+        window.addEventListener('click', (e) => {
+            setTimeout(() => {
+                const activeEl = document.activeElement;
+                if (activeEl && activeEl.id !== 'yt-iframe' && activeEl.id !== 'spotify-iframe' && activeEl.className !== 'spotify-iframe') {
+                    window.isMusicPlaying = false;
+                    resetGlowBorders();
+                }
+            }, 50);
+        });
 
         function resetGlowBorders() {
             document.querySelectorAll('#youtube-target, #spotify-target').forEach(card => {
