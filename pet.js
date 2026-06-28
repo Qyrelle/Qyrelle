@@ -1,4 +1,4 @@
-// --- MAKIMA AUDIO-REACTIVE TRAIL & ELECTRONIC SYNTH SOUND ENGINE ---
+// --- QYRELLE ULTIMATE INTERACTIVE EXTENSION WORKSPACE ENGINE ---
 
 const element = document.getElementById('shimeji-character');
 
@@ -8,6 +8,11 @@ let prevX = currentX;
 let prevY = currentY;
 let direction = 1;
 let state = 'FLOOR_WALKING';
+
+// Overdrive configuration states
+let isOverdriveActive = false;
+let clickCount = 0;
+let resetTimeout = null;
 
 const targets = ['youtube-target', 'spotify-target', 'contact-target'];
 let mouseX = 0;
@@ -23,34 +28,48 @@ function findTargetCoords(id) {
     };
 }
 
-// --- STEP 3: CODE-GENERATED WEB AUDIO SYNTH ACCENT ---
+// --- SYNTH ACCENT SOUND GENERATOR (Tuned to low-end aggressive bass red theme) ---
 function playClickSound() {
     try {
-        // Initialize independent digital audio framework context
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
         const audioCtx = new AudioContext();
 
-        // 1. Setup Oscillator Node for deep electronic pitch tone frequencies
         const osc = audioCtx.createOscillator();
+        const dist = audioCtx.createWaveShaper(); // Distorts sound wave for an aggressive grit feel
         const gainNode = audioCtx.createGain();
         
-        osc.type = 'triangle'; // Smooth, low-end bass texture perfect for Phonk layouts
-        osc.frequency.setValueAtTime(120, audioCtx.currentTime); // Mid-low sweep starting point
-        osc.frequency.exponentialRampToValueAtTime(45, audioCtx.currentTime + 0.35); // Sweeps down into deep sub bass
+        // Custom distortion curve values
+        function makeDistortionCurve(amount) {
+            let k = typeof amount === 'number' ? amount : 50,
+                n_samples = 44100,
+                curve = new Float32Array(n_samples),
+                deg = Math.PI / 180, i = 0, x;
+            for ( ; i < n_samples; ++i ) {
+                x = i * 2 / n_samples - 1;
+                curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+            }
+            return curve;
+        }
+        
+        dist.curve = makeDistortionCurve(isOverdriveActive ? 120 : 60);
+        dist.oversample = '4x';
+        
+        osc.type = 'sawtooth'; // Aggressive harmonic wave shape
+        osc.frequency.setValueAtTime(isOverdriveActive ? 180 : 90, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(30, audioCtx.currentTime + 0.4);
 
-        // 2. Setup Volume Envelope curve to handle fast-decay pop punch
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // Sets master drop volume
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); // Fast smooth decay fade out
+        gainNode.gain.setValueAtTime(isOverdriveActive ? 0.4 : 0.25, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
 
-        // 3. Connect audio modules together and execute tone release execution
-        osc.connect(gainNode);
+        osc.connect(dist);
+        dist.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.35);
+        osc.stop(audioCtx.currentTime + 0.4);
     } catch(e) {
-        console.log("Audio play blocked by browser sandbox policy rules.");
+        console.log("Audio block bypass active.");
     }
 }
 
@@ -62,8 +81,11 @@ function spawnTrailParticle(x, y) {
     trail.style.top = (y + 10 + Math.random() * 30) + 'px';
     trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
     trail.style.height = trail.style.width;
-    trail.style.backgroundColor = '#ff0055'; 
-    trail.style.boxShadow = '0 0 8px #ff0055, 0 0 15px #ff0055';
+    
+    // In overdrive mode, trails burn completely red, otherwise standard brand pink
+    trail.style.backgroundColor = isOverdriveActive ? '#ff0000' : '#ff0055'; 
+    trail.style.boxShadow = isOverdriveActive ? '0 0 10px #ff0000, 0 0 20px #ff0000' : '0 0 8px #ff0055, 0 0 15px #ff0055';
+    
     trail.style.zIndex = '99'; 
     trail.style.pointerEvents = 'none';
     trail.style.borderRadius = '1px';
@@ -72,11 +94,44 @@ function spawnTrailParticle(x, y) {
     document.body.appendChild(trail);
 
     setTimeout(() => {
-        trail.style.transform = 'translateY(15px) scale(0) rotate(45deg)';
+        trail.style.transform = isOverdriveActive ? 'translateY(25px) scale(0) rotate(90deg)' : 'translateY(15px) scale(0) rotate(45deg)';
         trail.style.opacity = '0';
     }, 50);
 
     setTimeout(() => { trail.remove(); }, 450);
+}
+
+// --- INTERACTIVE EASTER EGG OVERDRIVE INITIATION ---
+const headerTitle = document.querySelector('header h1');
+if (headerTitle) {
+    headerTitle.style.cursor = 'pointer';
+    headerTitle.addEventListener('click', () => {
+        clickCount++;
+        clearTimeout(resetTimeout);
+        
+        // Resets click tracking state if user pauses clicking sequence
+        resetTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+        
+        if (clickCount >= 3) {
+            clickCount = 0;
+            isOverdriveActive = !isOverdriveActive;
+            
+            if (isOverdriveActive) {
+                // Set layout engine parameters to MAX velocity configuration
+                headerTitle.style.animation = 'phonkGlow 0.3s infinite alternate ease-in-out';
+                headerTitle.style.color = '#ff0000';
+                document.documentElement.style.setProperty('--accent-color', '#ff0000');
+                
+                // Audio spike feedback cue
+                playClickSound();
+            } else {
+                // Return parameters back to normal base values
+                headerTitle.style.animation = 'phonkGlow 3s infinite alternate ease-in-out';
+                headerTitle.style.color = '#ffffff';
+                document.documentElement.style.setProperty('--accent-color', '#ff0055');
+            }
+        }
+    });
 }
 
 function updateMakimaBehavior() {
@@ -86,8 +141,11 @@ function updateMakimaBehavior() {
         element.style.transform = 'scaleX(-1)'; 
     }
 
+    // Dynamic speed scalar based on event triggers
+    let speedModifier = isOverdriveActive ? 3.6 : 1.2;
+
     if (state === 'FLOOR_WALKING') {
-        currentX += 1.2 * direction;
+        currentX += speedModifier * direction;
         element.style.left = currentX + 'px';
         element.style.top = (window.innerHeight - 65) + 'px';
 
@@ -95,7 +153,8 @@ function updateMakimaBehavior() {
         if (currentX > maxW) direction = -1;
         if (currentX < 15) direction = 1;
 
-        if (Math.random() < 0.006) {
+        // Skip random sitting cycles if she's in an active overdrive sprint
+        if (Math.random() < 0.006 && !isOverdriveActive) {
             const randomTarget = targets[Math.floor(Math.random() * targets.length)];
             const coord = findTargetCoords(randomTarget);
             if (coord) {
@@ -109,7 +168,7 @@ function updateMakimaBehavior() {
         }
     } 
     else if (state === 'PANEL_SITTING') {
-        if (Math.random() < 0.005) {
+        if (Math.random() < 0.005 || isOverdriveActive) {
             state = 'FLOOR_WALKING';
             currentY = window.innerHeight - 65;
             element.style.top = currentY + 'px';
@@ -117,10 +176,11 @@ function updateMakimaBehavior() {
         }
     }
 
+    // Spawns persistent trail calculations
     let velocity = Math.abs(currentX - prevX) + Math.abs(currentY - prevY);
     if (velocity > 0.5) {
         spawnTrailParticle(currentX, currentY);
-        if (Math.abs(currentY - prevY) > 2) {
+        if (isOverdriveActive || Math.abs(currentY - prevY) > 2) {
             spawnTrailParticle(currentX, currentY);
             spawnTrailParticle(currentX, currentY);
         }
@@ -130,18 +190,20 @@ function updateMakimaBehavior() {
     prevY = currentY;
 }
 
-// Click listener with custom code synth integration
 element.addEventListener('click', (e) => {
     e.stopPropagation();
     const originalY = currentY;
     element.style.top = (originalY - 30) + 'px';
+    
+    // Dynamic color illumination parameters
+    element.style.filter = isOverdriveActive ? 'drop-shadow(0 0 15px #ff0000) brightness(1.4)' : 'drop-shadow(0 0 10px #ff0055)';
     element.classList.add('reactive-pulse');
     
-    // Play our new synthesized sound wave
     playClickSound();
     
     setTimeout(() => {
         element.style.top = originalY + 'px';
+        element.style.filter = '';
         if (state !== 'PANEL_SITTING') {
             element.classList.remove('reactive-pulse');
         }
