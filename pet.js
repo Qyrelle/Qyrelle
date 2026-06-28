@@ -1,104 +1,91 @@
-// --- QYRELLE COGNITIVE SHIMEJI INTERACTION ENGINE ---
+// --- MAKIMA INTELLIGENT NAVIGATION ENGINE ---
 
 const element = document.getElementById('shimeji-character');
 
-// --- ANIMATION CONTENT LINKS ---
-// Swap these URLs out with transparent anime girl GIFs or custom sprite artwork matching your ideal outfits
-const ANIMATION_STATES = {
-    WALKING: 'https://i.imgur.com/vH6vA5A.gif',  // Walking loops
-    IDLE: 'https://i.imgur.com/8N4F9Xy.gif',     // Standing chill state
-    SINGING: 'https://i.imgur.com/Xm6zS5l.gif',  // Vibes/smiles on music components
-    ANGRY: 'https://i.imgur.com/mY7L9m0.gif'     // Click shock reaction state
-};
+let currentX = 150;
+let currentY = window.innerHeight - 65;
+let direction = 1;
+let state = 'FLOOR_WALKING';
+let idleTimer = null;
 
-let currentX = 100;
-let currentY = window.innerHeight - 120;
-let state = 'IDLE';
-let targetElementId = null;
+// Target points cache map
+const targets = ['youtube-target', 'spotify-target', 'contact-target'];
 
-// Baseline rendering logic
-function setCharacterVisual(stateKey) {
-    state = stateKey;
-    element.style.backgroundImage = `url('${ANIMATION_STATES[stateKey]}')`;
-}
+// Track mouse position to let her look toward your cursor dynamically
+let mouseX = 0;
+window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
 
-// AI TARGET ENGINE: Finds coordinates of elements (like Spotify or YouTube windows) to jump on them
-function findTargetCoordinates(id) {
+function findTargetCoords(id) {
     const target = document.getElementById(id);
     if (!target) return null;
     const rect = target.getBoundingClientRect();
     return {
-        x: rect.left + (rect.width / 2) - 40,
-        y: rect.top - 105 // Sits perfectly on top of the container tab menu
+        x: rect.left + (rect.width / 2) - 24,
+        y: rect.top - 42 // Sits directly on top edge of card frames
     };
 }
 
-// CRADLE CONTROLLER: Handles AI decision states dynamically
-function runIntelligenceTicker() {
-    if (state === 'ANGRY' || state === 'SINGING') return;
-
-    const roll = Math.random();
-
-    if (roll < 0.15) {
-        // ACTION: Jump up onto the YouTube Dashboard window
-        const coord = findTargetCoordinates('youtube-target');
-        if (coord) {
-            currentX = coord.x;
-            currentY = coord.y;
-            setCharacterVisual('IDLE');
-        }
-    } 
-    else if (roll < 0.30) {
-        // ACTION: Go sit on the Spotify Player and vibe to your music tracks
-        const coord = findTargetCoordinates('spotify-target');
-        if (coord) {
-            currentX = coord.x;
-            currentY = coord.y;
-            setCharacterVisual('SINGING');
-            // Remains vibing for 5 seconds before moving again
-            setTimeout(() => setCharacterVisual('IDLE'), 5000);
-        }
-    } 
-    else if (roll < 0.70) {
-        // ACTION: Jump back down to walk along the bottom window panel base
-        currentY = window.innerHeight - 120;
-        setCharacterVisual('WALKING');
-        const direction = Math.random() > 0.5 ? 1 : -1;
-        currentX += (Math.random() * 120 + 40) * direction;
-        
-        // Boundaries processing
-        if (currentX < 20) currentX = 50;
-        if (currentX > window.innerWidth - 100) currentX = window.innerWidth - 150;
-        
-        element.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
-    } 
-    else {
-        // ACTION: Stand still and stay idle
-        setCharacterVisual('IDLE');
+function updateMakimaBehavior() {
+    // Face the mouse cursor direction smoothly
+    if (mouseX > currentX) {
+        element.style.transform = 'scaleX(1)'; // Face right
+    } else {
+        element.style.transform = 'scaleX(-1)'; // Face left
     }
 
-    // Apply positioning updates smoothly
-    element.style.left = currentX + 'px';
-    element.style.top = currentY + 'px';
+    if (state === 'FLOOR_WALKING') {
+        currentX += 1.2 * direction;
+        element.style.left = currentX + 'px';
+        element.style.top = (window.innerHeight - 65) + 'px';
+
+        // Ground boundaries calculation
+        const maxW = window.innerWidth - 60;
+        if (currentX > maxW) direction = -1;
+        if (currentX < 15) direction = 1;
+
+        // Random chance to look for a panel to jump and climb on
+        if (Math.random() < 0.006) {
+            const randomTarget = targets[Math.floor(Math.random() * targets.length)];
+            const coord = findTargetCoords(randomTarget);
+            if (coord) {
+                state = 'PANEL_SITTING';
+                currentX = coord.x;
+                currentY = coord.y;
+                element.style.left = currentX + 'px';
+                element.style.top = currentY + 'px';
+                
+                // Add a cute breathing scale effect when she successfully sits on a dashboard card
+                element.style.transform += ' scale(1.05)';
+            }
+        }
+    } 
+    else if (state === 'PANEL_SITTING') {
+        // Safe check if browser resized out from under her position
+        if (Math.random() < 0.005) {
+            // Drop back down to ground floor walking mode
+            state = 'FLOOR_WALKING';
+            currentY = window.innerHeight - 65;
+            element.style.top = currentY + 'px';
+        }
+    }
 }
 
-// EMOTION HOOK: Triggers anger expression when a user clicks directly on her body structure
+// INTERACTIVE REACTION: Leaps out of shock if a user tries clicking her
 element.addEventListener('click', (e) => {
     e.stopPropagation();
-    setCharacterVisual('ANGRY');
-    // Jumps vertically out of shock
-    element.style.top = (currentY - 20) + 'px';
+    const originalY = currentY;
+    element.style.top = (originalY - 30) + 'px';
+    element.style.filter = 'drop-shadow(0 0 8px #ff0055)'; // Subtle pink anger aura glow
     
     setTimeout(() => {
-        element.style.top = currentY + 'px';
-        setCharacterVisual('IDLE');
-    }, 1500);
+        element.style.top = originalY + 'px';
+        element.style.filter = '';
+    }, 400);
 });
 
-// Run character logic cycles every 3.5 seconds
-setInterval(runIntelligenceTicker, 3500);
+// Smooth 50Hz animation logic ticker
+setInterval(updateMakimaBehavior, 20);
 
-// Initialize baseline character values
-setCharacterVisual('IDLE');
+// Initialize starting coordinates
 element.style.left = currentX + 'px';
 element.style.top = currentY + 'px';
