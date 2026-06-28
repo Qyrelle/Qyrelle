@@ -1,4 +1,4 @@
-// --- PRIVATE DYNAMIC ZONE TRACKING ENGINE ---
+// --- MAKIMA STANDARD STABLE NAVIGATION ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -10,10 +10,6 @@ window.onload = function() {
     let prevY = currentY;
     let direction = 1;
     let state = 'FLOOR_WALKING';
-
-    let isOverdriveActive = false;
-    let clickCount = 0;
-    let resetTimeout = null;
 
     const targets = ['youtube-target', 'spotify-target', 'contact-target'];
     let mouseX = 0;
@@ -32,22 +28,16 @@ window.onload = function() {
             if (!AudioContext) return;
             const audioCtx = new AudioContext();
             const osc = audioCtx.createOscillator();
-            const dist = audioCtx.createWaveShaper();
             const gainNode = audioCtx.createGain();
             
-            function makeDistortionCurve(amount) {
-                let k = amount, n_samples = 44100, curve = new Float32Array(n_samples), i = 0, x;
-                for ( ; i < n_samples; ++i ) { x = i * 2 / n_samples - 1; curve[i] = ( 3 + k ) * x * 20 / ( Math.PI + k * Math.abs(x) ); }
-                return curve;
-            }
-            dist.curve = makeDistortionCurve(isOverdriveActive ? 120 : 60);
-            osc.type = 'sawtooth'; 
-            osc.frequency.setValueAtTime(isOverdriveActive ? 180 : 90, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(30, audioCtx.currentTime + 0.4);
-            gainNode.gain.setValueAtTime(isOverdriveActive ? 0.4 : 0.25, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-            osc.connect(dist); dist.connect(gainNode); gainNode.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         } catch(e) {}
     }
 
@@ -58,72 +48,39 @@ window.onload = function() {
         trail.style.top = (y + 10 + Math.random() * 30) + 'px';
         trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
         trail.style.height = trail.style.width;
-        
-        let currentColor = document.documentElement.style.getPropertyValue('--accent-color').trim() || '#ff0055';
-        trail.style.backgroundColor = currentColor; 
-        trail.style.boxShadow = `0 0 8px ${currentColor}`;
-        
+        trail.style.backgroundColor = '#ff0055'; 
+        trail.style.boxShadow = '0 0 8px #ff0055';
         trail.style.zIndex = '99'; trail.style.pointerEvents = 'none';
+        
         document.body.appendChild(trail);
         setTimeout(() => { trail.style.transform = 'scale(0)'; trail.style.opacity = '0'; }, 50);
         setTimeout(() => { trail.remove(); }, 450);
-    }
-
-    const headerTitle = document.querySelector('header h1');
-    if (headerTitle) {
-        headerTitle.addEventListener('click', () => {
-            clickCount++; clearTimeout(resetTimeout);
-            resetTimeout = setTimeout(() => { clickCount = 0; }, 1000);
-            if (clickCount >= 3) {
-                clickCount = 0; isOverdriveActive = !isOverdriveActive;
-                window.isMusicPlaying = isOverdriveActive;
-                if (isOverdriveActive) {
-                    headerTitle.style.animation = 'phonkGlow 0.3s infinite alternate ease-in-out';
-                    headerTitle.style.color = '#ff0000';
-                    document.documentElement.style.setProperty('--accent-color', '#ff0000');
-                    playClickSound();
-                } else {
-                    headerTitle.style.animation = 'phonkGlow 3s infinite alternate ease-in-out';
-                    headerTitle.style.color = '#ffffff';
-                    document.documentElement.style.setProperty('--accent-color', '#ff0055');
-                }
-            }
-        });
     }
 
     function updateMakimaBehavior() {
         if (mouseX > currentX) element.style.transform = 'scaleX(1)'; 
         else element.style.transform = 'scaleX(-1)'; 
 
-        let baseSpeed = isOverdriveActive ? 3.6 : 1.2;
-        let finalSpeed = baseSpeed;
-        
-        if (window.isMusicPlaying) {
-            finalSpeed *= 1.6;
-            element.classList.add('reactive-pulse');
-        }
-
         if (state === 'FLOOR_WALKING') {
-            currentX += finalSpeed * direction;
+            currentX += 1.3 * direction;
             element.style.left = currentX + 'px';
             element.style.top = (window.innerHeight - 65) + 'px';
             const maxW = window.innerWidth - 60;
             if (currentX > maxW) direction = -1; if (currentX < 15) direction = 1;
 
-            if (Math.random() < 0.006 && !isOverdriveActive) {
+            if (Math.random() < 0.006) {
                 const randomTarget = targets[Math.floor(Math.random() * targets.length)];
                 const coord = findTargetCoords(randomTarget);
                 if (coord) {
                     state = 'PANEL_SITTING'; currentX = coord.x; currentY = coord.y;
                     element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
-                    element.classList.add('reactive-pulse');
                 }
             }
         } 
         else if (state === 'PANEL_SITTING') {
-            if (Math.random() < 0.005 || isOverdriveActive) {
+            if (Math.random() < 0.005) {
                 state = 'FLOOR_WALKING'; currentY = window.innerHeight - 65;
-                element.style.top = currentY + 'px'; element.classList.remove('reactive-pulse');
+                element.style.top = currentY + 'px';
             }
         }
 
@@ -137,11 +94,9 @@ window.onload = function() {
     element.addEventListener('click', (e) => {
         e.stopPropagation(); const originalY = currentY;
         element.style.top = (originalY - 30) + 'px';
-        let auraColor = isOverdriveActive ? '#ff0000' : '#ff0055';
-        element.style.filter = `drop-shadow(0 0 10px ${auraColor}) var(--pet-skin, initial)`;
-        element.classList.add('reactive-pulse');
+        element.style.filter = 'drop-shadow(0 0 10px #ff0055)';
         playClickSound();
-        setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.5)) var(--pet-skin, initial)'; if (state !== 'PANEL_SITTING') element.classList.remove('reactive-pulse'); }, 600);
+        setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = ''; }, 600);
     });
 
     setInterval(updateMakimaBehavior, 20);
