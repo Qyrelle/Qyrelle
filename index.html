@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
     
-    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
     
     <style>
@@ -16,6 +15,7 @@
             --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
+            --pet-skin: initial; /* Dynamic costume overlay properties */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,12 +59,35 @@
             background-position: bottom center;
             transition: transform 0.15s ease-out, top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             transform-origin: bottom center;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) var(--pet-skin);
         }
 
-        /* Reactive glow applied to her whole sprite without covering the artwork */
         .reactive-pulse {
             animation: makimaGlowPulse 1s infinite alternate ease-in-out;
+        }
+
+        /* Audio Engine Controller Access Bar Layout */
+        #visualizer-gate {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 200;
+            background: rgba(20, 20, 25, 0.8);
+            border: 1px solid #252530;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 1.1vh;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        #visualizer-gate:hover {
+            color: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         header { text-align: center; margin: 1vh 0; z-index: 2; }
@@ -99,10 +122,9 @@
         
         footer { text-align: center; margin: 1vh 0 0 0; color: #444; font-size: 1.3vh; z-index: 2; }
 
-        /* Animation Rules */
         @keyframes makimaGlowPulse {
-            0% { filter: drop-shadow(0 0 2px #ffb700) brightness(1.1); }
-            100% { filter: drop-shadow(0 0 10px #ff9900) brightness(1.3); }
+            0% { filter: drop-shadow(0 0 2px #ffb700) brightness(1.1) var(--pet-skin); }
+            100% { filter: drop-shadow(0 0 10px #ff9900) brightness(1.3) var(--pet-skin); }
         }
         @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
 
@@ -114,14 +136,16 @@
             .contact-box { height: 14vh; padding: 1vh; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); height: 10vh; gap: 8px; }
             .interactive-shimeji { width: 36px; height: 36px; }
+            #visualizer-gate { top: 10px; right: 10px; padding: 4px 10px; }
         }
     </style>
 </head>
 <body>
 
+    <div id="visualizer-gate" onclick="initAudioEngine()">🎙️ Sync Audio</div>
+
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Character Frame Element -->
     <div id="shimeji-character" class="interactive-shimeji"></div>
 
     <header>
@@ -168,16 +192,98 @@
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
     <script>
-        const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        // Audio API references
+        let audioCtx = null;
+        let analyser = null;
+        let dataArray = null;
+        let isAudioConnected = false;
+
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
         class Particle {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * -0.5 - 0.1; this.opacity = Math.random() * 0.5 + 0.1; }
-            update() { this.x += this.speedX; this.y += this.speedY; if (this.y < 0) this.y = canvas.height; }
-            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill(); }
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * -0.5 - 0.1;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update(intensity) {
+                // Background particles speed up subtly matching low frequencies
+                this.y += this.speedY * (1 + intensity * 3);
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill();
+            }
         }
+
         for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+
+        // Request browser microphone audio synchronization stream
+        function initAudioEngine() {
+            if (isAudioConnected) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+            .then(stream => {
+                audioCtx = new AudioContext();
+                analyser = audioCtx.createAnalyser();
+                const source = audioCtx.createMediaStreamSource(stream);
+                source.connect(analyser);
+                
+                analyser.fftSize = 64; // Low bucket sizes keeps calculations fast
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                isAudioConnected = true;
+                document.getElementById('visualizer-gate').innerText = "🔊 Audio Synced";
+                document.getElementById('visualizer-gate').style.borderColor = "#1DB954";
+            })
+            .catch(err => {
+                document.getElementById('visualizer-gate').innerText = "❌ Mic Denied";
+                console.log("Audio capturing system connection failed.", err);
+            });
+        }
+
+        function animate() {
+            // Draw gradient workspace canvas base
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            let audioIntensity = 0;
+            if (isAudioConnected && analyser) {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
+                audioIntensity = sum / dataArray.length / 255; // Normalized amplitude scale (0.0 to 1.0)
+            }
+
+            // --- LIVE BACKGROUND CANVAS SPECTRUM RING ---
+            if (audioIntensity > 0.05) {
+                ctx.beginPath();
+                // Centers spectrum ring layout exactly behind dashboard panel workspace
+                ctx.arc(canvas.width / 2, canvas.height / 2, 140 + audioIntensity * 80, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 0, 85, ${audioIntensity * 0.4})`;
+                ctx.lineWidth = 4 + audioIntensity * 12;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff0055';
+                ctx.stroke();
+                ctx.shadowBlur = 0; // Clear blur constraints immediately
+            }
+
+            // Render particles
+            particles.forEach(p => { p.update(audioIntensity); p.draw(); });
+            requestAnimationFrame(animate);
+        }
         animate();
     </script>
 
