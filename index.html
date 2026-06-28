@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
-    
-    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
-    
     <style>
         :root {
             --bg-color: #060608;
@@ -16,8 +13,6 @@
             --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
-            --visor-color: #00f2fe;
-            --visor-glow: #00f2fe;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,109 +38,23 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -2; /* Placed deepest */
+            z-index: -2;
             pointer-events: none;
         }
 
-        /* --- THE ADVANCED INTERACTIVE ANIME CHARACTER --- */
-        #anime-pet {
+        /* --- ADVANCED SHIMEJI CANVASES --- */
+        .interactive-shimeji {
             position: fixed;
-            bottom: 1.5vh;
-            left: 150px;
-            width: 45px;
-            height: 75px;
-            z-index: -1; /* Placed BEHIND panels and buttons, but in front of particles */
-            pointer-events: none;
-            transition: transform 0.15s ease-out, left 0.02s linear;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform-origin: bottom center;
+            width: 80px;
+            height: 110px;
+            z-index: 100; /* Floats over elements to sit, walk, and climb on them */
+            pointer-events: auto; /* Allows clicking to trigger reactions */
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            transition: transform 0.2s ease, top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
-        /* Curvy Hair & Head Shape */
-        .chibi-head {
-            width: 32px;
-            height: 30px;
-            background: #1a1a24;
-            border: 2px solid var(--accent-color);
-            border-radius: 14px 14px 10px 10px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.2);
-            animation: characterIdle 1s infinite alternate ease-in-out;
-        }
-
-        /* Long Flowing Anime Hair Tails */
-        .chibi-head::before, .chibi-head::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            width: 6px;
-            height: 25px;
-            background: #12121a;
-            border: 1.5px solid var(--accent-color);
-            border-radius: 4px;
-        }
-        .chibi-head::before { left: -4px; transform: rotate(-10deg); }
-        .chibi-head::after { right: -4px; transform: rotate(10deg); }
-
-        /* Reactive Emotional Visor Eyes */
-        .chibi-visor {
-            width: 22px;
-            height: 8px;
-            background: var(--visor-color);
-            border-radius: 4px;
-            box-shadow: 0 0 8px var(--visor-glow), 0 0 15px var(--visor-glow);
-            transition: all 0.2s ease;
-        }
-
-        /* Curvy Silhouette Torso & Waist styling */
-        .chibi-torso {
-            width: 16px;
-            height: 18px;
-            background: #15151c;
-            border: 2px solid #252530;
-            border-top: none;
-            border-radius: 4px 4px 8px 8px; /* Simulated hourglass profile curves */
-            margin-top: -2px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Flowing Anime Skirt Outlines */
-        .chibi-skirt {
-            width: 26px;
-            height: 12px;
-            background: var(--accent-color);
-            border-radius: 4px 4px 12px 12px; /* Flared pleat design */
-            margin-top: -4px;
-            position: relative;
-            z-index: 3;
-            box-shadow: 0 3px 8px rgba(255, 0, 85, 0.3);
-        }
-
-        .chibi-legs {
-            display: flex;
-            justify-content: space-between;
-            width: 16px;
-            margin-top: -2px;
-            z-index: 1;
-        }
-
-        .chibi-leg {
-            width: 4px;
-            height: 14px;
-            background: #1a1a24;
-            border: 1px solid var(--accent-color);
-            border-radius: 0 0 2px 2px;
-        }
-
-        /* Class toggled during runtime scripts to sync walking loops */
-        .pet-walking .chibi-leg-left { animation: legSwing 0.25s infinite alternate linear; }
-        .pet-walking .chibi-leg-right { animation: legSwing 0.25s infinite alternate linear; animation-delay: 0.12s; }
 
         header { text-align: center; margin: 1vh 0; z-index: 2; }
         header h1 { font-size: 5vh; letter-spacing: 6px; color: var(--text-color); animation: phonkGlow 3s infinite alternate ease-in-out; line-height: 1.2; }
@@ -178,33 +87,16 @@
         .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 15px rgba(0, 168, 225, 0.3); }
         
         footer { text-align: center; margin: 1vh 0 0 0; color: #444; font-size: 1.3vh; z-index: 2; }
-
-        /* Keyframe Motion Systems */
-        @keyframes characterIdle { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-2px) scale(0.98); } }
-        @keyframes legSwing { 0% { transform: translateY(0) rotate(-15deg); } 100% { transform: translateY(-3px) rotate(20deg); } }
         @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
-        
-        /* Reacting AI Jolt Pulse */
-        @keyframes shockJump {
-            0% { transform: translateY(0) scaleY(1); }
-            30% { transform: translateY(-25px) scaleY(1.1); }
-            50% { transform: translateY(-30px) rotate(15deg); }
-            80% { transform: translateY(2px) scaleY(0.85); }
-            100% { transform: translateY(0) scaleY(1); }
-        }
 
         @media (max-width: 600px) {
             body { padding: 1vh 3vw; }
             header h1 { font-size: 4vh; }
             .container { height: 84vh; gap: 1vh; }
-            .section-title { font-size: 1.5vh; margin-bottom: 0.5vh; }
             .media-grid { grid-template-columns: 1fr; height: 50vh; gap: 1vh; }
-            .player-card { padding: 1vh; }
             .contact-box { height: 14vh; padding: 1vh; }
-            .contact-btn { margin-top: 0.5vh; padding: 4px 15px; }
-            .platforms-grid { grid-template-columns: 1fr 1fr; height: 10vh; gap: 8px; }
-            .platform-card { font-size: 1.4vh; }
-            #anime-pet { transform: scale(0.75); bottom: 1vh; } /* Automatically shrinks her cleanly on phone viewports */
+            .platforms-grid { grid-template-columns: repeat(2, 1fr); height: 10vh; gap: 8px; }
+            .interactive-shimeji { transform: scale(0.7); }
         }
     </style>
 </head>
@@ -212,18 +104,7 @@
 
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Curvy Code-Based Chibi Shimeji Character Model Frame -->
-    <div id="anime-pet" class="pet-walking">
-        <div class="chibi-head">
-            <div class="chibi-visor" id="pet-visor"></div>
-        </div>
-        <div class="chibi-torso"></div>
-        <div class="chibi-skirt"></div>
-        <div class="chibi-legs">
-            <div class="chibi-leg chibi-leg-left"></div>
-            <div class="chibi-leg chibi-leg-right"></div>
-        </div>
-    </div>
+    <div id="shimeji-character" class="interactive-shimeji"></div>
 
     <header>
         <h1>Qyrelle</h1>
@@ -231,24 +112,22 @@
     </header>
 
     <div class="container">
-        <!-- RELEASES & INTERACTIVE MEDIA -->
         <section>
             <h2 class="section-title">Latest Drops & Visuals</h2>
             <div class="media-grid">
-                <div class="player-card">
+                <div class="player-card" id="youtube-target">
                     <div class="card-label">Latest Videos</div>
                     <div class="video-container">
                         <iframe src="https://www.youtube.com/embed/videoseries?list=PLe-JhuYacKzo" allowfullscreen></iframe>
                     </div>
                 </div>
-                <div class="player-card">
+                <div class="player-card" id="spotify-target">
                     <div class="card-label">Stream on Spotify</div>
                     <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                 </div>
             </div>
         </section>
 
-        <!-- BOOKING / CONNECT BOX -->
         <section>
             <h2 class="section-title">Contact & Inquiries</h2>
             <div class="player-card contact-box">
@@ -260,11 +139,10 @@
             </div>
         </section>
 
-        <!-- EXTERNAL PLATFORMS PORTAL -->
         <section>
             <h2 class="section-title">Listen Everywhere</h2>
             <div class="platforms-grid">
-                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
+                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
                 <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn"><span>♫</span> Apple Music</a>
                 <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn"><span>☁️</span> SoundCloud</a>
                 <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon</a>
@@ -275,121 +153,19 @@
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
     <script>
-        // --- BACKGROUND PARTICLE MATRIX ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 45;
-
+        const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * -0.5 - 0.1;
-                this.opacity = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`;
-                ctx.shadowBlur = 8; ctx.shadowColor = '#ff0055'; ctx.fill();
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * -0.5 - 0.1; this.opacity = Math.random() * 0.5 + 0.1; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.y < 0) this.y = canvas.height; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill(); }
         }
-        function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } }
-        function animate() {
-            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
-            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.shadowBlur = 0; particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        init(); animate();
-
-        // --- THE AI EMOTIONAL SHIMEJI ENGINE ---
-        const pet = document.getElementById('anime-pet');
-        const visor = document.getElementById('pet-visor');
-        
-        let petX = 150;
-        let direction = 1;
-        let isWalking = true;
-        let isJumping = false;
-
-        // Mouse orientation hook: Tracks cursor across dashboard canvas plane
-        let mouseX = 0;
-        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
-
-        function updateCharacterLoop() {
-            if (isJumping) return;
-
-            // Turn character horizontally to face toward your mouse cursor placement
-            if (mouseX > petX) {
-                pet.style.transform = 'scaleX(1)'; // Face right
-            } else {
-                pet.style.transform = 'scaleX(-1)'; // Face left
-            }
-
-            if (isWalking) {
-                petX += 0.9 * direction;
-                pet.style.left = petX + 'px';
-
-                // Bounce system handles running boundaries cleanly
-                const maxW = window.innerWidth - 60;
-                if (petX > maxW) { direction = -1; } 
-                else if (petX < 15) { direction = 1; }
-            }
-
-            // Natural state machine engine simulation
-            if (Math.random() < 0.004 && isWalking) {
-                isWalking = false;
-                pet.classList.remove('pet-walking');
-                setTimeout(() => {
-                    isWalking = true;
-                    pet.classList.add('pet-walking');
-                    if (Math.random() > 0.6) direction *= -1;
-                }, Math.random() * 2000 + 1000);
-            }
-        }
-
-        // COGNITIVE REACTION ENGINE: Jolt, change visor expression, and jump on any webpage interaction
-        function triggerEmotionalReaction() {
-            if (isJumping) return;
-            isJumping = true;
-            isWalking = false;
-            pet.classList.remove('pet-walking');
-
-            // Visor changes to deep neon pink emotional spike
-            document.documentElement.style.setProperty('--visor-color', '#ff0055');
-            document.documentElement.style.setProperty('--visor-glow', '#ff0055');
-            pet.style.animation = 'shockJump 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
-
-            setTimeout(() => {
-                // Restore baseline cyan balance tracking configurations
-                document.documentElement.style.setProperty('--visor-color', '#00f2fe');
-                document.documentElement.style.setProperty('--visor-glow', '#00f2fe');
-                pet.style.animation = '';
-                isJumping = false;
-                isWalking = true;
-                pet.classList.add('pet-walking');
-            }, 600);
-        }
-
-        // Hook global triggers: Clicks, user hovers on buttons, or link activations trigger responses
-        window.addEventListener('click', triggerEmotionalReaction);
-        document.querySelectorAll('.platform-card, .contact-btn, iframe').forEach(elem => {
-            elem.addEventListener('mouseenter', triggerEmotionalReaction);
-        });
-
-        setInterval(updateCharacterLoop, 20);
+        for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
     </script>
+
+    <script src="pet.js"></script>
 </body>
 </html>
