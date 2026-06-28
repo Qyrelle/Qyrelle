@@ -1,171 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Qyrelle | Official Hub</title>
-    <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
-    <style>
-        :root {
-            --bg-color: #060608;
-            --panel-bg: rgba(13, 13, 15, 0.85);
-            --accent-color: #ff0055;
-            --accent-glow: rgba(255, 0, 85, 0.4);
-            --text-color: #ffffff;
-            --text-dim: #999999;
+// --- QYRELLE COGNITIVE SHIMEJI INTERACTION ENGINE ---
+
+const element = document.getElementById('shimeji-character');
+
+// --- ANIMATION CONTENT LINKS ---
+// Swap these URLs out with transparent anime girl GIFs or custom sprite artwork matching your ideal outfits
+const ANIMATION_STATES = {
+    WALKING: 'https://i.imgur.com/vH6vA5A.gif',  // Walking loops
+    IDLE: 'https://i.imgur.com/8N4F9Xy.gif',     // Standing chill state
+    SINGING: 'https://i.imgur.com/Xm6zS5l.gif',  // Vibes/smiles on music components
+    ANGRY: 'https://i.imgur.com/mY7L9m0.gif'     // Click shock reaction state
+};
+
+let currentX = 100;
+let currentY = window.innerHeight - 120;
+let state = 'IDLE';
+let targetElementId = null;
+
+// Baseline rendering logic
+function setCharacterVisual(stateKey) {
+    state = stateKey;
+    element.style.backgroundImage = `url('${ANIMATION_STATES[stateKey]}')`;
+}
+
+// AI TARGET ENGINE: Finds coordinates of elements (like Spotify or YouTube windows) to jump on them
+function findTargetCoordinates(id) {
+    const target = document.getElementById(id);
+    if (!target) return null;
+    const rect = target.getBoundingClientRect();
+    return {
+        x: rect.left + (rect.width / 2) - 40,
+        y: rect.top - 105 // Sits perfectly on top of the container tab menu
+    };
+}
+
+// CRADLE CONTROLLER: Handles AI decision states dynamically
+function runIntelligenceTicker() {
+    if (state === 'ANGRY' || state === 'SINGING') return;
+
+    const roll = Math.random();
+
+    if (roll < 0.15) {
+        // ACTION: Jump up onto the YouTube Dashboard window
+        const coord = findTargetCoordinates('youtube-target');
+        if (coord) {
+            currentX = coord.x;
+            currentY = coord.y;
+            setCharacterVisual('IDLE');
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 1.5vh 2vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            position: relative;
+    } 
+    else if (roll < 0.30) {
+        // ACTION: Go sit on the Spotify Player and vibe to your music tracks
+        const coord = findTargetCoordinates('spotify-target');
+        if (coord) {
+            currentX = coord.x;
+            currentY = coord.y;
+            setCharacterVisual('SINGING');
+            // Remains vibing for 5 seconds before moving again
+            setTimeout(() => setCharacterVisual('IDLE'), 5000);
         }
-
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        /* --- ADVANCED SHIMEJI CANVASES --- */
-        .interactive-shimeji {
-            position: fixed;
-            width: 80px;
-            height: 110px;
-            z-index: 100; /* Floats over elements to sit, walk, and climb on them */
-            pointer-events: auto; /* Allows clicking to trigger reactions */
-            cursor: pointer;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: bottom center;
-            transition: transform 0.2s ease, top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        header { text-align: center; margin: 1vh 0; z-index: 2; }
-        header h1 { font-size: 5vh; letter-spacing: 6px; color: var(--text-color); animation: phonkGlow 3s infinite alternate ease-in-out; line-height: 1.2; }
-        header p { color: var(--text-dim); font-size: 1.6vh; letter-spacing: 1px; text-transform: uppercase; }
-
-        .container { width: 100%; max-width: 1000px; display: flex; flex-direction: column; justify-content: space-between; height: 78vh; gap: 2vh; z-index: 2; }
-        .section-title { font-size: 1.8vh; letter-spacing: 1px; margin-bottom: 0.8vh; border-left: 3px solid var(--accent-color); padding-left: 8px; text-shadow: 0 0 10px var(--accent-glow); }
-
-        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; height: 42vh; }
-        .player-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 12px; padding: 1.5vh; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
-        .card-label { margin-bottom: 0.8vh; font-weight: 600; color: #e6e6e6; text-transform: uppercase; letter-spacing: 1px; font-size: 1.3vh; }
-
-        .video-container { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-        .video-container iframe { width: 100%; height: 100%; border: 0; }
-        .spotify-iframe { border-radius: 8px; width: 100%; height: 100%; }
-
-        .contact-box { text-align: center; align-items: center; justify-content: center; padding: 1.5vh; height: 14vh; }
-        .contact-box p { color: var(--text-dim); margin-bottom: 0.5vh; font-size: 1.5vh; }
-        .email-link { color: #ffffff; font-weight: bold; font-size: 1.8vh; text-decoration: none; letter-spacing: 0.5px; }
-        .contact-btn { display: inline-block; margin-top: 1vh; background: transparent; border: 1.5px solid var(--accent-color); color: #ffffff; padding: 0.6vh 20px; font-size: 1.3vh; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px; text-decoration: none; transition: all 0.3s ease; }
-        .contact-btn:hover { background: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
-
-        .platforms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1vw; height: 8vh; }
-        .platform-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 10px; text-align: center; text-decoration: none; color: var(--text-color); font-weight: bold; font-size: 1.5vh; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; height: 100%; }
-        .platform-card span { font-size: 1.8vh; }
-        .platform-card:hover { transform: translateY(-2px); color: #fff; }
-        .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
-        .apple-btn:hover { border-color: #FA243C; box-shadow: 0 0 15px rgba(250, 36, 60, 0.3); }
-        .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
-        .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 15px rgba(0, 168, 225, 0.3); }
+    } 
+    else if (roll < 0.70) {
+        // ACTION: Jump back down to walk along the bottom window panel base
+        currentY = window.innerHeight - 120;
+        setCharacterVisual('WALKING');
+        const direction = Math.random() > 0.5 ? 1 : -1;
+        currentX += (Math.random() * 120 + 40) * direction;
         
-        footer { text-align: center; margin: 1vh 0 0 0; color: #444; font-size: 1.3vh; z-index: 2; }
-        @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
+        // Boundaries processing
+        if (currentX < 20) currentX = 50;
+        if (currentX > window.innerWidth - 100) currentX = window.innerWidth - 150;
+        
+        element.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+    } 
+    else {
+        // ACTION: Stand still and stay idle
+        setCharacterVisual('IDLE');
+    }
 
-        @media (max-width: 600px) {
-            body { padding: 1vh 3vw; }
-            header h1 { font-size: 4vh; }
-            .container { height: 84vh; gap: 1vh; }
-            .media-grid { grid-template-columns: 1fr; height: 50vh; gap: 1vh; }
-            .contact-box { height: 14vh; padding: 1vh; }
-            .platforms-grid { grid-template-columns: repeat(2, 1fr); height: 10vh; gap: 8px; }
-            .interactive-shimeji { transform: scale(0.7); }
-        }
-    </style>
-</head>
-<body>
+    // Apply positioning updates smoothly
+    element.style.left = currentX + 'px';
+    element.style.top = currentY + 'px';
+}
 
-    <canvas id="bg-canvas"></canvas>
+// EMOTION HOOK: Triggers anger expression when a user clicks directly on her body structure
+element.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setCharacterVisual('ANGRY');
+    // Jumps vertically out of shock
+    element.style.top = (currentY - 20) + 'px';
+    
+    setTimeout(() => {
+        element.style.top = currentY + 'px';
+        setCharacterVisual('IDLE');
+    }, 1500);
+});
 
-    <div id="shimeji-character" class="interactive-shimeji"></div>
+// Run character logic cycles every 3.5 seconds
+setInterval(runIntelligenceTicker, 3500);
 
-    <header>
-        <h1>Qyrelle</h1>
-        <p>Phonk Producer & Visual Artist</p>
-    </header>
-
-    <div class="container">
-        <section>
-            <h2 class="section-title">Latest Drops & Visuals</h2>
-            <div class="media-grid">
-                <div class="player-card" id="youtube-target">
-                    <div class="card-label">Latest Videos</div>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/videoseries?list=PLe-JhuYacKzo" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="player-card" id="spotify-target">
-                    <div class="card-label">Stream on Spotify</div>
-                    <iframe class="spotify-iframe" src="https://open.spotify.com/embed/artist/6kBTv9IdI3A3OshhpkheBM?utm_source=generator&theme=0" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Contact & Inquiries</h2>
-            <div class="player-card contact-box">
-                <p>For placements, visual edits, or collaborations:</p>
-                <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
-                <div>
-                    <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="contact-btn">Send Message</a>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Listen Everywhere</h2>
-            <div class="platforms-grid">
-                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
-                <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn"><span>♫</span> Apple Music</a>
-                <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn"><span>☁️</span> SoundCloud</a>
-                <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon</a>
-            </div>
-        </section>
-    </div>
-
-    <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
-
-    <script>
-        const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
-        class Particle {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * -0.5 - 0.1; this.opacity = Math.random() * 0.5 + 0.1; }
-            update() { this.x += this.speedX; this.y += this.speedY; if (this.y < 0) this.y = canvas.height; }
-            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill(); }
-        }
-        for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        animate();
-    </script>
-
-    <script src="pet.js"></script>
-</body>
-</html>
+// Initialize baseline character values
+setCharacterVisual('IDLE');
+element.style.left = currentX + 'px';
+element.style.top = currentY + 'px';
