@@ -1,4 +1,4 @@
-// --- MAKIMA ADVANCED NAVIGATION EYE ENGINE ---
+// --- MAKIMA NAVIGATION AURIC GLOW ENGINE ---
 
 const element = document.getElementById('shimeji-character');
 
@@ -22,7 +22,6 @@ function findTargetCoords(id) {
 }
 
 function updateMakimaBehavior() {
-    // Face the mouse cursor dynamically
     if (mouseX > currentX) {
         element.style.transform = 'scaleX(1)'; 
     } else {
@@ -47,8 +46,6 @@ function updateMakimaBehavior() {
                 currentY = coord.y;
                 element.style.left = currentX + 'px';
                 element.style.top = currentY + 'px';
-                
-                // Triggers her eye glow bloom when she arrives on a media card panel!
                 element.classList.add('reactive-pulse');
             }
         }
@@ -58,31 +55,25 @@ function updateMakimaBehavior() {
             state = 'FLOOR_WALKING';
             currentY = window.innerHeight - 65;
             element.style.top = currentY + 'px';
-            
-            // Turns off eye glow when she jumps back down to floor walk
             element.classList.remove('reactive-pulse');
         }
     }
 }
 
-// INTERACTIVE ACTION: Click response jolt
 element.addEventListener('click', (e) => {
     e.stopPropagation();
     const originalY = currentY;
     element.style.top = (originalY - 30) + 'px';
-    element.style.filter = 'drop-shadow(0 0 8px #ff0055)';
-    element.classList.add('reactive-pulse'); // Force flash eyes on shock click
+    element.classList.add('reactive-pulse');
     
     setTimeout(() => {
         element.style.top = originalY + 'px';
-        element.style.filter = '';
         if (state !== 'PANEL_SITTING') {
             element.classList.remove('reactive-pulse');
         }
     }, 600);
 });
 
-// AUDIO GLOBAL LISTENERS: Trigger her eye glow whenever mouse enters any player or streaming card
 document.querySelectorAll('.player-card, .platform-card').forEach(item => {
     item.addEventListener('mouseenter', () => {
         element.classList.add('reactive-pulse');
