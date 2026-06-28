@@ -1,4 +1,4 @@
-// --- COMPLETE UTILITY SYSTEM FRAMEWORK INTEGRATION ---
+// --- PRIVATE DIRECT VISUAL MONITOR ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -73,6 +73,7 @@ window.onload = function() {
             resetTimeout = setTimeout(() => { clickCount = 0; }, 1000);
             if (clickCount >= 3) {
                 clickCount = 0; isOverdriveActive = !isOverdriveActive;
+                window.isMusicPlaying = isOverdriveActive;
                 if (isOverdriveActive) {
                     headerTitle.style.animation = 'phonkGlow 0.3s infinite alternate ease-in-out';
                     headerTitle.style.color = '#ff0000';
@@ -91,19 +92,13 @@ window.onload = function() {
         if (mouseX > currentX) element.style.transform = 'scaleX(1)'; 
         else element.style.transform = 'scaleX(-1)'; 
 
-        // TAPS MATRIX: If system visualizer captures a heavy musical beat, boost her running velocity metrics!
         let baseSpeed = isOverdriveActive ? 3.6 : 1.2;
         let finalSpeed = baseSpeed;
         
-        if (window.dataArray) {
-            let total = 0; for(let i=0; i<window.dataArray.length; i++) { total += window.dataArray[i]; }
-            let amplitude = total / window.dataArray.length;
-            if (amplitude > 50) {
-                finalSpeed *= 1.8; // Music audio sprint surge
-                element.classList.add('reactive-pulse');
-            } else if (state !== 'PANEL_SITTING' && !isOverdriveActive) {
-                element.classList.remove('reactive-pulse');
-            }
+        // Boost her speed automatically when page registers user playback interaction
+        if (window.isMusicPlaying) {
+            finalSpeed *= 1.6;
+            element.classList.add('reactive-pulse');
         }
 
         if (state === 'FLOOR_WALKING') {
