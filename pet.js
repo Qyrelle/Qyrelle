@@ -1,4 +1,4 @@
-// --- PRIVATE DIRECT VISUAL MONITOR ENGINE WITH SKIN SYSTEM ---
+// --- PRIVATE DYNAMIC ZONE TRACKING ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -142,11 +142,6 @@ window.onload = function() {
         element.classList.add('reactive-pulse');
         playClickSound();
         setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.5)) var(--pet-skin, initial)'; if (state !== 'PANEL_SITTING') element.classList.remove('reactive-pulse'); }, 600);
-    });
-
-    document.querySelectorAll('.player-card, .platform-card').forEach(item => {
-        item.addEventListener('mouseenter', () => element.classList.add('reactive-pulse'));
-        item.addEventListener('mouseleave', () => { if (state !== 'PANEL_SITTING') element.classList.remove('reactive-pulse'); });
     });
 
     setInterval(updateMakimaBehavior, 20);
