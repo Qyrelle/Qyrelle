@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
+    
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
+    
     <style>
         :root {
             --bg-color: #060608;
@@ -42,18 +44,20 @@
             pointer-events: none;
         }
 
-        /* --- ADVANCED SHIMEJI CANVASES --- */
+        /* --- THE COMPACT HALF-INCH ANIME SHIMEJI CONTAINER --- */
         .interactive-shimeji {
             position: fixed;
-            width: 80px;
-            height: 110px;
-            z-index: 100; /* Floats over elements to sit, walk, and climb on them */
-            pointer-events: auto; /* Allows clicking to trigger reactions */
+            width: 48px;  /* Roughly half an inch size constraint */
+            height: 48px;
+            z-index: 100; /* Floats perfectly to sit and walk on top of panels */
+            pointer-events: auto;
             cursor: pointer;
+            background-image: url('makima.png'); /* Reads directly from your GitHub directory */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: bottom center;
-            transition: transform 0.2s ease, top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: transform 0.15s ease-out, top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-origin: bottom center;
         }
 
         header { text-align: center; margin: 1vh 0; z-index: 2; }
@@ -96,7 +100,7 @@
             .media-grid { grid-template-columns: 1fr; height: 50vh; gap: 1vh; }
             .contact-box { height: 14vh; padding: 1vh; }
             .platforms-grid { grid-template-columns: repeat(2, 1fr); height: 10vh; gap: 8px; }
-            .interactive-shimeji { transform: scale(0.7); }
+            .interactive-shimeji { width: 36px; height: 36px; } /* Scales down smoothly on small screens */
         }
     </style>
 </head>
@@ -130,7 +134,7 @@
 
         <section>
             <h2 class="section-title">Contact & Inquiries</h2>
-            <div class="player-card contact-box">
+            <div class="player-card contact-box" id="contact-target">
                 <p>For placements, visual edits, or collaborations:</p>
                 <a href="mailto:qyrelle.creative@gmail.com?subject=Business%20Inquiry%20-%20Qyrelle" class="email-link">qyrelle.creative@gmail.com</a>
                 <div>
