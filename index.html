@@ -16,6 +16,8 @@
             --accent-glow: rgba(255, 0, 85, 0.4);
             --text-color: #ffffff;
             --text-dim: #999999;
+            --visor-color: #00f2fe;
+            --visor-glow: #00f2fe;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,9 +31,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 100vh; /* Lock height to exact screen viewport */
+            height: 100vh;
             width: 100vw;
-            overflow: hidden; /* Obliterates all up/down scrolling */
+            overflow: hidden;
             position: relative;
         }
 
@@ -41,208 +43,133 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
+            z-index: -2; /* Placed deepest */
             pointer-events: none;
         }
 
-        /* Pure CSS Pixel Art Pet */
+        /* --- THE ADVANCED INTERACTIVE ANIME CHARACTER --- */
         #anime-pet {
             position: fixed;
             bottom: 1.5vh;
-            left: 100px;
-            width: 40px;
-            height: 45px;
-            z-index: 999;
+            left: 150px;
+            width: 45px;
+            height: 75px;
+            z-index: -1; /* Placed BEHIND panels and buttons, but in front of particles */
             pointer-events: none;
-            transition: transform 0.1s linear;
+            transition: transform 0.15s ease-out, left 0.02s linear;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transform-origin: bottom center;
         }
 
-        .pet-head {
+        /* Curvy Hair & Head Shape */
+        .chibi-head {
             width: 32px;
-            height: 24px;
+            height: 30px;
             background: #1a1a24;
             border: 2px solid var(--accent-color);
-            border-radius: 6px;
+            border-radius: 14px 14px 10px 10px;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: petBob 0.6s infinite alternate ease-in-out;
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.2);
+            animation: characterIdle 1s infinite alternate ease-in-out;
         }
 
-        .pet-head::after {
+        /* Long Flowing Anime Hair Tails */
+        .chibi-head::before, .chibi-head::after {
             content: '';
-            width: 20px;
-            height: 6px;
-            background: #00f2fe;
-            border-radius: 2px;
-            box-shadow: 0 0 8px #00f2fe;
+            position: absolute;
+            bottom: -5px;
+            width: 6px;
+            height: 25px;
+            background: #12121a;
+            border: 1.5px solid var(--accent-color);
+            border-radius: 4px;
+        }
+        .chibi-head::before { left: -4px; transform: rotate(-10deg); }
+        .chibi-head::after { right: -4px; transform: rotate(10deg); }
+
+        /* Reactive Emotional Visor Eyes */
+        .chibi-visor {
+            width: 22px;
+            height: 8px;
+            background: var(--visor-color);
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--visor-glow), 0 0 15px var(--visor-glow);
+            transition: all 0.2s ease;
         }
 
-        .pet-body {
-            width: 20px;
-            height: 12px;
+        /* Curvy Silhouette Torso & Waist styling */
+        .chibi-torso {
+            width: 16px;
+            height: 18px;
             background: #15151c;
             border: 2px solid #252530;
             border-top: none;
-        }
-
-        .pet-legs { display: flex; justify-content: space-between; width: 16px; margin-top: -2px; }
-        .leg { width: 4px; height: 6px; background: var(--accent-color); animation: legWalk 0.2s infinite alternate linear; }
-        .leg-right { animation-delay: 0.1s; }
-
-        header { 
-            text-align: center; 
-            margin: 1vh 0;
+            border-radius: 4px 4px 8px 8px; /* Simulated hourglass profile curves */
+            margin-top: -2px;
+            position: relative;
             z-index: 2;
         }
 
-        header h1 { 
-            font-size: 5vh; /* Responsive font scaling based on screen height */
-            letter-spacing: 6px; 
-            color: var(--text-color); 
-            animation: phonkGlow 3s infinite alternate ease-in-out;
-            line-height: 1.2;
-        }
-        
-        header p { 
-            color: var(--text-dim); 
-            font-size: 1.6vh; 
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        /* Flowing Anime Skirt Outlines */
+        .chibi-skirt {
+            width: 26px;
+            height: 12px;
+            background: var(--accent-color);
+            border-radius: 4px 4px 12px 12px; /* Flared pleat design */
+            margin-top: -4px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 3px 8px rgba(255, 0, 85, 0.3);
         }
 
-        .container { 
-            width: 100%; 
-            max-width: 1000px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            height: 78vh; /* Forces content grid to live exactly inside dashboard constraints */
-            gap: 2vh;
-            z-index: 2;
-        }
-
-        .section-title { 
-            font-size: 1.8vh; 
-            letter-spacing: 1px; 
-            margin-bottom: 0.8vh; 
-            border-left: 3px solid var(--accent-color); 
-            padding-left: 8px;
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .media-grid { 
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2vw;
-            height: 42vh; /* Precise locked media window height */
-        }
-
-        .player-card { 
-            background: var(--panel-bg); 
-            border: 1px solid #1f1f24; 
-            border-radius: 12px; 
-            padding: 1.5vh; 
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+        .chibi-legs {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            height: 100%;
-        }
-        
-        .card-label { 
-            margin-bottom: 0.8vh; 
-            font-weight: 600; 
-            color: #e6e6e6; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            font-size: 1.3vh; 
+            width: 16px;
+            margin-top: -2px;
+            z-index: 1;
         }
 
-        .video-container { 
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        .chibi-leg {
+            width: 4px;
+            height: 14px;
+            background: #1a1a24;
+            border: 1px solid var(--accent-color);
+            border-radius: 0 0 2px 2px;
         }
+
+        /* Class toggled during runtime scripts to sync walking loops */
+        .pet-walking .chibi-leg-left { animation: legSwing 0.25s infinite alternate linear; }
+        .pet-walking .chibi-leg-right { animation: legSwing 0.25s infinite alternate linear; animation-delay: 0.12s; }
+
+        header { text-align: center; margin: 1vh 0; z-index: 2; }
+        header h1 { font-size: 5vh; letter-spacing: 6px; color: var(--text-color); animation: phonkGlow 3s infinite alternate ease-in-out; line-height: 1.2; }
+        header p { color: var(--text-dim); font-size: 1.6vh; letter-spacing: 1px; text-transform: uppercase; }
+
+        .container { width: 100%; max-width: 1000px; display: flex; flex-direction: column; justify-content: space-between; height: 78vh; gap: 2vh; z-index: 2; }
+        .section-title { font-size: 1.8vh; letter-spacing: 1px; margin-bottom: 0.8vh; border-left: 3px solid var(--accent-color); padding-left: 8px; text-shadow: 0 0 10px var(--accent-glow); }
+
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; height: 42vh; }
+        .player-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 12px; padding: 1.5vh; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        .card-label { margin-bottom: 0.8vh; font-weight: 600; color: #e6e6e6; text-transform: uppercase; letter-spacing: 1px; font-size: 1.3vh; }
+
+        .video-container { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .video-container iframe { width: 100%; height: 100%; border: 0; }
         .spotify-iframe { border-radius: 8px; width: 100%; height: 100%; }
 
-        /* Full Width Contact Box Styling */
-        .contact-box {
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5vh;
-            height: 14vh; /* Fits neatly inside dashboard calculations */
-        }
+        .contact-box { text-align: center; align-items: center; justify-content: center; padding: 1.5vh; height: 14vh; }
+        .contact-box p { color: var(--text-dim); margin-bottom: 0.5vh; font-size: 1.5vh; }
+        .email-link { color: #ffffff; font-weight: bold; font-size: 1.8vh; text-decoration: none; letter-spacing: 0.5px; }
+        .contact-btn { display: inline-block; margin-top: 1vh; background: transparent; border: 1.5px solid var(--accent-color); color: #ffffff; padding: 0.6vh 20px; font-size: 1.3vh; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px; text-decoration: none; transition: all 0.3s ease; }
+        .contact-btn:hover { background: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
 
-        .contact-box p {
-            color: var(--text-dim);
-            margin-bottom: 0.5vh;
-            font-size: 1.5vh;
-        }
-
-        .email-link {
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 1.8vh;
-            text-decoration: none;
-            letter-spacing: 0.5px;
-        }
-
-        .contact-btn {
-            display: inline-block;
-            margin-top: 1vh;
-            background: transparent;
-            border: 1.5px solid var(--accent-color);
-            color: #ffffff;
-            padding: 0.6vh 20px;
-            font-size: 1.3vh;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .contact-btn:hover {
-            background: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color);
-        }
-
-        /* Distribution Dashboard Setup */
-        .platforms-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 1vw;
-            height: 8vh;
-        }
-        
-        .platform-card { 
-            background: var(--panel-bg); 
-            border: 1px solid #1f1f24; 
-            border-radius: 10px; 
-            text-align: center; 
-            text-decoration: none; 
-            color: var(--text-color); 
-            font-weight: bold; 
-            font-size: 1.5vh;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            height: 100%;
-        }
-
+        .platforms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1vw; height: 8vh; }
+        .platform-card { background: var(--panel-bg); border: 1px solid #1f1f24; border-radius: 10px; text-align: center; text-decoration: none; color: var(--text-color); font-weight: bold; font-size: 1.5vh; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; height: 100%; }
         .platform-card span { font-size: 1.8vh; }
         .platform-card:hover { transform: translateY(-2px); color: #fff; }
         .spotify-btn:hover { border-color: #1DB954; box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
@@ -250,34 +177,34 @@
         .soundcloud-btn:hover { border-color: #FF5500; box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
         .amazon-btn:hover { border-color: #00A8E1; box-shadow: 0 0 15px rgba(0, 168, 225, 0.3); }
         
-        footer { 
-            text-align: center; 
-            margin: 1vh 0 0 0;
-            color: #444; 
-            font-size: 1.3vh; 
-            z-index: 2;
+        footer { text-align: center; margin: 1vh 0 0 0; color: #444; font-size: 1.3vh; z-index: 2; }
+
+        /* Keyframe Motion Systems */
+        @keyframes characterIdle { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-2px) scale(0.98); } }
+        @keyframes legSwing { 0% { transform: translateY(0) rotate(-15deg); } 100% { transform: translateY(-3px) rotate(20deg); } }
+        @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
+        
+        /* Reacting AI Jolt Pulse */
+        @keyframes shockJump {
+            0% { transform: translateY(0) scaleY(1); }
+            30% { transform: translateY(-25px) scaleY(1.1); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+            80% { transform: translateY(2px) scaleY(0.85); }
+            100% { transform: translateY(0) scaleY(1); }
         }
 
-        @keyframes petBob { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
-        @keyframes legWalk { 0% { height: 3px; transform: translateY(0); } 100% { height: 7px; transform: translateY(-2px); } }
-        @keyframes phonkGlow { 0% { text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); } 100% { text-shadow: 0 0 20px rgba(255, 0, 85, 0.7); } }
-
-        /* --- SINGLE SCREEN AUTO-SCALING FOR SMARTPHONES --- */
         @media (max-width: 600px) {
             body { padding: 1vh 3vw; }
             header h1 { font-size: 4vh; }
             .container { height: 84vh; gap: 1vh; }
             .section-title { font-size: 1.5vh; margin-bottom: 0.5vh; }
-            
-            /* Stack media blocks but let them automatically split the space */
             .media-grid { grid-template-columns: 1fr; height: 50vh; gap: 1vh; }
             .player-card { padding: 1vh; }
-            
-            /* Compact layouts on phone viewports to prevent layout breakages */
             .contact-box { height: 14vh; padding: 1vh; }
             .contact-btn { margin-top: 0.5vh; padding: 4px 15px; }
             .platforms-grid { grid-template-columns: 1fr 1fr; height: 10vh; gap: 8px; }
             .platform-card { font-size: 1.4vh; }
+            #anime-pet { transform: scale(0.75); bottom: 1vh; } /* Automatically shrinks her cleanly on phone viewports */
         }
     </style>
 </head>
@@ -285,12 +212,16 @@
 
     <canvas id="bg-canvas"></canvas>
 
-    <div id="anime-pet">
-        <div class="pet-head"></div>
-        <div class="pet-body"></div>
-        <div class="pet-legs">
-            <div class="leg leg-left"></div>
-            <div class="leg leg-right"></div>
+    <!-- Curvy Code-Based Chibi Shimeji Character Model Frame -->
+    <div id="anime-pet" class="pet-walking">
+        <div class="chibi-head">
+            <div class="chibi-visor" id="pet-visor"></div>
+        </div>
+        <div class="chibi-torso"></div>
+        <div class="chibi-skirt"></div>
+        <div class="chibi-legs">
+            <div class="chibi-leg chibi-leg-left"></div>
+            <div class="chibi-leg chibi-leg-right"></div>
         </div>
     </div>
 
@@ -333,7 +264,7 @@
         <section>
             <h2 class="section-title">Listen Everywhere</h2>
             <div class="platforms-grid">
-                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpkheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
+                <a href="https://open.spotify.com/artist/6kBTv9IdI3A3OshhpheBM" target="_blank" class="platform-card spotify-btn"><span>ᯤ</span> Spotify</a>
                 <a href="https://music.apple.com/in/artist/qyrelle/1887495171" target="_blank" class="platform-card apple-btn"><span>♫</span> Apple Music</a>
                 <a href="https://soundcloud.com/qyrelle" target="_blank" class="platform-card soundcloud-btn"><span>☁️</span> SoundCloud</a>
                 <a href="https://music.amazon.in/artists/B0GX5YRWQV/qyrelle" target="_blank" class="platform-card amazon-btn"><span>‿</span> Amazon</a>
@@ -343,17 +274,14 @@
 
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
-    <!-- Background Particle Engine Script -->
     <script>
+        // --- BACKGROUND PARTICLE MATRIX ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         const particleCount = 45;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
@@ -370,62 +298,98 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
                 if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
-                if (this.x < 0 || this.x > canvas.width) { this.speedX = -this.speedX; }
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = '#ff0055';
-                ctx.fill();
+                ctx.shadowBlur = 8; ctx.shadowColor = '#ff0055'; ctx.fill();
             }
         }
-
-        function init() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); }
-        }
-
+        function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } }
         function animate() {
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grad.addColorStop(0, '#0c0c10');
-            grad.addColorStop(0.5, '#060608');
-            grad.addColorStop(1, '#020203');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.shadowBlur = 0; 
-            particles.forEach(p => { p.update(); p.draw(); });
+            grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.shadowBlur = 0; particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
-        init();
-        animate();
+        init(); animate();
 
-        // --- PET KINETIC POSITION TICKER ---
+        // --- THE AI EMOTIONAL SHIMEJI ENGINE ---
         const pet = document.getElementById('anime-pet');
-        let petX = 100;
-        let direction = 1; 
+        const visor = document.getElementById('pet-visor');
+        
+        let petX = 150;
+        let direction = 1;
         let isWalking = true;
+        let isJumping = false;
 
-        function updatePetMovement() {
-            if (!isWalking) return;
-            petX += 0.8 * direction;
-            pet.style.left = petX + 'px';
-            const maxW = window.innerWidth - 60;
-            if (petX > maxW) { direction = -1; pet.style.transform = 'scaleX(-1)'; }
-            else if (petX < 10) { direction = 1; pet.style.transform = 'scaleX(1)'; }
+        // Mouse orientation hook: Tracks cursor across dashboard canvas plane
+        let mouseX = 0;
+        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
 
-            if (Math.random() < 0.005) {
+        function updateCharacterLoop() {
+            if (isJumping) return;
+
+            // Turn character horizontally to face toward your mouse cursor placement
+            if (mouseX > petX) {
+                pet.style.transform = 'scaleX(1)'; // Face right
+            } else {
+                pet.style.transform = 'scaleX(-1)'; // Face left
+            }
+
+            if (isWalking) {
+                petX += 0.9 * direction;
+                pet.style.left = petX + 'px';
+
+                // Bounce system handles running boundaries cleanly
+                const maxW = window.innerWidth - 60;
+                if (petX > maxW) { direction = -1; } 
+                else if (petX < 15) { direction = 1; }
+            }
+
+            // Natural state machine engine simulation
+            if (Math.random() < 0.004 && isWalking) {
                 isWalking = false;
-                document.querySelectorAll('.leg').forEach(l => l.style.animationPlayState = 'paused');
+                pet.classList.remove('pet-walking');
                 setTimeout(() => {
                     isWalking = true;
-                    document.querySelectorAll('.leg').forEach(l => l.style.animationPlayState = 'running');
-                    if (Math.random() > 0.5) { direction *= -1; pet.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)'; }
-                }, Math.random() * 3000 + 1000);
+                    pet.classList.add('pet-walking');
+                    if (Math.random() > 0.6) direction *= -1;
+                }, Math.random() * 2000 + 1000);
             }
         }
-        setInterval(updatePetMovement, 20);
+
+        // COGNITIVE REACTION ENGINE: Jolt, change visor expression, and jump on any webpage interaction
+        function triggerEmotionalReaction() {
+            if (isJumping) return;
+            isJumping = true;
+            isWalking = false;
+            pet.classList.remove('pet-walking');
+
+            // Visor changes to deep neon pink emotional spike
+            document.documentElement.style.setProperty('--visor-color', '#ff0055');
+            document.documentElement.style.setProperty('--visor-glow', '#ff0055');
+            pet.style.animation = 'shockJump 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+
+            setTimeout(() => {
+                // Restore baseline cyan balance tracking configurations
+                document.documentElement.style.setProperty('--visor-color', '#00f2fe');
+                document.documentElement.style.setProperty('--visor-glow', '#00f2fe');
+                pet.style.animation = '';
+                isJumping = false;
+                isWalking = true;
+                pet.classList.add('pet-walking');
+            }, 600);
+        }
+
+        // Hook global triggers: Clicks, user hovers on buttons, or link activations trigger responses
+        window.addEventListener('click', triggerEmotionalReaction);
+        document.querySelectorAll('.platform-card, .contact-btn, iframe').forEach(elem => {
+            elem.addEventListener('mouseenter', triggerEmotionalReaction);
+        });
+
+        setInterval(updateCharacterLoop, 20);
     </script>
 </body>
 </html>
