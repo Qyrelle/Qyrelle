@@ -1,4 +1,4 @@
-// --- MAKIMA FLUSHED STANDALONE SCRIPT ENGINE ---
+// --- MAKIMA ADVANCED LIFE-LIKE BEHAVIORAL ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -10,39 +10,37 @@ window.onload = function() {
     let prevX = currentX;
     let prevY = currentY;
     let direction = 1;
-    let state = 'FLOOR_WALKING';
+    let state = 'FLOOR_WALKING'; // FLOOR_WALKING, PANEL_SITTING, STALKING_MOUSE
     let bubbleTimeout = null;
 
     const targets = ['youtube-target', 'spotify-target', 'contact-target'];
     let mouseX = 0;
-    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
+    let mouseY = 0;
+    let mouseIdleTimer = null;
+    let isMouseIdle = false;
+
+    // Monitor exact mouse vector arrays
+    window.addEventListener('mousemove', (e) => { 
+        mouseX = e.clientX; 
+        mouseY = e.clientY;
+        
+        // Reset idle tracking state on cursor move
+        isMouseIdle = false;
+        clearTimeout(mouseIdleTimer);
+        
+        // If mouse stops moving for 1.2 seconds, she locks onto it
+        mouseIdleTimer = setTimeout(() => {
+            isMouseIdle = true;
+        }, 1200);
+    });
 
     const DIALOGUE_BANK = {
-        GREETING: [
-            "Welcome to the hub. Don't touch anything without permission.",
-            "I'm keeping an eye on this workspace.",
-            "A quiet listener is a good listener."
-        ],
-        SPOTIFY: [
-            "Let's see what tracks you're vibing with on Spotify.",
-            "Qyrelle's audio work is under my absolute control.",
-            "This beat meets my expectations."
-        ],
-        YOUTUBE: [
-            "Monitoring the latest visual edits.",
-            "High velocity structure. Keep watching.",
-            "The visuals are proceeding according to plan."
-        ],
-        CLICK: [
-            "Do not make me repeat myself.",
-            "You are testing my patience.",
-            "Everything here belongs to me, including your attention."
-        ],
-        AMBIENT: [
-            "Listen closely to the audio work.",
-            "The atmosphere here suits me.",
-            "Keep exploring. I am watching."
-        ]
+        GREETING: ["I'm keeping an eye on this workspace.", "A quiet listener is a good listener."],
+        SPOTIFY: ["Let's see what tracks you're vibing with on Spotify.", "This beat meets my expectations."],
+        YOUTUBE: ["Monitoring the latest visual edits.", "High velocity structure. Keep watching."],
+        CLICK: ["Do not make me repeat myself.", "You are testing my patience."],
+        STALKING: ["Why did you stop here?", "Are you waiting for me?", "I see what you are doing."],
+        PEEK: ["Hiding in plain sight.", "Don't mind me...", "Observing."]
     };
 
     function triggerLocalDialogue(category) {
@@ -56,10 +54,7 @@ window.onload = function() {
         bubble.innerText = text;
         bubble.classList.add('visible');
         positionSpeechBubble();
-
-        bubbleTimeout = setTimeout(() => {
-            bubble.classList.remove('visible');
-        }, 4500);
+        bubbleTimeout = setTimeout(() => { bubble.classList.remove('visible'); }, 4000);
     }
 
     function positionSpeechBubble() {
@@ -67,97 +62,120 @@ window.onload = function() {
         bubble.style.top = (currentY - 45) + 'px';
     }
 
-    function playClickSound() {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const audioCtx = new AudioContext();
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-        } catch(e) {}
-    }
-
-    function spawnTrailParticle(x, y) {
-        const trail = document.createElement('div');
-        trail.style.position = 'fixed';
-        trail.style.left = (x + 14 + Math.random() * 20) + 'px';
-        trail.style.top = (y + 10 + Math.random() * 30) + 'px';
-        trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
-        trail.style.height = trail.style.width;
-        trail.style.backgroundColor = '#ff0055'; trail.style.boxShadow = '0 0 8px #ff0055';
-        trail.style.zIndex = '99'; trail.style.pointerEvents = 'none';
-        document.body.appendChild(trail);
-        setTimeout(() => { trail.style.transform = 'scale(0)'; trail.style.opacity = '0'; }, 50);
-        setTimeout(() => { trail.remove(); }, 450);
+    function findTargetCoords(id) {
+        const target = document.getElementById(id);
+        if (!target) return null;
+        const rect = target.getBoundingClientRect();
+        // Return coordinate right on the bottom border frame line for peeking
+        return { x: rect.left + (rect.width / 2) - 24, y: rect.bottom - 12, targetId: id };
     }
 
     function updateMakimaBehavior() {
+        // Face the cursor direction naturally
         if (mouseX > currentX) element.style.transform = 'scaleX(1)'; 
         else element.style.transform = 'scaleX(-1)'; 
 
-        if (state === 'FLOOR_WALKING') {
-            currentX += 1.3 * direction;
+        // Apply a gentle breathing/swimming sway to her body naturally
+        let baseSway = Math.sin(Date.now() / 300) * 2;
+        element.style.paddingBottom = (Math.abs(baseSway)) + 'px';
+
+        // --- CORE STATE MACHINE ---
+        
+        // Priority Override: If cursor is parked still, she walks towards it
+        if (isMouseIdle && state !== 'PANEL_SITTING') {
+            state = 'STALKING_MOUSE';
+            let targetX = mouseX - 24;
+            let targetY = mouseY - 42;
+            
+            // Move incrementally toward mouse position coordinates
+            let diffX = targetX - currentX;
+            let diffY = targetY - currentY;
+            
+            if (Math.abs(diffX) > 5) currentX += Math.sign(diffX) * 2.0;
+            if (Math.abs(diffY) > 5) currentY += Math.sign(diffY) * 2.0;
+            
             element.style.left = currentX + 'px';
-            element.style.top = (window.innerHeight - 65) + 'px';
-            const maxW = window.innerWidth - 60;
-            if (currentX > maxW) direction = -1; if (currentX < 15) direction = 1;
-
-            if (Math.random() < 0.0015 && !bubble.classList.contains('visible')) {
-                triggerLocalDialogue('AMBIENT');
+            element.style.top = currentY + 'px';
+            element.style.zIndex = "100"; // Stay in front while hunting cursor
+            
+            // If she reaches the cursor, say something and reset idle
+            if (Math.abs(diffX) <= 6 && Math.abs(diffY) <= 6) {
+                isMouseIdle = false;
+                state = 'FLOOR_WALKING';
+                triggerLocalDialogue('STALKING');
             }
+        }
+        // Baseline Floor Roaming behavior
+        else if (state === 'FLOOR_WALKING') {
+            element.style.zIndex = "100"; // Reset layer priority
+            currentX += 1.3 * direction;
+            currentY = window.innerHeight - 65;
+            element.style.left = currentX + 'px';
+            element.style.top = currentY + 'px';
+            
+            const maxW = window.innerWidth - 60;
+            if (currentX > maxW) direction = -1; 
+            if (currentX < 15) direction = 1;
 
+            // Roll odds to climb and hide/peek behind an interface panel
             if (Math.random() < 0.006) {
                 const randomTarget = targets[Math.floor(Math.random() * targets.length)];
                 const coord = findTargetCoords(randomTarget);
                 if (coord) {
-                    state = 'PANEL_SITTING'; currentX = coord.x; currentY = coord.y;
-                    element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
+                    state = 'PANEL_SITTING';
+                    currentX = coord.x;
+                    currentY = coord.y;
+                    element.style.left = currentX + 'px';
+                    element.style.top = currentY + 'px';
                     
-                    if (randomTarget === 'spotify-target') triggerLocalDialogue('SPOTIFY');
+                    // LAYER TRICK: Push her behind the card so she looks up from the bottom!
+                    element.style.zIndex = "1"; 
+                    
+                    if (Math.random() < 0.5) triggerLocalDialogue('PEEK');
+                    else if (randomTarget === 'spotify-target') triggerLocalDialogue('SPOTIFY');
                     else if (randomTarget === 'youtube-target') triggerLocalDialogue('YOUTUBE');
                 }
             }
         } 
+        // Peeking state loop
         else if (state === 'PANEL_SITTING') {
-            if (Math.random() < 0.005) {
-                state = 'FLOOR_WALKING'; currentY = window.innerHeight - 65;
+            // Keep her anchored down behind the card block layer
+            element.style.zIndex = "1";
+            
+            // Randomly decide to slide out from behind the button/card back to floor
+            if (Math.random() < 0.004) {
+                state = 'FLOOR_WALKING';
+                currentY = window.innerHeight - 65;
                 element.style.top = currentY + 'px';
+                element.style.zIndex = "100";
             }
         }
 
+        // Particle trail tracking vector loops
         let velocity = Math.abs(currentX - prevX) + Math.abs(currentY - prevY);
         if (velocity > 0.5) {
-            spawnTrailParticle(currentX, currentY);
+            // Add custom forward tilt mechanics depending on movement speed
+            let tilt = direction * 4;
+            if (state === 'STALKING_MOUSE') tilt = Math.sign(currentX - prevX) * 6;
+            element.style.transform += ` rotate(${tilt}deg)`;
         }
         
-        if (bubble.classList.contains('visible')) {
-            positionSpeechBubble();
-        }
-
+        if (bubble.classList.contains('visible')) { positionSpeechBubble(); }
         prevX = currentX; prevY = currentY;
     }
 
     element.addEventListener('click', (e) => {
-        e.stopPropagation(); const originalY = currentY;
+        e.stopPropagation();
+        const originalY = currentY;
         element.style.top = (originalY - 30) + 'px';
         element.style.filter = 'drop-shadow(0 0 10px #ff0055)';
-        playClickSound();
+        element.style.zIndex = "100"; // Force front if clicked while hiding
         
         triggerLocalDialogue('CLICK');
-
         setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = ''; }, 600);
     });
 
-    setTimeout(() => {
-        triggerLocalDialogue('GREETING');
-    }, 1000);
-
+    setTimeout(() => { triggerLocalDialogue('GREETING'); }, 1000);
     setInterval(updateMakimaBehavior, 20);
     element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
 };
