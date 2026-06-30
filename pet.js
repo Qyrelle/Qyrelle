@@ -1,4 +1,4 @@
-// --- MAKIMA STANDARD STABLE DETECT & DIALOGUE ENGINE ---
+// --- MAKIMA FLUSHED STANDALONE SCRIPT ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
@@ -17,7 +17,6 @@ window.onload = function() {
     let mouseX = 0;
     window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
 
-    // --- LOCAL DIALOGUE MATRIX ---
     const DIALOGUE_BANK = {
         GREETING: [
             "Welcome to the hub. Don't touch anything without permission.",
@@ -58,7 +57,6 @@ window.onload = function() {
         bubble.classList.add('visible');
         positionSpeechBubble();
 
-        // Automatically hide the bubble after 4.5 seconds
         bubbleTimeout = setTimeout(() => {
             bubble.classList.remove('visible');
         }, 4500);
@@ -110,7 +108,6 @@ window.onload = function() {
             const maxW = window.innerWidth - 60;
             if (currentX > maxW) direction = -1; if (currentX < 15) direction = 1;
 
-            // Occasional ambient chatter while walking
             if (Math.random() < 0.0015 && !bubble.classList.contains('visible')) {
                 triggerLocalDialogue('AMBIENT');
             }
@@ -122,7 +119,6 @@ window.onload = function() {
                     state = 'PANEL_SITTING'; currentX = coord.x; currentY = coord.y;
                     element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
                     
-                    // Trigger custom location dialogues instantly
                     if (randomTarget === 'spotify-target') triggerLocalDialogue('SPOTIFY');
                     else if (randomTarget === 'youtube-target') triggerLocalDialogue('YOUTUBE');
                 }
@@ -158,7 +154,6 @@ window.onload = function() {
         setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = ''; }, 600);
     });
 
-    // Trigger greeting lines on initial load
     setTimeout(() => {
         triggerLocalDialogue('GREETING');
     }, 1000);
