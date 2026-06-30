@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Qyrelle | Official Hub</title>
     
+    <!-- Tab Icon -->
     <link rel="icon" type="image/jpeg" href="https://unavatar.io/youtube/qyrelle">
     
     <style>
@@ -59,6 +60,40 @@
             transition: transform 0.15s ease-out, top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             transform-origin: bottom center;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        /* --- MINI SPEECH BUBBLE INTERFACE LAYOUT --- */
+        .shimeji-bubble {
+            position: fixed;
+            background: rgba(10, 10, 12, 0.95);
+            border: 1px solid #ff0055;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1.2vh;
+            max-width: 180px;
+            z-index: 101;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .shimeji-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 20px;
+            width: 0; height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(10, 10, 12, 0.95);
+        }
+        .bubble-visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
         header { text-align: center; margin: 1vh 0; z-index: 2; }
@@ -135,7 +170,11 @@
 
     <canvas id="bg-canvas"></canvas>
 
+    <!-- Character Frame Element -->
     <div id="shimeji-character" class="interactive-shimeji"></div>
+    
+    <!-- Dynamic speech output display node -->
+    <div id="shimeji-speech" class="shimeji-bubble">...</div>
 
     <header>
         <h1>Qyrelle</h1>
@@ -180,30 +219,17 @@
 
     <footer><p>© 2026 Qyrelle. All Rights Reserved.</p></footer>
 
+    <!-- HIGH-VELOCITY BACKGROUND CANVAS PARTICLE ENGINE -->
     <script>
         const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
-
         class Particle {
-            constructor() { 
-                this.x = Math.random() * canvas.width; 
-                this.y = Math.random() * canvas.height; 
-                this.size = Math.random() * 2 + 0.5; 
-                this.speedY = Math.random() * -1.8 - 0.6; 
-                this.opacity = Math.random() * 0.6 + 0.1; 
-            }
-            update() { 
-                this.y += this.speedY; 
-                if (this.y < 0) this.y = canvas.height; 
-            }
-            draw() { 
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
-                ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill(); 
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedY = Math.random() * -1.8 - 0.6; this.opacity = Math.random() * 0.6 + 0.1; }
+            update() { this.y += this.speedY; if (this.y < 0) this.y = canvas.height; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 0, 85, ${this.opacity})`; ctx.fill(); }
         }
         for (let i = 0; i < 55; i++) { particles.push(new Particle()); }
-
         function animate() {
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             grad.addColorStop(0, '#0c0c10'); grad.addColorStop(0.5, '#060608'); grad.addColorStop(1, '#020203');
