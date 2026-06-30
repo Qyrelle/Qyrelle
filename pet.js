@@ -1,13 +1,9 @@
-// --- MAKIMA LIVE AI INFERENCE AGENT ENGINE ---
+// --- MAKIMA STANDARD STABLE DETECT & DIALOGUE ENGINE ---
 
 window.onload = function() {
     const element = document.getElementById('shimeji-character');
-    const bubble = document.getElementById('shimeji-speech');
+    const bubble = document.getElementById('shimeji-bubble');
     if (!element || !bubble) return;
-
-    // --- SECURE INFERENCE CONNECTION CONFIGURATION ---
-    const HF_TOKEN = "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";
-    const MODEL_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct";
 
     let currentX = 150;
     let currentY = window.innerHeight - 65;
@@ -16,87 +12,61 @@ window.onload = function() {
     let direction = 1;
     let state = 'FLOOR_WALKING';
     let bubbleTimeout = null;
-    let isRequestPending = false;
 
     const targets = ['youtube-target', 'spotify-target', 'contact-target'];
     let mouseX = 0;
     window.addEventListener('mousemove', (e) => { mouseX = e.clientX; });
 
-    function findTargetCoords(id) {
-        const target = document.getElementById(id);
-        if (!target) return null;
-        const rect = target.getBoundingClientRect();
-        return { x: rect.left + (rect.width / 2) - 24, y: rect.top - 42 };
+    // --- LOCAL DIALOGUE MATRIX ---
+    const DIALOGUE_BANK = {
+        GREETING: [
+            "Welcome to the hub. Don't touch anything without permission.",
+            "I'm keeping an eye on this workspace.",
+            "A quiet listener is a good listener."
+        ],
+        SPOTIFY: [
+            "Let's see what tracks you're vibing with on Spotify.",
+            "Qyrelle's audio work is under my absolute control.",
+            "This beat meets my expectations."
+        ],
+        YOUTUBE: [
+            "Monitoring the latest visual edits.",
+            "High velocity structure. Keep watching.",
+            "The visuals are proceeding according to plan."
+        ],
+        CLICK: [
+            "Do not make me repeat myself.",
+            "You are testing my patience.",
+            "Everything here belongs to me, including your attention."
+        ],
+        AMBIENT: [
+            "Listen closely to the audio work.",
+            "The atmosphere here suits me.",
+            "Keep exploring. I am watching."
+        ]
+    };
+
+    function triggerLocalDialogue(category) {
+        const lines = DIALOGUE_BANK[category];
+        const randomLine = lines[Math.floor(Math.random() * lines.length)];
+        showSpeechBubble(randomLine);
     }
 
-    // --- SPEECH BUBBLE POSITIONING FRAMEWORK ---
-    function updateBubblePosition() {
-        bubble.style.left = (currentX - 10) + 'px';
+    function showSpeechBubble(text) {
+        clearTimeout(bubbleTimeout);
+        bubble.innerText = text;
+        bubble.classList.add('visible');
+        positionSpeechBubble();
+
+        // Automatically hide the bubble after 4.5 seconds
+        bubbleTimeout = setTimeout(() => {
+            bubble.classList.remove('visible');
+        }, 4500);
+    }
+
+    function positionSpeechBubble() {
+        bubble.style.left = (currentX - 20) + 'px';
         bubble.style.top = (currentY - 45) + 'px';
-    }
-
-    // --- OPTION B: REAL-TIME AI PROMPT CAPTURE FETCH ENGINE ---
-    async function askMakimaAI(userActionDescription) {
-        if (isRequestPending) return;
-        isRequestPending = true;
-
-        // Show loading ticks inside bubble framework
-        bubble.innerText = "•••";
-        bubble.classList.add('bubble-visible');
-        updateBubblePosition();
-
-        // Stable fallback arrays if API faces queue delays
-        const fallbacks = {
-            "click": ["Don't get familiar.", "I don't remember giving you permission to click me.", "Are you listing or just staring?", "Quiet. Listen to Qyrelle's tracks."],
-            "youtube": ["Fascinating visual edits. Qyrelle has talent.", "Let's observe these videos."],
-            "spotify": ["This Phonk bass drops heavy. Adequate work.", "Listen carefully. Sound waves carry power."]
-        };
-
-        try {
-            const systemPrompt = "You are Makima from Chainsaw Man, chilling on Qyrelle's official Phonk music and visual edits hub. Speak directly to the user as Makima. Keep your response extremely brief, cold, cryptic, highly commanding, and under 12 words total. Do not use hashtags or actions.";
-            const userPrompt = `The user performed this action on the dashboard: ${userActionDescription}. What do you say?`;
-
-            const response = await fetch(MODEL_URL, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${HF_TOKEN}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    inputs: `<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n${systemPrompt}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n${userPrompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n`,
-                    parameters: { max_new_tokens: 35, temperature: 0.7 }
-                })
-            });
-
-            const data = await response.json();
-            let aiText = "";
-
-            if (data && data[0] && data[0].generated_text) {
-                const fullText = data[0].generated_text;
-                const parts = fullText.split("<|start_header_id|>assistant<|end_header_id|>\n\n");
-                aiText = parts[parts.length - 1].trim();
-            }
-
-            // Clean data text or trigger structural fallback drop
-            if (!aiText || aiText.length < 2) {
-                throw new Error("Empty processing yield.");
-            }
-
-            bubble.innerText = aiText;
-        } catch (error) {
-            console.log("Inference cluster busy. Launching backup matrix arrays.", error);
-            const list = fallbacks[userActionDescription] || fallbacks["click"];
-            bubble.innerText = list[Math.floor(Math.random() * list.length)];
-        } finally {
-            isRequestPending = false;
-            updateBubblePosition();
-
-            // Hold speech visibility for 4 seconds, then drop cleanly out
-            clearTimeout(bubbleTimeout);
-            bubbleTimeout = setTimeout(() => {
-                bubble.classList.remove('bubble-visible');
-            }, 4000);
-        }
     }
 
     function playClickSound() {
@@ -106,8 +76,7 @@ window.onload = function() {
             const audioCtx = new AudioContext();
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-            osc.type = 'triangle'; 
-            osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(110, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
             gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
@@ -123,8 +92,7 @@ window.onload = function() {
         trail.style.top = (y + 10 + Math.random() * 30) + 'px';
         trail.style.width = Math.floor(Math.random() * 4 + 3) + 'px';
         trail.style.height = trail.style.width;
-        trail.style.backgroundColor = '#ff0055'; 
-        trail.style.boxShadow = '0 0 8px #ff0055';
+        trail.style.backgroundColor = '#ff0055'; trail.style.boxShadow = '0 0 8px #ff0055';
         trail.style.zIndex = '99'; trail.style.pointerEvents = 'none';
         document.body.appendChild(trail);
         setTimeout(() => { trail.style.transform = 'scale(0)'; trail.style.opacity = '0'; }, 50);
@@ -142,6 +110,11 @@ window.onload = function() {
             const maxW = window.innerWidth - 60;
             if (currentX > maxW) direction = -1; if (currentX < 15) direction = 1;
 
+            // Occasional ambient chatter while walking
+            if (Math.random() < 0.0015 && !bubble.classList.contains('visible')) {
+                triggerLocalDialogue('AMBIENT');
+            }
+
             if (Math.random() < 0.006) {
                 const randomTarget = targets[Math.floor(Math.random() * targets.length)];
                 const coord = findTargetCoords(randomTarget);
@@ -149,9 +122,9 @@ window.onload = function() {
                     state = 'PANEL_SITTING'; currentX = coord.x; currentY = coord.y;
                     element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
                     
-                    // AI speaks when landing on specific layout panels
-                    if (randomTarget === 'youtube-target') askMakimaAI("youtube");
-                    if (randomTarget === 'spotify-target') askMakimaAI("spotify");
+                    // Trigger custom location dialogues instantly
+                    if (randomTarget === 'spotify-target') triggerLocalDialogue('SPOTIFY');
+                    else if (randomTarget === 'youtube-target') triggerLocalDialogue('YOUTUBE');
                 }
             }
         } 
@@ -166,10 +139,12 @@ window.onload = function() {
         if (velocity > 0.5) {
             spawnTrailParticle(currentX, currentY);
         }
-        prevX = currentX; prevY = currentY;
-        if (bubble.classList.contains('bubble-visible')) {
-            updateBubblePosition();
+        
+        if (bubble.classList.contains('visible')) {
+            positionSpeechBubble();
         }
+
+        prevX = currentX; prevY = currentY;
     }
 
     element.addEventListener('click', (e) => {
@@ -178,11 +153,15 @@ window.onload = function() {
         element.style.filter = 'drop-shadow(0 0 10px #ff0055)';
         playClickSound();
         
-        // Trigger live AI generation response loop on click
-        askMakimaAI("click");
+        triggerLocalDialogue('CLICK');
 
         setTimeout(() => { element.style.top = originalY + 'px'; element.style.filter = ''; }, 600);
     });
+
+    // Trigger greeting lines on initial load
+    setTimeout(() => {
+        triggerLocalDialogue('GREETING');
+    }, 1000);
 
     setInterval(updateMakimaBehavior, 20);
     element.style.left = currentX + 'px'; element.style.top = currentY + 'px';
