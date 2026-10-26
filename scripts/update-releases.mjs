@@ -34,9 +34,31 @@ for (const artist of artists) {
   }
 }
 
-const unique = [...new Map(
-  releases.map(r => [`${r.artist}|${r.title}|${r.date}`, r])
-).values()].sort((a, b) => b.date.localeCompare(a.date));
+// Remove duplicate store listings for the same artist, song, and release date.
+ // Ignore "- Single" and a "(feat. Qyrelle)" suffix when comparing titles.
+ // Keep the credited version when two otherwise matching listings exist.
+const normalizeTitle = title => title
+  .replace(/\\s*[-–]\\s*single\\s*$/i, "")
+  .replace(/\\s*\\(feat\\.?\\s*qyrelle\\)\\s*/i, " ")
+  .replace(/\\s+/g, " ")
+  .trim()
+  .toLowerCase();
+
+const deduped = new Map();
+for (const release of releases) {
+  const key = `${release.artist.toLowerCase()}|${normalizeTitle(release.title)}|${release.date}`;
+  const existing = deduped.get(key);
+  if (!existing) {
+    deduped.set(key, release);
+    continue;
+  }
+  // Prefer the title that explicitly includes QYRELLE as a featured artist.
+  if (/feat\\.?\\s*qyrelle/i.test(release.title) && !/feat\\.?\\s*qyrelle/i.test(existing.title)) {
+    deduped.set(key, release);
+  }
+}
+
+const unique = [...deduped.values()].sort((a, b) => b.date.localeCompare(a.date));
 
 await fs.writeFile("releases.json", JSON.stringify(unique, null, 2));
 
