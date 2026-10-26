@@ -182,8 +182,9 @@ const cards = unique.map(r => {
     ${r.cover ? `<img src="${r.cover}" alt="">` : ""}
     <h2>${r.title}</h2>
     <p>${r.artist} · ${r.date}</p>
-    <a href="${r.appleUrl}" target="_blank" rel="noopener">Apple Music</a>
+    ${r.appleUrl ? `<a href="${r.appleUrl}" target="_blank" rel="noopener">Apple Music</a>` : ""}
     <a href="${spotifySearch(r)}" target="_blank" rel="noopener">Spotify</a>
+    ${r.youtubeUrl ? `<a href="${r.youtubeUrl}" target="_blank" rel="noopener">YouTube</a>` : ""}
     <p><a href="../releases/${page}/">Song details</a></p>
   </article>`;
 }).join("\n");
@@ -220,8 +221,9 @@ for (const r of unique) {
 <a href="/music/" style="color:#ff6b9b">All releases</a>
 <h1>${r.title}</h1><p>${r.artist} · ${r.date}</p>
 ${r.cover ? `<img width="300" src="${r.cover}" alt="Cover art">` : ""}
-<p><a href="${r.appleUrl}">Listen on Apple Music</a></p>
-<p><a href="${r.spotifyUrl}" target="_blank" rel="noopener">Search this release on Spotify</a></p>
+<p>${r.appleUrl ? `<a href="${r.appleUrl}" target="_blank" rel="noopener">Listen on Apple Music</a>` : ""}</p>
+<p><a href="${spotifySearch(r)}" target="_blank" rel="noopener">Listen / search on Spotify</a></p>
+${r.youtubeUrl ? `<p><a href="${r.youtubeUrl}" target="_blank" rel="noopener">Watch on YouTube</a></p>` : ""}
 </body></html>`);
 }
 
