@@ -58,6 +58,26 @@ for (const release of releases) {
   }
 }
 
+// Collapse duplicate catalog entries when titles differ only by a release-type
+// suffix or a "feat. Qyrelle" credit. Keep distinct releases from different dates.
+const normalizeTitle = title => title
+  .replace(/\\s*[-–]\\s*single\\s*$/i, "")
+  .replace(/\\s*\\(feat\\.?\\s*qyrelle\\)\\s*/i, " ")
+  .replace(/\\s+/g, " ")
+  .trim()
+  .toLowerCase();
+
+const deduped = new Map();
+for (const release of releases) {
+  const key = `${release.artist.toLowerCase()}|${normalizeTitle(release.title)}|${release.date}`;
+  const existing = deduped.get(key);
+  if (!existing) {
+    deduped.set(key, release);
+  } else if (/feat\\.?\\s*qyrelle/i.test(release.title) &&
+             !/feat\\.?\\s*qyrelle/i.test(existing.title)) {
+    deduped.set(key, release);
+  }
+}
 const unique = [...deduped.values()].sort((a, b) => b.date.localeCompare(a.date));
 
 await fs.writeFile("releases.json", JSON.stringify(unique, null, 2));
