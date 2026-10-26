@@ -24,7 +24,7 @@ for (const artist of artists) {
           date: (item.releaseDate || "").slice(0, 10),
           cover: item.artworkUrl100 || "",
           appleUrl: item.collectionViewUrl || "",
-          spotifyUrl: `https://open.spotify.com/artist/${artist.spotify}`,
+          spotifyUrl: `https://open.spotify.com/search/${encodeURIComponent(`${item.collectionName.replace(/\\s*[-–]\\s*single\\s*$/i, "")} ${artist.name}`)}`,
           source: "Apple Music"
         });
       }
@@ -66,7 +66,7 @@ const cards = unique.map(r => {
     <h2>${r.title}</h2>
     <p>${r.artist} · ${r.date}</p>
     <a href="${r.appleUrl}" target="_blank" rel="noopener">Apple Music</a>
-    <a href="${r.spotifyUrl}" target="_blank" rel="noopener">Spotify</a>
+    <a href="${r.spotifyUrl}" target="_blank" rel="noopener">Search on Spotify</a>
     <p><a href="../releases/${page}/">Song details</a></p>
   </article>`;
 }).join("\n");
@@ -104,7 +104,7 @@ for (const r of unique) {
 <h1>${r.title}</h1><p>${r.artist} · ${r.date}</p>
 ${r.cover ? `<img width="300" src="${r.cover}" alt="Cover art">` : ""}
 <p><a href="${r.appleUrl}">Listen on Apple Music</a></p>
-<p><a href="${r.spotifyUrl}">Find artist on Spotify</a></p>
+<p><a href="${r.spotifyUrl}" target="_blank" rel="noopener">Search this release on Spotify</a></p>
 </body></html>`);
 }
 
