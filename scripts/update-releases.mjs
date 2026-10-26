@@ -24,7 +24,7 @@ for (const artist of artists) {
           date: (item.releaseDate || "").slice(0, 10),
           cover: item.artworkUrl100 || "",
           appleUrl: item.collectionViewUrl || "",
-          spotifyUrl: `https://open.spotify.com/search/${encodeURIComponent(`${item.collectionName.replace(/\\s*[-–]\\s*single\\s*$/i, "")} ${artist.name}`)}`,
+          spotifyUrl: `https://open.spotify.com/search/${encodeURIComponent(`${item.collectionName.replace(/(?: - Single| – Single)$/i, "")} ${artist.name}`)}`,
           source: "Apple Music"
         });
       }
