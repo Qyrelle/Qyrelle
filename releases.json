@@ -1,5 +1,23 @@
 [
   {
+    "title": "VIRA VIRA! - Single",
+    "artist": "QYRELLE",
+    "date": "2026-11-02",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a2/6e/e0/a26ee093-2078-41c1-0357-e51af5822f22/7333596535315.jpg/100x100bb.jpg",
+    "appleUrl": "https://music.apple.com/us/album/vira-vira-single/6826877644?uo=4",
+    "spotifyUrl": "",
+    "source": "Apple Music"
+  },
+  {
+    "title": "FOLGA (feat. Qyrelle) - Single",
+    "artist": "QYRELLE",
+    "date": "2026-11-02",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/df/dc/dedfdccf-78e9-817f-32c8-d8d3f22c155e/859750171818_cover.jpg/100x100bb.jpg",
+    "appleUrl": "https://music.apple.com/us/album/folga-feat-qyrelle-single/6829921476?uo=4",
+    "spotifyUrl": "",
+    "source": "Apple Music"
+  },
+  {
     "title": "ECO DA FONE - Single",
     "artist": "QYRELLE",
     "date": "2026-10-29",
@@ -441,15 +459,6 @@
     "source": "Apple Music"
   },
   {
-    "title": "MEU AMOR - Single",
-    "artist": "QYRELLE",
-    "date": "2026-08-05",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/48/95/16/489516de-d735-099f-453a-4fd2572a81cd/7333591861006.jpg/100x100bb.jpg",
-    "appleUrl": "https://music.apple.com/us/album/meu-amor-single/6798174008?uo=4",
-    "spotifyUrl": "",
-    "source": "Apple Music"
-  },
-  {
     "title": "SEM VOLTA - Single",
     "artist": "QYRELLE",
     "date": "2026-07-31",
@@ -482,15 +491,6 @@
     "date": "2026-07-24",
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/57/a8/20/57a820ca-73e1-636d-6e5d-a142919e67fe/7333591414431.jpg/100x100bb.jpg",
     "appleUrl": "https://music.apple.com/us/album/meu-her%C3%B3i-single/6794233353?uo=4",
-    "spotifyUrl": "",
-    "source": "Apple Music"
-  },
-  {
-    "title": "NOITE SEM FREIO - Single",
-    "artist": "QYRELLE",
-    "date": "2026-07-20",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/cb/01/13/cb01130b-5166-e33e-f232-a398319808ce/7333591348071.jpg/100x100bb.jpg",
-    "appleUrl": "https://music.apple.com/us/album/noite-sem-freio-single/6792742798?uo=4",
     "spotifyUrl": "",
     "source": "Apple Music"
   },
