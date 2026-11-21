@@ -1,5 +1,14 @@
 [
   {
+    "title": "QUÉDATE AQUÍ - Single",
+    "artist": "QYRELLE",
+    "date": "2026-11-19",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/67/c3/3d/67c33d29-aeb1-19d5-164e-c75ac633343a/7333596602833.jpg/100x100bb.jpg",
+    "appleUrl": "https://music.apple.com/us/album/qu%C3%A9date-aqu%C3%AD-single/6827974710?uo=4",
+    "spotifyUrl": "",
+    "source": "Apple Music"
+  },
+  {
     "title": "LOSE THE GHOST - Single",
     "artist": "QYRELLE",
     "date": "2026-11-17",
@@ -752,15 +761,6 @@
     "date": "2026-05-07",
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/21/00/09/21000971-0f01-eab9-b3d5-261fe6081e2b/7333583174305.jpg/100x100bb.jpg",
     "appleUrl": "https://music.apple.com/us/album/yami-estrela-single/1896381894?uo=4",
-    "spotifyUrl": "",
-    "source": "Apple Music"
-  },
-  {
-    "title": "Estrella - Single",
-    "artist": "QYRELLE",
-    "date": "2026-05-04",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d1/e9/83/d1e983d0-d047-24dd-bb4a-80327c6d1c3f/7333583122764.jpg/100x100bb.jpg",
-    "appleUrl": "https://music.apple.com/us/album/estrella-single/1896273054?uo=4",
     "spotifyUrl": "",
     "source": "Apple Music"
   },
